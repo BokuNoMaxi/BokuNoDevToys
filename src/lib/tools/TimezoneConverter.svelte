@@ -1,14 +1,21 @@
 <script lang="ts">
-	const bases = ['UTC', 'GMT'];
+	const bases = ['GMT', 'MEZ', 'MESZ'];
 	const offsets = Array.from({ length: 25 }, (_, i) => i - 12); // -12 to +12
+
+	// MEZ = UTC+1, MESZ = UTC+2 — fixed offsets
+	const fixedOffset: Record<string, number> = { MEZ: 1, MESZ: 2 };
 
 	let inputDate = $state(new Date().toISOString().slice(0, 10));
 	let inputTime = $state(new Date().toTimeString().slice(0, 5));
 
-	let fromBase   = $state('UTC');
+	let fromBase   = $state('GMT');
 	let fromOffset = $state(0);
-	let toBase     = $state('UTC');
+	let toBase     = $state('MEZ');
 	let toOffset   = $state(1);
+
+	// Auto-set offset when a fixed-offset base is chosen
+	$effect(() => { if (fixedOffset[fromBase] !== undefined) fromOffset = fixedOffset[fromBase]; });
+	$effect(() => { if (fixedOffset[toBase]   !== undefined) toOffset   = fixedOffset[toBase]; });
 
 	let result = $state('');
 	let error  = $state('');
@@ -86,7 +93,7 @@
 					<select bind:value={fromBase} class="{selectClass} w-24">
 						{#each bases as b}<option value={b}>{b}</option>{/each}
 					</select>
-					<select bind:value={fromOffset} class="{selectClass} flex-1">
+					<select bind:value={fromOffset} disabled={fixedOffset[fromBase] !== undefined} class="{selectClass} flex-1 disabled:opacity-40 disabled:cursor-not-allowed">
 						{#each offsets as o}<option value={o}>{offsetLabel(o)}</option>{/each}
 					</select>
 				</div>
@@ -100,7 +107,7 @@
 					<select bind:value={toBase} class="{selectClass} w-24">
 						{#each bases as b}<option value={b}>{b}</option>{/each}
 					</select>
-					<select bind:value={toOffset} class="{selectClass} flex-1">
+					<select bind:value={toOffset} disabled={fixedOffset[toBase] !== undefined} class="{selectClass} flex-1 disabled:opacity-40 disabled:cursor-not-allowed">
 						{#each offsets as o}<option value={o}>{offsetLabel(o)}</option>{/each}
 					</select>
 				</div>
