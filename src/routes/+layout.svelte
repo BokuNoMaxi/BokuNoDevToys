@@ -88,6 +88,7 @@
 				>DE</button>
 			</div>
 		</div>
+		<p class="px-5 pb-4 text-xs text-slate-700 text-center">BokuNoDevToys &copy; {new Date().getFullYear()}</p>
 	</aside>
 
 	<div class="flex-1 flex flex-col min-w-0">
