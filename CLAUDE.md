@@ -17,21 +17,21 @@ SvelteKit-Projekt mit Dev-Tools im Browser. Läuft produktiv via Docker unter ht
    ```
 3. In `src/routes/tools/[tool]/+page.svelte` importieren und per `{:else if toolId === 'mein-tool'}` einbinden
 
+## Arbeitsweise
+
+**Immer direkt im Projektverzeichnis `/home/pi/BokuNoDevToys/` arbeiten** — nie in Worktrees oder anderen Verzeichnissen, da Docker von hier baut und ein `git pull` sonst nötig wäre.
+
 ## Build & Deploy
 
-Die Seite läuft in Docker (`/home/pi/BokuNoDevToys/`). Nach jeder Änderung:
+Nach jeder Änderung — erst Docker neu bauen, dann committen:
 
 ```bash
 cd /home/pi/BokuNoDevToys
 docker compose down && docker compose build --no-cache && docker compose up -d
-```
 
-Danach Änderungen committen und auf main pushen:
-
-```bash
 git add <dateien>
 git commit -m "Beschreibung"
-git push origin <branch>:main
+git push
 ```
 
 > Der lokale `npm run dev` hat keinen Effekt auf die Produktivseite.
