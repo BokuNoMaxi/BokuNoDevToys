@@ -27,7 +27,7 @@
 			map[key] = val;
 		}
 
-		const found = { user: map['DB_USER'], password: map['DB_PASSWORD'], host: map['DB_HOST'], database: map['DB_NAME'] };
+		const found = { user: map['DB_USER'], password: map['DB_PASSWORD'], host: map['DB_HOST'], database: map['DB_NAME'] ?? map['DB_DATABASE'] };
 		const missing = Object.entries(found).filter(([, v]) => !v).map(([k]) => k);
 
 		if (missing.length === 4) {
@@ -35,7 +35,7 @@
 			return;
 		}
 		if (missing.length > 0) {
-			envError = `Nicht gefunden: ${missing.map(k => ({ user: 'DB_USER', password: 'DB_PASSWORD', host: 'DB_HOST', database: 'DB_NAME' }[k])).join(', ')}`;
+			envError = `Nicht gefunden: ${missing.map(k => ({ user: 'DB_USER', password: 'DB_PASSWORD', host: 'DB_HOST', database: 'DB_NAME / DB_DATABASE' } as Record<string,string>)[k]).join(', ')}`;
 		}
 
 		if (found.user) user = found.user;
@@ -87,12 +87,12 @@
 		<p class="text-xs text-slate-500 mb-4">
 			Kopiere den Inhalt deiner <code class="text-slate-400">.env</code>-Datei hier hinein — die Felder
 			<code class="text-slate-400">DB_USER</code>, <code class="text-slate-400">DB_PASSWORD</code>,
-			<code class="text-slate-400">DB_HOST</code> und <code class="text-slate-400">DB_NAME</code>
+			<code class="text-slate-400">DB_HOST</code> und <code class="text-slate-400">DB_NAME</code> / <code class="text-slate-400">DB_DATABASE</code>
 			werden automatisch übernommen.
 		</p>
 		<textarea
 			bind:value={envInput}
-			placeholder={'DB_USER=myuser\nDB_PASSWORD=secret\nDB_HOST=localhost\nDB_NAME=mydb\n# Kommentare und andere Variablen werden ignoriert'}
+			placeholder={'DB_USER=myuser\nDB_PASSWORD=secret\nDB_HOST=localhost\nDB_NAME=mydb\n# oder: DB_DATABASE=mydb\n# Kommentare und andere Variablen werden ignoriert'}
 			rows="6"
 			class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-700 focus:outline-none focus:border-violet-500 font-mono text-xs resize-y"
 		></textarea>
