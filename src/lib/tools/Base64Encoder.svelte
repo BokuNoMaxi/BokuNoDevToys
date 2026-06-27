@@ -1,6 +1,6 @@
 <script lang="ts">
 	let textInput = $state('');
-	let textOutput = $state('');
+	let textMode = $state<'encode' | 'decode'>('encode');
 	let textError = $state('');
 
 	let imageSrc = $state('');
@@ -9,27 +9,25 @@
 	let imageCopied = $state(false);
 	let textCopied = $state(false);
 
-	function encode() {
+	function setMode(mode: 'encode' | 'decode') {
+		if (textMode === mode) return;
+		textMode = mode;
+		textInput = '';
+	}
+
+	function convert(input: string) {
 		textError = '';
-		if (!textInput.trim()) return;
+		if (!input.trim()) return '';
 		try {
-			textOutput = btoa(unescape(encodeURIComponent(textInput)));
-			textInput = '';
+			if (textMode === 'encode') return btoa(unescape(encodeURIComponent(input)));
+			return decodeURIComponent(escape(atob(input)));
 		} catch {
-			textError = 'Encoding failed';
+			textError = textMode === 'decode' ? 'Invalid Base64 string' : 'Encoding failed';
+			return '';
 		}
 	}
 
-	function decode() {
-		textError = '';
-		if (!textInput.trim()) return;
-		try {
-			textOutput = decodeURIComponent(escape(atob(textInput)));
-			textInput = '';
-		} catch {
-			textError = 'Invalid Base64 string';
-		}
-	}
+	let textOutput = $derived(convert(textInput));
 
 	function copyText() {
 		navigator.clipboard.writeText(textOutput);
@@ -78,12 +76,12 @@
 
 		<div class="flex gap-2 mt-3">
 			<button
-				onclick={encode}
-				class="px-5 py-2.5 bg-violet-600 hover:bg-violet-500 text-white rounded-lg text-sm font-medium transition-colors"
+				onclick={() => setMode('encode')}
+				class="px-5 py-2.5 rounded-lg text-sm font-medium transition-colors {textMode === 'encode' ? 'bg-violet-600 text-white' : 'bg-slate-700 text-slate-400 hover:text-slate-200 hover:bg-slate-600'}"
 			>Encode →</button>
 			<button
-				onclick={decode}
-				class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-sm font-medium transition-colors"
+				onclick={() => setMode('decode')}
+				class="px-5 py-2.5 rounded-lg text-sm font-medium transition-colors {textMode === 'decode' ? 'bg-violet-600 text-white' : 'bg-slate-700 text-slate-400 hover:text-slate-200 hover:bg-slate-600'}"
 			>← Decode</button>
 		</div>
 
