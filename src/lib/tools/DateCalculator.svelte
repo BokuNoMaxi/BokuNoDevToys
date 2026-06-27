@@ -98,12 +98,14 @@
 			</div>
 		</div>
 
-		<div class="flex gap-3">
+		<div class="flex gap-3" role="group" aria-label="{$t('dateCalc').add} / {$t('dateCalc').subtract}">
 			<button onclick={() => operation = 'add'}
+				aria-pressed={operation === 'add'}
 				class="flex-1 py-2 rounded-lg font-medium transition-colors {operation === 'add' ? 'bg-emerald-600 text-white' : 'bg-slate-700 text-slate-400 hover:text-slate-200'}">
 				{$t('dateCalc').add}
 			</button>
 			<button onclick={() => operation = 'sub'}
+				aria-pressed={operation === 'sub'}
 				class="flex-1 py-2 rounded-lg font-medium transition-colors {operation === 'sub' ? 'bg-rose-600 text-white' : 'bg-slate-700 text-slate-400 hover:text-slate-200'}">
 				{$t('dateCalc').subtract}
 			</button>
@@ -119,8 +121,8 @@
 				{ labelKey: 'seconds' as const, val: seconds, set: (v: number) => seconds = v },
 			] as field}
 				<div>
-					<label class="block text-xs text-slate-500 mb-1.5">{$t('dateCalc')[field.labelKey]}</label>
-					<input type="number" min="0" value={field.val}
+					<label class="block text-xs text-slate-500 mb-1.5" for="dc-{field.labelKey}">{$t('dateCalc')[field.labelKey]}</label>
+					<input id="dc-{field.labelKey}" type="number" min="0" value={field.val}
 						oninput={(e) => field.set(parseInt((e.target as HTMLInputElement).value) || 0)}
 						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-slate-200 focus:outline-none focus:border-violet-500 font-mono text-center" />
 				</div>
@@ -131,7 +133,7 @@
 			{$t('dateCalc').calculate}
 		</button>
 
-		{#if error}<p class="text-red-400 text-sm">{error}</p>{/if}
+		{#if error}<p class="text-red-400 text-sm" role="alert">{error}</p>{/if}
 		{#if result}
 			<div class="flex items-center gap-3 bg-slate-900 rounded-lg px-4 py-3">
 				<span class="font-mono text-emerald-400 text-lg flex-1">{result}</span>
@@ -144,20 +146,24 @@
 		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider">{$t('dateCalc').diffTitle}</h2>
 
 		<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-			<div class="space-y-3">
-				<p class="text-xs text-slate-500 font-medium uppercase">{$t('dateCalc').dateA}</p>
+			<fieldset class="space-y-3">
+				<legend class="text-xs text-slate-500 font-medium uppercase">{$t('dateCalc').dateA}</legend>
 				<input type="date" bind:value={dateA}
+					aria-label="{$t('dateCalc').dateA} — {$t('dateCalc').startDate}"
 					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-violet-500 font-mono" />
 				<input type="time" bind:value={timeA}
+					aria-label="{$t('dateCalc').dateA} — {$t('dateCalc').startTime}"
 					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-violet-500 font-mono" />
-			</div>
-			<div class="space-y-3">
-				<p class="text-xs text-slate-500 font-medium uppercase">{$t('dateCalc').dateB}</p>
+			</fieldset>
+			<fieldset class="space-y-3">
+				<legend class="text-xs text-slate-500 font-medium uppercase">{$t('dateCalc').dateB}</legend>
 				<input type="date" bind:value={dateB}
+					aria-label="{$t('dateCalc').dateB} — {$t('dateCalc').startDate}"
 					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-violet-500 font-mono" />
 				<input type="time" bind:value={timeB}
+					aria-label="{$t('dateCalc').dateB} — {$t('dateCalc').startTime}"
 					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-violet-500 font-mono" />
-			</div>
+			</fieldset>
 		</div>
 
 		<button onclick={calculateDiff} class="w-full px-5 py-2.5 bg-violet-600 hover:bg-violet-500 text-white rounded-lg font-medium transition-colors">

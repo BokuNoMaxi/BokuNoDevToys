@@ -29,7 +29,7 @@
 		></div>
 	{/if}
 
-	<aside class="
+	<aside id="sidebar" aria-label="Navigation" class="
 		fixed lg:static inset-y-0 left-0 z-30 w-64 bg-slate-900 border-r border-slate-800 flex flex-col
 		transform transition-transform duration-200 ease-in-out
 		{sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
@@ -41,7 +41,7 @@
 			</a>
 		</div>
 
-		<nav class="flex-1 overflow-y-auto py-4 px-3">
+		<nav class="flex-1 overflow-y-auto py-4 px-3" aria-label="Tools">
 			{#each categories as category}
 				<div class="mb-5">
 					<div class="px-3 mb-1.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">
@@ -77,13 +77,17 @@
 					</svg>
 				</a>
 			</div>
-			<div class="flex gap-1">
+			<div class="flex gap-1" role="group" aria-label="Language">
 				<button
 					onclick={() => lang.set('en')}
+					aria-pressed={$lang === 'en'}
+					aria-label="English"
 					class="text-xs px-2 py-1 rounded transition-colors {$lang === 'en' ? 'bg-violet-600 text-white' : 'text-slate-500 hover:text-slate-300'}"
 				>EN</button>
 				<button
 					onclick={() => lang.set('de')}
+					aria-pressed={$lang === 'de'}
+					aria-label="Deutsch"
 					class="text-xs px-2 py-1 rounded transition-colors {$lang === 'de' ? 'bg-violet-600 text-white' : 'text-slate-500 hover:text-slate-300'}"
 				>DE</button>
 			</div>
@@ -92,16 +96,22 @@
 	</aside>
 
 	<div class="flex-1 flex flex-col min-w-0">
-		<header class="lg:hidden flex items-center gap-3 px-4 py-3 border-b border-slate-800 bg-slate-900">
-			<button onclick={() => sidebarOpen = !sidebarOpen} class="text-slate-400 hover:text-slate-200" aria-label="Toggle menu">
-				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+		<header class="lg:hidden flex items-center gap-3 px-4 py-3 border-b border-slate-800 bg-slate-900" aria-label="Mobile Navigation">
+			<button
+				onclick={() => sidebarOpen = !sidebarOpen}
+				aria-expanded={sidebarOpen}
+				aria-controls="sidebar"
+				aria-label="Toggle menu"
+				class="text-slate-400 hover:text-slate-200"
+			>
+				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
 				</svg>
 			</button>
 			<span class="font-semibold text-slate-100">BokuNoDevToys</span>
-			<div class="ml-auto flex gap-1">
-				<button onclick={() => lang.set('en')} class="text-xs px-2 py-1 rounded transition-colors {$lang === 'en' ? 'bg-violet-600 text-white' : 'text-slate-500'}">EN</button>
-				<button onclick={() => lang.set('de')} class="text-xs px-2 py-1 rounded transition-colors {$lang === 'de' ? 'bg-violet-600 text-white' : 'text-slate-500'}">DE</button>
+			<div class="ml-auto flex gap-1" role="group" aria-label="Language">
+				<button onclick={() => lang.set('en')} aria-pressed={$lang === 'en'} aria-label="English" class="text-xs px-2 py-1 rounded transition-colors {$lang === 'en' ? 'bg-violet-600 text-white' : 'text-slate-500'}">EN</button>
+				<button onclick={() => lang.set('de')} aria-pressed={$lang === 'de'} aria-label="Deutsch" class="text-xs px-2 py-1 rounded transition-colors {$lang === 'de' ? 'bg-violet-600 text-white' : 'text-slate-500'}">DE</button>
 			</div>
 		</header>
 

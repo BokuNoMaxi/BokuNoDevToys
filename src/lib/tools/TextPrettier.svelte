@@ -75,10 +75,11 @@
 	<div class="bg-slate-800 rounded-xl p-6 space-y-5">
 		<div>
 			<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">{$t('textPrettier').mode}</h2>
-			<div class="flex flex-wrap gap-2">
+			<div class="flex flex-wrap gap-2" role="group" aria-label={$t('textPrettier').modeGroupLabel}>
 				{#each (['auto', 'single', 'paragraph', 'compact'] as Mode[]) as m}
 					<button
 						onclick={() => mode = m}
+						aria-pressed={mode === m}
 						class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {mode === m ? 'bg-violet-600 text-white' : 'bg-slate-900 text-slate-400 hover:text-slate-200'}"
 					>{$t('textPrettier')[m]}</button>
 				{/each}
@@ -88,9 +89,10 @@
 
 		<div>
 			<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">{$t('textPrettier').options}</h2>
-			<div class="flex flex-wrap gap-2">
+			<div class="flex flex-wrap gap-2" role="group" aria-label={$t('textPrettier').optionsGroupLabel}>
 				<button
 					onclick={() => stripHtml = !stripHtml}
+					aria-pressed={stripHtml}
 					class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {stripHtml ? 'bg-violet-600 text-white' : 'bg-slate-900 text-slate-400 hover:text-slate-200'}"
 				>{$t('textPrettier').stripHtml}</button>
 			</div>
@@ -103,7 +105,9 @@
 	<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 		<div class="bg-slate-800 rounded-xl p-6">
 			<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">{$t('textPrettier').input}</h2>
+			<label for="tp-input" class="sr-only">{$t('textPrettier').inputLabel}</label>
 			<textarea
+				id="tp-input"
 				bind:value={input}
 				onpaste={handlePaste}
 				placeholder={$t('textPrettier').placeholder}

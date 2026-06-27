@@ -65,8 +65,9 @@
 		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">{$t('base64').textTab}</h2>
 
 		<div>
-			<label class="block text-xs text-slate-500 mb-1.5">{$t('base64').input}</label>
+			<label class="block text-xs text-slate-500 mb-1.5" for="b64-text-input">{$t('base64').input}</label>
 			<textarea
+				id="b64-text-input"
 				bind:value={textInput}
 				placeholder={$t('base64').textPlaceholder}
 				rows="5"
@@ -74,29 +75,32 @@
 			></textarea>
 		</div>
 
-		<div class="flex gap-2 mt-3">
+		<div class="flex gap-2 mt-3" role="group" aria-label="{$t('base64').encode} / {$t('base64').decode}">
 			<button
 				onclick={() => setMode('encode')}
+				aria-pressed={textMode === 'encode'}
 				class="px-5 py-2.5 rounded-lg text-sm font-medium transition-colors {textMode === 'encode' ? 'bg-violet-600 text-white' : 'bg-slate-700 text-slate-400 hover:text-slate-200 hover:bg-slate-600'}"
 			>{$t('base64').encode}</button>
 			<button
 				onclick={() => setMode('decode')}
+				aria-pressed={textMode === 'decode'}
 				class="px-5 py-2.5 rounded-lg text-sm font-medium transition-colors {textMode === 'decode' ? 'bg-violet-600 text-white' : 'bg-slate-700 text-slate-400 hover:text-slate-200 hover:bg-slate-600'}"
 			>{$t('base64').decode}</button>
 		</div>
 
 		{#if textError}
-			<p class="mt-3 text-red-400 text-sm">{textError}</p>
+			<p class="mt-3 text-red-400 text-sm" role="alert">{textError}</p>
 		{/if}
 
 		<div class="mt-4">
 			<div class="flex items-center justify-between mb-1.5">
-				<label class="text-xs text-slate-500">{$t('base64').output}</label>
+				<label class="text-xs text-slate-500" for="b64-text-output">{$t('base64').output}</label>
 				<button onclick={copyText} class="text-xs text-slate-500 hover:text-slate-300 transition-colors">
 					{textCopied ? $t('base64').copied : $t('base64').copy}
 				</button>
 			</div>
 			<textarea
+				id="b64-text-output"
 				readonly
 				value={textOutput}
 				placeholder={$t('base64').resultPlaceholder}

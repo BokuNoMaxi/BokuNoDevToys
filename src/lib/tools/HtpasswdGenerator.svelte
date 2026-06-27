@@ -112,17 +112,17 @@
 		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">{$t('htpasswd').credentials}</h2>
 		<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 			<div>
-				<label class="block text-xs text-slate-500 mb-1.5">{$t('htpasswd').username}</label>
-				<input type="text" bind:value={username} placeholder="admin"
+				<label class="block text-xs text-slate-500 mb-1.5" for="hp-username">{$t('htpasswd').username}</label>
+				<input id="hp-username" type="text" bind:value={username} placeholder="admin"
 					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-violet-500" />
 			</div>
 			<div>
-				<label class="block text-xs text-slate-500 mb-1.5">{$t('htpasswd').password}</label>
-				<input type="password" bind:value={password} placeholder="••••••••"
+				<label class="block text-xs text-slate-500 mb-1.5" for="hp-password">{$t('htpasswd').password}</label>
+				<input id="hp-password" type="password" bind:value={password} placeholder="••••••••"
 					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-violet-500" />
 			</div>
 		</div>
-		{#if error}<p class="mt-2 text-red-400 text-sm">{error}</p>{/if}
+		{#if error}<p class="mt-2 text-red-400 text-sm" role="alert">{error}</p>{/if}
 		<button onclick={generate} disabled={generating} class="mt-4 px-6 py-2.5 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white rounded-lg font-medium transition-colors">
 			{generating ? $t('htpasswd').generating : $t('htpasswd').generate}
 		</button>
@@ -146,12 +146,12 @@
 		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">{$t('htpasswd').paths}</h2>
 		<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 			<div>
-				<label class="block text-xs text-slate-500 mb-1.5">{$t('htpasswd').protectedDir}</label>
-				<input type="text" bind:value={protectedPath} class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-violet-500 font-mono text-sm" />
+				<label class="block text-xs text-slate-500 mb-1.5" for="hp-dir">{$t('htpasswd').protectedDir}</label>
+				<input id="hp-dir" type="text" bind:value={protectedPath} class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-violet-500 font-mono text-sm" />
 			</div>
 			<div>
-				<label class="block text-xs text-slate-500 mb-1.5">{$t('htpasswd').htpasswdFile}</label>
-				<input type="text" bind:value={htpasswdPath} class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-violet-500 font-mono text-sm" />
+				<label class="block text-xs text-slate-500 mb-1.5" for="hp-file">{$t('htpasswd').htpasswdFile}</label>
+				<input id="hp-file" type="text" bind:value={htpasswdPath} class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-violet-500 font-mono text-sm" />
 			</div>
 		</div>
 	</div>
@@ -170,7 +170,7 @@
 				{#each domainConditions as domain}
 					<span class="flex items-center gap-2 bg-slate-900 rounded-full px-3 py-1 text-sm font-mono text-sky-400">
 						{domain}
-						<button onclick={() => { domainConditions = domainConditions.filter(d => d !== domain); }} class="text-slate-600 hover:text-red-400 transition-colors">✕</button>
+						<button onclick={() => { domainConditions = domainConditions.filter(d => d !== domain); }} class="text-slate-600 hover:text-red-400 transition-colors" aria-label="{$t('htpasswd').remove} {domain}">✕</button>
 					</span>
 				{/each}
 			</div>
@@ -191,7 +191,7 @@
 				{#each ipExclusions as ip}
 					<span class="flex items-center gap-2 bg-slate-900 rounded-full px-3 py-1 text-sm font-mono text-emerald-400">
 						{ip}
-						<button onclick={() => { ipExclusions = ipExclusions.filter(i => i !== ip); }} class="text-slate-600 hover:text-red-400 transition-colors">✕</button>
+						<button onclick={() => { ipExclusions = ipExclusions.filter(i => i !== ip); }} class="text-slate-600 hover:text-red-400 transition-colors" aria-label="{$t('htpasswd').remove} {ip}">✕</button>
 					</span>
 				{/each}
 			</div>

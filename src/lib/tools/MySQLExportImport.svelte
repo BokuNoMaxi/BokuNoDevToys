@@ -86,15 +86,18 @@
 	<!-- .env Import -->
 	<div class="bg-slate-800 rounded-xl p-6">
 		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-1.5">{$t('mysql').envImport}</h2>
-		<p class="text-xs text-slate-500 mb-4">{$t('mysql').envDesc}</p>
+		<p class="text-xs text-slate-500 mb-4" id="mysql-env-desc">{$t('mysql').envDesc}</p>
+		<label for="mysql-env" class="sr-only">{$t('mysql').envInputLabel}</label>
 		<textarea
+			id="mysql-env"
 			bind:value={envInput}
+			aria-describedby="mysql-env-desc"
 			placeholder={'DB_USER=myuser\nDB_PASSWORD=secret\nDB_HOST=localhost\nDB_NAME=mydb\n# DB_DATABASE=mydb\n# ...'}
 			rows="6"
 			class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-700 focus:outline-none focus:border-violet-500 font-mono text-xs resize-y"
 		></textarea>
 		{#if envError}
-			<p class="mt-2 text-amber-400 text-sm">{envError}</p>
+			<p class="mt-2 text-amber-400 text-sm" role="alert">{envError}</p>
 		{/if}
 		<button
 			onclick={parseEnv}

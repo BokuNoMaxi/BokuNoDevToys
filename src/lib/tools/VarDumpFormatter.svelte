@@ -134,7 +134,9 @@
 	<div class="bg-slate-800 rounded-xl p-6">
 		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-1.5">var_dump</h2>
 		<p class="text-xs text-slate-600 mb-3">Supported: string, int, float, bool, NULL, array, object — nested.</p>
+		<label for="vd-input" class="sr-only">{$t('vardump').inputLabel}</label>
 		<textarea
+			id="vd-input"
 			bind:value={input}
 			onpaste={handlePaste}
 			placeholder={'array(2) {\n  [0]=>\n  string(5) "hello"\n  [1]=>\n  int(42)\n}'}
@@ -142,7 +144,7 @@
 			class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-700 focus:outline-none focus:border-violet-500 font-mono text-xs resize-y"
 		></textarea>
 		{#if error}
-			<p class="mt-2 text-red-400 text-sm font-mono">{error}</p>
+			<p class="mt-2 text-red-400 text-sm font-mono" role="alert">{error}</p>
 		{/if}
 		<button
 			onclick={format}

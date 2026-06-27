@@ -75,36 +75,36 @@
 		</div>
 
 		<div class="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] gap-3 items-end">
-			<div>
-				<p class="text-xs text-slate-500 mb-2 uppercase font-medium">{$t('timezone').from}</p>
+			<fieldset>
+				<legend class="text-xs text-slate-500 mb-2 uppercase font-medium">{$t('timezone').from}</legend>
 				<div class="flex gap-2">
-					<select bind:value={fromBase} class="{selectClass} w-24">
+					<select bind:value={fromBase} aria-label="{$t('timezone').from} — Zone" class="{selectClass} w-24">
 						{#each bases as b}<option value={b}>{b}</option>{/each}
 					</select>
-					<select bind:value={fromOffset} disabled={fixedOffset[fromBase] !== undefined} class="{selectClass} flex-1 disabled:opacity-40 disabled:cursor-not-allowed">
+					<select bind:value={fromOffset} disabled={fixedOffset[fromBase] !== undefined} aria-label="{$t('timezone').from} — Offset" class="{selectClass} flex-1 disabled:opacity-40 disabled:cursor-not-allowed">
 						{#each offsets as o}<option value={o}>{offsetLabel(o)}</option>{/each}
 					</select>
 				</div>
-			</div>
-			<div class="text-slate-500 text-xl text-center pb-2.5">→</div>
-			<div>
-				<p class="text-xs text-slate-500 mb-2 uppercase font-medium">{$t('timezone').to}</p>
+			</fieldset>
+			<div class="text-slate-500 text-xl text-center pb-2.5" aria-hidden="true">→</div>
+			<fieldset>
+				<legend class="text-xs text-slate-500 mb-2 uppercase font-medium">{$t('timezone').to}</legend>
 				<div class="flex gap-2">
-					<select bind:value={toBase} class="{selectClass} w-24">
+					<select bind:value={toBase} aria-label="{$t('timezone').to} — Zone" class="{selectClass} w-24">
 						{#each bases as b}<option value={b}>{b}</option>{/each}
 					</select>
-					<select bind:value={toOffset} disabled={fixedOffset[toBase] !== undefined} class="{selectClass} flex-1 disabled:opacity-40 disabled:cursor-not-allowed">
+					<select bind:value={toOffset} disabled={fixedOffset[toBase] !== undefined} aria-label="{$t('timezone').to} — Offset" class="{selectClass} flex-1 disabled:opacity-40 disabled:cursor-not-allowed">
 						{#each offsets as o}<option value={o}>{offsetLabel(o)}</option>{/each}
 					</select>
 				</div>
-			</div>
+			</fieldset>
 		</div>
 
 		<button onclick={convert} class="w-full px-5 py-2.5 bg-violet-600 hover:bg-violet-500 text-white rounded-lg font-medium transition-colors">
 			{$t('timezone').convert}
 		</button>
 
-		{#if error}<p class="text-red-400 text-sm">{error}</p>{/if}
+		{#if error}<p class="text-red-400 text-sm" role="alert">{error}</p>{/if}
 		{#if result}
 			<div class="flex items-center gap-3 bg-slate-900 rounded-lg px-4 py-3">
 				<span class="font-mono text-emerald-400 text-lg flex-1">{result}</span>

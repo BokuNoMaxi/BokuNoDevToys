@@ -62,15 +62,16 @@
 	</div>
 
 	<div class="bg-slate-800 rounded-xl p-6">
-		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">{$t('datetime').dateToTs}</h2>
+		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4" id="dtc-date-label">{$t('datetime').dateToTs}</h2>
 		<div class="flex gap-3">
 			<input type="datetime-local" bind:value={dateInput}
+				aria-labelledby="dtc-date-label"
 				class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-violet-500 font-mono" />
 			<button onclick={convertDateToTs} class="px-5 py-2.5 bg-violet-600 hover:bg-violet-500 text-white rounded-lg font-medium transition-colors">
 				{$t('datetime').convert}
 			</button>
 		</div>
-		{#if dateError}<p class="mt-2 text-red-400 text-sm">{dateError}</p>{/if}
+		{#if dateError}<p class="mt-2 text-red-400 text-sm" role="alert">{dateError}</p>{/if}
 		{#if dateToTs}
 			<div class="mt-3 flex items-center gap-3 bg-slate-900 rounded-lg px-4 py-3">
 				<span class="font-mono text-violet-400 text-lg flex-1">{dateToTs}</span>
@@ -80,15 +81,16 @@
 	</div>
 
 	<div class="bg-slate-800 rounded-xl p-6">
-		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">{$t('datetime').tsToDate}</h2>
+		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4" id="dtc-ts-label">{$t('datetime').tsToDate}</h2>
 		<div class="flex gap-3">
 			<input type="text" bind:value={tsInput} placeholder={$t('datetime').placeholder}
+				aria-labelledby="dtc-ts-label"
 				class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-violet-500 font-mono" />
 			<button onclick={convertTsToDate} class="px-5 py-2.5 bg-violet-600 hover:bg-violet-500 text-white rounded-lg font-medium transition-colors">
 				{$t('datetime').convert}
 			</button>
 		</div>
-		{#if tsError}<p class="mt-2 text-red-400 text-sm">{tsError}</p>{/if}
+		{#if tsError}<p class="mt-2 text-red-400 text-sm" role="alert">{tsError}</p>{/if}
 		{#if tsToDate}
 			<div class="mt-3 bg-slate-900 rounded-lg px-4 py-3">
 				<pre class="font-mono text-emerald-400 text-sm whitespace-pre">{tsToDate}</pre>

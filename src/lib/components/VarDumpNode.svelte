@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { t } from '$lib/i18n';
+
 	export interface VDNode {
 		type: 'string' | 'int' | 'float' | 'bool' | 'null' | 'array' | 'object';
 		value?: string | number | boolean;
@@ -51,13 +53,16 @@
 			<button
 				onclick={() => collapsed = !collapsed}
 				class="text-slate-400 hover:text-violet-400 transition-colors font-mono text-xs ml-1 select-none"
+				aria-label={collapsed ? $t('vardump').expand : $t('vardump').collapse}
+				aria-expanded={!collapsed}
 			>{collapsed ? '▶' : '▼'}</button>
 
 			{#if collapsed}
 				<button
 					onclick={() => collapsed = false}
 					class="text-slate-500 hover:text-slate-300 font-mono text-xs transition-colors"
-				>&#123; {count} Einträge &#125;</button>
+					aria-label="{$t('vardump').expand}: {count} {$t('vardump').entries}"
+				>&#123; {count} {$t('vardump').entries} &#125;</button>
 			{:else}
 				<div class="ml-4 border-l border-slate-700 pl-3 mt-0.5">
 					{#each node.children ?? [] as child, i}

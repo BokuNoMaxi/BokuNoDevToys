@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { t } from '$lib/i18n';
+
 	let { value, depth = 0 }: { value: unknown; depth?: number } = $props();
 
 	let collapsed = $state(depth > 2);
@@ -40,13 +42,15 @@
 		<button
 			onclick={() => collapsed = !collapsed}
 			class="text-slate-400 hover:text-violet-400 transition-colors font-mono text-xs mr-1 select-none"
-			aria-label={collapsed ? 'aufklappen' : 'zuklappen'}
+			aria-label={collapsed ? $t('json').expand : $t('json').collapse}
+			aria-expanded={!collapsed}
 		>{collapsed ? '▶' : '▼'}</button>
 
 		{#if collapsed}
 			<button
 				onclick={() => collapsed = false}
 				class="text-slate-500 hover:text-slate-300 font-mono text-xs transition-colors"
+				aria-label="{$t('json').expand}: {preview}"
 			>{bracket[0]} {preview} {bracket[1]}</button>
 		{:else}
 			<span class="text-slate-400">{bracket[0]}</span>
