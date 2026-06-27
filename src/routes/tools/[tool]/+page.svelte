@@ -55,7 +55,7 @@
 	<div class="max-w-4xl mx-auto flex items-center justify-center h-64">
 		<div class="text-center">
 			<p class="text-slate-500 text-lg">{$t('nav').notFound}</p>
-			<a href="/tools/datetime" class="mt-3 inline-block text-violet-400 hover:text-violet-300 text-sm">{$t('nav').goToDatetime}</a>
+			<a href="/tools/datetime" class="mt-3 inline-block text-violet-300 hover:text-violet-300 text-sm">{$t('nav').goToDatetime}</a>
 		</div>
 	</div>
 {/if}

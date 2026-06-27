@@ -34,14 +34,14 @@
 {:else if type === 'boolean'}
 	<span class="text-amber-400">{String(value)}</span>
 {:else if type === 'null'}
-	<span class="text-slate-500 italic">null</span>
+	<span class="text-slate-300 italic">null</span>
 {:else if isEmpty}
-	<span class="text-slate-500">{bracket[0]}{bracket[1]}</span>
+	<span class="text-slate-300">{bracket[0]}{bracket[1]}</span>
 {:else}
 	<span>
 		<button
 			onclick={() => collapsed = !collapsed}
-			class="text-slate-400 hover:text-violet-400 transition-colors font-mono text-xs mr-1 select-none"
+			class="text-slate-300 hover:text-violet-300 transition-colors font-mono text-xs mr-1 select-none"
 			aria-label={collapsed ? $t('json').expand : $t('json').collapse}
 			aria-expanded={!collapsed}
 		>{collapsed ? '▶' : '▼'}</button>
@@ -49,24 +49,24 @@
 		{#if collapsed}
 			<button
 				onclick={() => collapsed = false}
-				class="text-slate-500 hover:text-slate-300 font-mono text-xs transition-colors"
+				class="text-slate-300 hover:text-slate-100 font-mono text-xs transition-colors"
 				aria-label="{$t('json').expand}: {preview}"
 			>{bracket[0]} {preview} {bracket[1]}</button>
 		{:else}
-			<span class="text-slate-400">{bracket[0]}</span>
+			<span class="text-slate-300">{bracket[0]}</span>
 			<div class="ml-4 border-l border-slate-700 pl-3">
 				{#each entries as [key, val], i}
 					<div class="py-0.5">
 						<span class="text-violet-300 font-mono text-xs">
 							{type === 'array' ? key : `"${key}"`}
 						</span>
-						<span class="text-slate-600 mx-1">:</span>
+						<span class="text-slate-400 mx-1">:</span>
 						<svelte:self value={val} depth={depth + 1} />
-						{#if i < count - 1}<span class="text-slate-600">,</span>{/if}
+						{#if i < count - 1}<span class="text-slate-400">,</span>{/if}
 					</div>
 				{/each}
 			</div>
-			<span class="text-slate-400">{bracket[1]}</span>
+			<span class="text-slate-300">{bracket[1]}</span>
 		{/if}
 	</span>
 {/if}

@@ -21,9 +21,23 @@ SvelteKit-Projekt mit Dev-Tools im Browser. Läuft produktiv via Docker unter ht
 
 **Immer direkt im Projektverzeichnis `/home/pi/BokuNoDevToys/` arbeiten** — nie in Worktrees oder anderen Verzeichnissen, da Docker von hier baut und ein `git pull` sonst nötig wäre.
 
-## Barrierefreiheit (WCAG 2.1 AA — Pflicht)
+## Barrierefreiheit (WCAG 2.1 AAA — Pflicht)
 
 Die Seite muss zu 100% barrierefrei sein. Folgende Regeln gelten für **jede neue Komponente und jede Änderung**:
+
+### Farbkontrast (WCAG AAA — Pflicht)
+- Normaler Text (< 18pt / < 14pt bold): Kontrastverhältnis **mindestens 7:1**
+- Großer Text (≥ 18pt / ≥ 14pt bold): Kontrastverhältnis mindestens 4.5:1
+- **Erlaubte Text-Farben** auf dunklem Hintergrund (bg-slate-800/900):
+  - `text-slate-300` oder heller für Beschriftungen, Überschriften, Hinweistexte
+  - `text-violet-300` für Code-Highlights, aktive Nav-Links
+  - `text-red-300` für Fehlermeldungen
+  - `text-emerald-400`, `text-amber-400`, `text-sky-400` (nur auf bg-slate-900: ≥ 7.6:1)
+- **Buttons aktiv**: `bg-violet-700 text-white` (7.10:1 ✓)
+- **Buttons inaktiv auf bg-slate-700**: `text-slate-200` (8.40:1 ✓)
+- **Buttons inaktiv auf bg-slate-900**: `text-slate-300` (12.02:1 ✓)
+- **Hover** auf bg-slate-600: `text-white` (7.57:1 ✓)
+- **Nie verwenden** für lesbaren Text: `text-slate-400` bis `text-slate-700` auf slate-800/900 Hintergründen
 
 ### Formularelemente
 - Jedes `<input>`, `<textarea>`, `<select>` **muss** ein zugeordnetes `<label for="id">` oder `aria-label` / `aria-labelledby` haben

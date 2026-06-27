@@ -62,16 +62,16 @@
 <div class="space-y-6">
 	<!-- Text -->
 	<div class="bg-slate-800 rounded-xl p-6">
-		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">{$t('base64').textTab}</h2>
+		<h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-5">{$t('base64').textTab}</h2>
 
 		<div>
-			<label class="block text-xs text-slate-500 mb-1.5" for="b64-text-input">{$t('base64').input}</label>
+			<label class="block text-xs text-slate-300 mb-1.5" for="b64-text-input">{$t('base64').input}</label>
 			<textarea
 				id="b64-text-input"
 				bind:value={textInput}
 				placeholder={$t('base64').textPlaceholder}
 				rows="5"
-				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-violet-500 font-mono text-sm resize-y"
+				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 font-mono text-sm resize-y"
 			></textarea>
 		</div>
 
@@ -79,23 +79,23 @@
 			<button
 				onclick={() => setMode('encode')}
 				aria-pressed={textMode === 'encode'}
-				class="px-5 py-2.5 rounded-lg text-sm font-medium transition-colors {textMode === 'encode' ? 'bg-violet-600 text-white' : 'bg-slate-700 text-slate-400 hover:text-slate-200 hover:bg-slate-600'}"
+				class="px-5 py-2.5 rounded-lg text-sm font-medium transition-colors {textMode === 'encode' ? 'bg-violet-700 text-white' : 'bg-slate-700 text-slate-200 hover:text-white hover:bg-slate-600'}"
 			>{$t('base64').encode}</button>
 			<button
 				onclick={() => setMode('decode')}
 				aria-pressed={textMode === 'decode'}
-				class="px-5 py-2.5 rounded-lg text-sm font-medium transition-colors {textMode === 'decode' ? 'bg-violet-600 text-white' : 'bg-slate-700 text-slate-400 hover:text-slate-200 hover:bg-slate-600'}"
+				class="px-5 py-2.5 rounded-lg text-sm font-medium transition-colors {textMode === 'decode' ? 'bg-violet-700 text-white' : 'bg-slate-700 text-slate-200 hover:text-white hover:bg-slate-600'}"
 			>{$t('base64').decode}</button>
 		</div>
 
 		{#if textError}
-			<p class="mt-3 text-red-400 text-sm" role="alert">{textError}</p>
+			<p class="mt-3 text-red-300 text-sm" role="alert">{textError}</p>
 		{/if}
 
 		<div class="mt-4">
 			<div class="flex items-center justify-between mb-1.5">
-				<label class="text-xs text-slate-500" for="b64-text-output">{$t('base64').output}</label>
-				<button onclick={copyText} class="text-xs text-slate-500 hover:text-slate-300 transition-colors">
+				<label class="text-xs text-slate-300" for="b64-text-output">{$t('base64').output}</label>
+				<button onclick={copyText} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">
 					{textCopied ? $t('base64').copied : $t('base64').copy}
 				</button>
 			</div>
@@ -105,18 +105,18 @@
 				value={textOutput}
 				placeholder={$t('base64').resultPlaceholder}
 				rows="5"
-				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-emerald-400 placeholder-slate-700 font-mono text-sm resize-y"
+				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-emerald-400 placeholder-slate-400 font-mono text-sm resize-y"
 			></textarea>
 		</div>
 	</div>
 
 	<!-- Image -->
 	<div class="bg-slate-800 rounded-xl p-6">
-		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">{$t('base64').imageTab} → Base64</h2>
+		<h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-5">{$t('base64').imageTab} → Base64</h2>
 
 		<label class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-violet-500 transition-colors bg-slate-900">
-			<span class="text-slate-500 text-sm">{$t('base64').dropImage}</span>
-			<span class="text-slate-600 text-xs mt-1">PNG, JPG, GIF, SVG, WebP</span>
+			<span class="text-slate-300 text-sm">{$t('base64').dropImage}</span>
+			<span class="text-slate-300 text-xs mt-1">PNG, JPG, GIF, SVG, WebP</span>
 			<input type="file" accept="image/*" onchange={handleImageUpload} class="hidden" />
 		</label>
 
@@ -127,11 +127,11 @@
 				</div>
 				<div class="space-y-3">
 					<div>
-						<span class="text-xs text-slate-500">MIME type: </span>
-						<code class="text-sm text-sky-400 font-mono">{imageType}</code>
+						<span class="text-xs text-slate-300">MIME type: </span>
+						<code class="text-sm text-sky-300 font-mono">{imageType}</code>
 					</div>
 					<div>
-						<span class="text-xs text-slate-500">Base64 size: {Math.round(base64Only.length / 1024)} KB</span>
+						<span class="text-xs text-slate-300">Base64 size: {Math.round(base64Only.length / 1024)} KB</span>
 					</div>
 					<div class="space-y-2">
 						<button onclick={() => copyImage('datauri')} class="w-full py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-sm transition-colors">
@@ -145,8 +145,8 @@
 			</div>
 
 			<div class="mt-4">
-				<div class="text-xs text-slate-500 mb-1.5">HTML usage</div>
-				<code class="block bg-slate-900 rounded-lg px-4 py-3 text-xs font-mono text-violet-400 break-all">
+				<div class="text-xs text-slate-300 mb-1.5">HTML usage</div>
+				<code class="block bg-slate-900 rounded-lg px-4 py-3 text-xs font-mono text-violet-300 break-all">
 					&lt;img {imgAttribute.slice(0, 80)}{imgAttribute.length > 80 ? '…"' : ''} /&gt;
 				</code>
 			</div>

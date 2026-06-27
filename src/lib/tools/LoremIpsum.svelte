@@ -53,22 +53,22 @@
 
 <div class="space-y-6">
 	<div class="bg-slate-800 rounded-xl p-6">
-		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">Settings</h2>
+		<h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-5">Settings</h2>
 		<div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
 			<div>
-				<label class="block text-sm text-slate-400 mb-2">Paragraphs: <span class="text-violet-400 font-semibold">{paragraphs}</span></label>
+				<label class="block text-sm text-slate-300 mb-2">Paragraphs: <span class="text-violet-300 font-semibold">{paragraphs}</span></label>
 				<input type="range" min="1" max="20" bind:value={paragraphs} class="w-full accent-violet-500" />
-				<div class="flex justify-between text-xs text-slate-600 mt-1"><span>1</span><span>20</span></div>
+				<div class="flex justify-between text-xs text-slate-300 mt-1"><span>1</span><span>20</span></div>
 			</div>
 			<div>
-				<label class="block text-sm text-slate-400 mb-2">
-					Max Characters: <span class="text-violet-400 font-semibold">{maxChars === 0 ? 'unlimited' : maxChars}</span>
+				<label class="block text-sm text-slate-300 mb-2">
+					Max Characters: <span class="text-violet-300 font-semibold">{maxChars === 0 ? 'unlimited' : maxChars}</span>
 				</label>
 				<input type="range" min="0" max="5000" step="50" bind:value={maxChars} class="w-full accent-violet-500" />
-				<div class="flex justify-between text-xs text-slate-600 mt-1"><span>unlimited</span><span>5000</span></div>
+				<div class="flex justify-between text-xs text-slate-300 mt-1"><span>unlimited</span><span>5000</span></div>
 			</div>
 		</div>
-		<button onclick={generate} class="mt-5 px-6 py-2.5 bg-violet-600 hover:bg-violet-500 text-white rounded-lg font-medium transition-colors">
+		<button onclick={generate} class="mt-5 px-6 py-2.5 bg-violet-700 hover:bg-violet-800 text-white rounded-lg font-medium transition-colors">
 			Generate
 		</button>
 	</div>
@@ -76,10 +76,10 @@
 	{#if result}
 		<div class="bg-slate-800 rounded-xl p-6">
 			<div class="flex items-center justify-between mb-4">
-				<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider">Result</h2>
+				<h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Result</h2>
 				<div class="flex items-center gap-3">
-					<span class="text-xs text-slate-500">{result.length} characters</span>
-					<button onclick={copy} class="text-sm px-3 py-1 rounded-md border border-slate-600 hover:border-violet-500 text-slate-400 hover:text-violet-400 transition-colors">
+					<span class="text-xs text-slate-300">{result.length} characters</span>
+					<button onclick={copy} class="text-sm px-3 py-1 rounded-md border border-slate-600 hover:border-violet-500 text-slate-300 hover:text-violet-300 transition-colors">
 						{copied ? '✓ Copied' : 'Copy'}
 					</button>
 				</div>
