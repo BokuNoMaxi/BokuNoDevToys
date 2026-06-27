@@ -29,6 +29,12 @@ export const categories: Category[] = [
 		]
 	},
 	{
+		name: 'AJAX',
+		tools: [
+			{ id: 'http-client', name: 'HTTP Client', description: 'GET/POST Requests mit Headers, Body und Response-Anzeige' }
+		]
+	},
+	{
 		name: 'Format',
 		tools: [
 			{ id: 'json-formatter', name: 'JSON Formatter', description: 'JSON einfügen, schön formatiert und kollabierbar anzeigen' },
