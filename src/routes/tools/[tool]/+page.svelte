@@ -1,0 +1,41 @@
+<script lang="ts">
+	import { page } from '$app/stores';
+	import { findTool } from '$lib/tools/config';
+	import DateTimeConverter from '$lib/tools/DateTimeConverter.svelte';
+	import LoremIpsum from '$lib/tools/LoremIpsum.svelte';
+	import HtpasswdGenerator from '$lib/tools/HtpasswdGenerator.svelte';
+	import Base64Encoder from '$lib/tools/Base64Encoder.svelte';
+
+	let toolId = $derived($page.params.tool);
+	let toolMeta = $derived(findTool(toolId));
+</script>
+
+<svelte:head>
+	<title>{toolMeta ? `${toolMeta.name} — BokuNoDevToys` : 'BokuNoDevToys'}</title>
+</svelte:head>
+
+{#if toolMeta}
+	<div class="max-w-4xl mx-auto">
+		<div class="mb-6">
+			<h1 class="text-2xl font-bold text-slate-100">{toolMeta.name}</h1>
+			<p class="text-slate-500 mt-1 text-sm">{toolMeta.description}</p>
+		</div>
+
+		{#if toolId === 'datetime'}
+			<DateTimeConverter />
+		{:else if toolId === 'lorem-ipsum'}
+			<LoremIpsum />
+		{:else if toolId === 'htpasswd'}
+			<HtpasswdGenerator />
+		{:else if toolId === 'base64'}
+			<Base64Encoder />
+		{/if}
+	</div>
+{:else}
+	<div class="max-w-4xl mx-auto flex items-center justify-center h-64">
+		<div class="text-center">
+			<p class="text-slate-500 text-lg">Tool not found</p>
+			<a href="/tools/datetime" class="mt-3 inline-block text-violet-400 hover:text-violet-300 text-sm">Go to DateTime Converter</a>
+		</div>
+	</div>
+{/if}
