@@ -19,7 +19,7 @@ export const categories: Category[] = [
 	{
 		name: 'Text',
 		tools: [
-			{ id: 'lorem-ipsum', name: 'Lorem Ipsum Generator', description: 'Generate placeholder text' }
+			{ id: 'text-generator', name: 'Text Generator', description: 'Placeholder-Text in verschiedenen Stilen generieren' }
 		]
 	},
 	{
