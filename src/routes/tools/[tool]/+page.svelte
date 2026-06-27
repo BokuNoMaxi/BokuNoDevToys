@@ -6,6 +6,8 @@
 	import HtpasswdGenerator from '$lib/tools/HtpasswdGenerator.svelte';
 	import Base64Encoder from '$lib/tools/Base64Encoder.svelte';
 	import MySQLExportImport from '$lib/tools/MySQLExportImport.svelte';
+	import JsonFormatter from '$lib/tools/JsonFormatter.svelte';
+	import VarDumpFormatter from '$lib/tools/VarDumpFormatter.svelte';
 
 	let toolId = $derived($page.params.tool);
 	let toolMeta = $derived(findTool(toolId));
@@ -32,6 +34,10 @@
 			<Base64Encoder />
 		{:else if toolId === 'mysql-export-import'}
 			<MySQLExportImport />
+		{:else if toolId === 'json-formatter'}
+			<JsonFormatter />
+		{:else if toolId === 'vardump-formatter'}
+			<VarDumpFormatter />
 		{/if}
 	</div>
 {:else}

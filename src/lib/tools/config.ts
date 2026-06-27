@@ -29,6 +29,13 @@ export const categories: Category[] = [
 		]
 	},
 	{
+		name: 'Format',
+		tools: [
+			{ id: 'json-formatter', name: 'JSON Formatter', description: 'JSON einfügen, schön formatiert und kollabierbar anzeigen' },
+			{ id: 'vardump-formatter', name: 'var_dump Formatter', description: 'PHP var_dump Output einfügen und als Baum lesen' }
+		]
+	},
+	{
 		name: 'Datenbank',
 		tools: [
 			{ id: 'mysql-export-import', name: 'MySQL Export / Import', description: 'mysqldump & mysql Befehle aus Verbindungsparametern oder .env generieren' }
