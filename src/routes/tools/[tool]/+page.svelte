@@ -5,6 +5,7 @@
 	import TextGenerator from '$lib/tools/TextGenerator.svelte';
 	import HtpasswdGenerator from '$lib/tools/HtpasswdGenerator.svelte';
 	import Base64Encoder from '$lib/tools/Base64Encoder.svelte';
+	import MySQLExportImport from '$lib/tools/MySQLExportImport.svelte';
 
 	let toolId = $derived($page.params.tool);
 	let toolMeta = $derived(findTool(toolId));
@@ -29,6 +30,8 @@
 			<HtpasswdGenerator />
 		{:else if toolId === 'base64'}
 			<Base64Encoder />
+		{:else if toolId === 'mysql-export-import'}
+			<MySQLExportImport />
 		{/if}
 	</div>
 {:else}

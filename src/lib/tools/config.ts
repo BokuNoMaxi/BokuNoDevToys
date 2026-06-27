@@ -29,6 +29,12 @@ export const categories: Category[] = [
 		]
 	},
 	{
+		name: 'Datenbank',
+		tools: [
+			{ id: 'mysql-export-import', name: 'MySQL Export / Import', description: 'mysqldump & mysql Befehle aus Verbindungsparametern oder .env generieren' }
+		]
+	},
+	{
 		name: 'Encoding',
 		tools: [
 			{ id: 'base64', name: 'Base64 Encoder', description: 'Encode/decode text and images as Base64' }
