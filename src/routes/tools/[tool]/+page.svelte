@@ -8,6 +8,8 @@
 	import MySQLExportImport from '$lib/tools/MySQLExportImport.svelte';
 	import JsonFormatter from '$lib/tools/JsonFormatter.svelte';
 	import VarDumpFormatter from '$lib/tools/VarDumpFormatter.svelte';
+	import TimezoneConverter from '$lib/tools/TimezoneConverter.svelte';
+	import DateCalculator from '$lib/tools/DateCalculator.svelte';
 
 	let toolId = $derived($page.params.tool);
 	let toolMeta = $derived(findTool(toolId));
@@ -38,6 +40,10 @@
 			<JsonFormatter />
 		{:else if toolId === 'vardump-formatter'}
 			<VarDumpFormatter />
+		{:else if toolId === 'timezone-converter'}
+			<TimezoneConverter />
+		{:else if toolId === 'date-calculator'}
+			<DateCalculator />
 		{/if}
 	</div>
 {:else}

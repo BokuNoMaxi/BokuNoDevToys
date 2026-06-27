@@ -13,7 +13,9 @@ export const categories: Category[] = [
 	{
 		name: 'Date & Time',
 		tools: [
-			{ id: 'datetime', name: 'DateTime Converter', description: 'Convert between timestamps and human-readable dates' }
+			{ id: 'datetime', name: 'DateTime Converter', description: 'Convert between timestamps and human-readable dates' },
+			{ id: 'timezone-converter', name: 'Zeitzonen Umrechner', description: 'Zeit von einer Zeitzone in eine andere umrechnen (UTC, GMT, Europe/Berlin, ...)' },
+			{ id: 'date-calculator', name: 'Zeitrechner', description: 'Jahre, Monate, Tage, Stunden, Minuten und Sekunden zu einem Datum addieren oder subtrahieren' }
 		]
 	},
 	{
