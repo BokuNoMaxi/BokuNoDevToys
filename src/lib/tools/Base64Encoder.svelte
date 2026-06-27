@@ -1,7 +1,6 @@
 <script lang="ts">
 	let textInput = $state('');
 	let textMode = $state<'encode' | 'decode'>('encode');
-	let textError = $state('');
 
 	let imageSrc = $state('');
 	let imageDataUri = $state('');
@@ -15,19 +14,18 @@
 		textInput = '';
 	}
 
-	function convert(input: string) {
-		textError = '';
-		if (!input.trim()) return '';
+	let computed = $derived.by(() => {
+		if (!textInput.trim()) return { output: '', error: '' };
 		try {
-			if (textMode === 'encode') return btoa(unescape(encodeURIComponent(input)));
-			return decodeURIComponent(escape(atob(input)));
+			if (textMode === 'encode') return { output: btoa(unescape(encodeURIComponent(textInput))), error: '' };
+			return { output: decodeURIComponent(escape(atob(textInput))), error: '' };
 		} catch {
-			textError = textMode === 'decode' ? 'Invalid Base64 string' : 'Encoding failed';
-			return '';
+			return { output: '', error: textMode === 'decode' ? 'Invalid Base64 string' : 'Encoding failed' };
 		}
-	}
+	});
 
-	let textOutput = $derived(convert(textInput));
+	let textOutput = $derived(computed.output);
+	let textError = $derived(computed.error);
 
 	function copyText() {
 		navigator.clipboard.writeText(textOutput);
