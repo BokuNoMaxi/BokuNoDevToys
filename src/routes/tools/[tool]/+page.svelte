@@ -11,6 +11,7 @@
 	import VarDumpFormatter from '$lib/tools/VarDumpFormatter.svelte';
 	import TimezoneConverter from '$lib/tools/TimezoneConverter.svelte';
 	import DateCalculator from '$lib/tools/DateCalculator.svelte';
+	import TextPrettier from '$lib/tools/TextPrettier.svelte';
 
 	let toolId = $derived($page.params.tool ?? '');
 	let toolMeta = $derived(findTool(toolId));
@@ -46,6 +47,8 @@
 			<TimezoneConverter />
 		{:else if toolId === 'date-calculator'}
 			<DateCalculator />
+		{:else if toolId === 'text-prettier'}
+			<TextPrettier />
 		{/if}
 	</div>
 {:else}

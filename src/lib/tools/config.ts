@@ -22,6 +22,7 @@ export const categories: Category[] = [
 		key: 'text',
 		tools: [
 			{ id: 'text-generator' },
+			{ id: 'text-prettier' },
 		]
 	},
 	{
