@@ -112,6 +112,38 @@
 		loading = false;
 	}
 
+	let curlCmd = $derived.by(() => {
+		if (!url.trim()) return '';
+		const parts = [`curl -X ${method}`];
+		if (authHeader) parts.push(`  -H "Authorization: ${authHeader}"`);
+		for (const h of headers) {
+			if (h.enabled && h.key.trim() && h.value.trim()) {
+				parts.push(`  -H "${h.key.trim()}: ${h.value.trim()}"`);
+			}
+		}
+		if (method !== 'GET' && method !== 'DELETE') {
+			if (bodyType === 'json' && jsonBody.trim()) {
+				parts.push(`  -H "Content-Type: application/json"`);
+				parts.push(`  -d '${jsonBody.replace(/'/g, "'\\''")}'`);
+			} else if (bodyType === 'form') {
+				for (const row of formData) {
+					if (row.enabled && row.key.trim()) parts.push(`  -F "${row.key}=${row.value}"`);
+				}
+			} else if (bodyType === 'raw' && rawBody.trim()) {
+				parts.push(`  -d '${rawBody.replace(/'/g, "'\\''")}'`);
+			}
+		}
+		parts.push(`  "${url.trim()}"`);
+		return parts.join(' \\\n');
+	});
+
+	let copiedCurl = $state(false);
+	function copyCurl() {
+		navigator.clipboard.writeText(curlCmd);
+		copiedCurl = true;
+		setTimeout(() => { copiedCurl = false; }, 2000);
+	}
+
 	function statusColor(s: number) {
 		if (s < 300) return 'text-emerald-400 bg-emerald-400/10';
 		if (s < 400) return 'text-sky-400 bg-sky-400/10';
@@ -128,6 +160,20 @@
 		PATCH: 'text-violet-400', DELETE: 'text-red-400'
 	};
 </script>
+
+{#snippet authPreview()}
+	<div class="mt-3 space-y-2">
+		<div class="bg-slate-900 rounded-lg px-4 py-3">
+			<div class="flex items-center justify-between mb-1.5">
+				<span class="text-xs text-slate-600">Generierter Authorization-Header</span>
+				<button
+					onclick={() => { navigator.clipboard.writeText(`Authorization: ${authHeader}`); }}
+					class="text-xs text-slate-600 hover:text-slate-300 transition-colors">Kopieren</button>
+			</div>
+			<code class="text-xs font-mono text-violet-400 break-all">Authorization: {authHeader}</code>
+		</div>
+	</div>
+{/snippet}
 
 <div class="space-y-4">
 	<!-- Request Line -->
@@ -220,10 +266,7 @@
 							</div>
 						</div>
 						{#if authHeader}
-							<div class="mt-3 bg-slate-900 rounded-lg px-4 py-3">
-								<div class="text-xs text-slate-600 mb-1">Generierter Header</div>
-								<code class="text-xs font-mono text-violet-400 break-all">Authorization: {authHeader}</code>
-							</div>
+							{@render authPreview()}
 						{/if}
 					</div>
 
@@ -235,11 +278,18 @@
 							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-violet-500 font-mono text-xs resize-none"
 						></textarea>
 						{#if authHeader}
-							<div class="mt-3 bg-slate-900 rounded-lg px-4 py-3">
-								<div class="text-xs text-slate-600 mb-1">Generierter Header</div>
-								<code class="text-xs font-mono text-violet-400 break-all">Authorization: {authHeader}</code>
-							</div>
+							{@render authPreview()}
 						{/if}
+					</div>
+				{/if}
+
+				{#if authType !== 'none'}
+					<div class="mt-5 pt-5 border-t border-slate-700">
+						<p class="text-xs text-amber-400/80 leading-relaxed">
+							⚠ <strong>Nginx Proxy Manager</strong> strippt den <code class="bg-slate-900 px-1 rounded">Authorization</code>-Header standardmäßig.
+							Falls du einen vorgeschaltet hast, füge im Proxy-Host unter <em>Advanced</em> folgendes ein:
+						</p>
+						<pre class="mt-2 bg-slate-900 rounded-lg px-4 py-3 text-xs font-mono text-slate-400">proxy_set_header Authorization $http_authorization;</pre>
 					</div>
 				{/if}
 
@@ -324,6 +374,24 @@
 			{/if}
 		</div>
 	</div>
+
+	<!-- cURL Preview -->
+	{#if curlCmd}
+		{@const [curlCopied, setCurlCopied] = [copiedCurl, (v: boolean) => { copiedCurl = v; }]}
+		<details class="bg-slate-800/60 border border-slate-700 rounded-xl overflow-hidden">
+			<summary class="px-4 py-3 text-xs text-slate-500 cursor-pointer hover:text-slate-300 select-none transition-colors">
+				cURL Equivalent <span class="text-slate-700 ml-1">(zum Debuggen im Terminal)</span>
+			</summary>
+			<div class="px-4 pb-4 pt-1">
+				<div class="flex justify-end mb-1.5">
+					<button onclick={copyCurl} class="text-xs px-3 py-1 rounded border border-slate-700 hover:border-violet-500 text-slate-500 hover:text-violet-400 transition-colors">
+						{copiedCurl ? '✓ Kopiert' : 'Kopieren'}
+					</button>
+				</div>
+				<pre class="bg-slate-900 rounded-lg px-4 py-3 text-xs font-mono text-emerald-400 overflow-x-auto whitespace-pre">{curlCmd}</pre>
+			</div>
+		</details>
+	{/if}
 
 	<!-- Error -->
 	{#if reqError}
