@@ -178,6 +178,8 @@ const de: Translations = {
     singleHint: 'Fügt alle Zeilen zu einem fortlaufenden Text zusammen — ideal für kopierte Artikel-Ausschnitte.',
     paragraphHint: 'Behält Absatzumbrüche bei, fügt umgebrochene Zeilen innerhalb eines Absatzes zusammen.',
     compactHint: 'Entfernt Leerzeilen, behält einzelne Zeilenumbrüche.',
+    stripHtml: 'HTML entfernen',
+    stripHtmlHint: 'Entfernt alle HTML-Tags und dekodiert Entities — übrig bleibt der reine Text.',
     input: 'Eingabe',
     output: 'Ausgabe',
     placeholder: 'Text hier einfügen…',

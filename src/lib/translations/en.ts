@@ -176,6 +176,8 @@ const en = {
     singleHint: 'Joins all lines into one continuous text — ideal for copied article snippets.',
     paragraphHint: 'Keeps paragraph breaks, joins wrapped lines within each paragraph.',
     compactHint: 'Removes blank lines, keeps single line breaks.',
+    stripHtml: 'Remove HTML',
+    stripHtmlHint: 'Strips all HTML tags and decodes entities — keeps the plain text content.',
     input: 'Input',
     output: 'Output',
     placeholder: 'Paste your text here…',

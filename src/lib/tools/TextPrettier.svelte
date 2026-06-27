@@ -4,11 +4,30 @@
 	let input = $state('');
 	let copied = $state(false);
 
-	type Mode = 'auto' | 'single' | 'paragraph' | 'compact';
+	type Mode = 'auto' | 'single' | 'paragraph' | 'compact' | 'stripHtml';
 	let mode = $state<Mode>('auto');
 
 	function prettify(text: string, m: Mode): string {
 		if (!text.trim()) return '';
+
+		if (m === 'stripHtml') {
+			// Replace block-level tags with newlines before stripping
+			let result = text
+				.replace(/<br\s*\/?>/gi, '\n')
+				.replace(/<\/?(p|div|h[1-6]|li|tr|blockquote|section|article|header|footer|main|aside)[^>]*>/gi, '\n')
+				.replace(/<[^>]+>/g, '')
+				.replace(/&nbsp;/g, ' ')
+				.replace(/&amp;/g, '&')
+				.replace(/&lt;/g, '<')
+				.replace(/&gt;/g, '>')
+				.replace(/&quot;/g, '"')
+				.replace(/&#39;/g, "'")
+				.replace(/&[a-z]+;/gi, ' ');
+			// Clean up whitespace
+			result = result.split('\n').map(l => l.trim()).filter(l => l.length > 0).join('\n');
+			result = result.replace(/\n{3,}/g, '\n\n').trim();
+			return result;
+		}
 
 		// Normalize line endings
 		let result = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
@@ -64,7 +83,7 @@
 	<div class="bg-slate-800 rounded-xl p-6">
 		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">{$t('textPrettier').mode}</h2>
 		<div class="flex flex-wrap gap-2">
-			{#each (['auto', 'single', 'paragraph', 'compact'] as Mode[]) as m}
+			{#each (['auto', 'single', 'paragraph', 'compact', 'stripHtml'] as Mode[]) as m}
 				<button
 					onclick={() => mode = m}
 					class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {mode === m ? 'bg-violet-600 text-white' : 'bg-slate-900 text-slate-400 hover:text-slate-200'}"
