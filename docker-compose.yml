@@ -1,5 +1,6 @@
 services:
-  app:
+  devtoys:
+    container_name: devtoys
     build: .
     ports:
       - "34291:80"
