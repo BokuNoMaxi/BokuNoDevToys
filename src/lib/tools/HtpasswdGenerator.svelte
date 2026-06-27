@@ -1,5 +1,6 @@
 <script lang="ts">
 	import bcrypt from 'bcryptjs';
+	import { t } from '$lib/i18n';
 
 	let username = $state('');
 	let password = $state('');
@@ -21,14 +22,14 @@
 	async function generate() {
 		error = '';
 		htpasswdEntry = '';
-		if (!username.trim() || !password.trim()) { error = 'Username and password required'; return; }
+		if (!username.trim() || !password.trim()) { error = $t('htpasswd').requiredFields; return; }
 		generating = true;
 		try {
 			const salt = await bcrypt.genSalt(10);
 			const hash = await bcrypt.hash(password, salt);
 			htpasswdEntry = `${username.trim()}:${hash}`;
 		} catch (e) {
-			error = 'Failed to generate hash';
+			error = $t('htpasswd').hashError;
 		}
 		generating = false;
 	}
@@ -108,48 +109,48 @@
 <div class="space-y-6">
 	<!-- Credentials -->
 	<div class="bg-slate-800 rounded-xl p-6">
-		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">Credentials</h2>
+		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">{$t('htpasswd').credentials}</h2>
 		<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 			<div>
-				<label class="block text-xs text-slate-500 mb-1.5">Username</label>
+				<label class="block text-xs text-slate-500 mb-1.5">{$t('htpasswd').username}</label>
 				<input type="text" bind:value={username} placeholder="admin"
 					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-violet-500" />
 			</div>
 			<div>
-				<label class="block text-xs text-slate-500 mb-1.5">Password</label>
+				<label class="block text-xs text-slate-500 mb-1.5">{$t('htpasswd').password}</label>
 				<input type="password" bind:value={password} placeholder="••••••••"
 					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-violet-500" />
 			</div>
 		</div>
 		{#if error}<p class="mt-2 text-red-400 text-sm">{error}</p>{/if}
 		<button onclick={generate} disabled={generating} class="mt-4 px-6 py-2.5 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white rounded-lg font-medium transition-colors">
-			{generating ? 'Generating…' : 'Generate'}
+			{generating ? $t('htpasswd').generating : $t('htpasswd').generate}
 		</button>
 
 		{#if htpasswdEntry}
 			<div class="mt-4">
-				<div class="text-xs text-slate-500 mb-1.5">htpasswd entry</div>
+				<div class="text-xs text-slate-500 mb-1.5">{$t('htpasswd').htpasswdEntry}</div>
 				<div class="flex items-start gap-3 bg-slate-900 rounded-lg px-4 py-3">
 					<code class="flex-1 text-sm font-mono text-violet-400 break-all">{htpasswdEntry}</code>
 					<button onclick={() => copy('entry', htpasswdEntry)} class="text-xs text-slate-500 hover:text-slate-300 shrink-0 transition-colors">
-						{copied['entry'] ? '✓' : 'Copy'}
+						{copied['entry'] ? '✓' : $t('htpasswd').copy}
 					</button>
 				</div>
-				<p class="text-xs text-slate-600 mt-1.5">Add this line to your <code class="text-slate-500">.htpasswd</code> file at <code class="text-slate-500">{htpasswdPath}</code></p>
+				<p class="text-xs text-slate-600 mt-1.5">{$t('htpasswd').htpasswdEntryHint} <code class="text-slate-500">{htpasswdPath}</code></p>
 			</div>
 		{/if}
 	</div>
 
 	<!-- Paths -->
 	<div class="bg-slate-800 rounded-xl p-6">
-		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">Paths</h2>
+		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">{$t('htpasswd').paths}</h2>
 		<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 			<div>
-				<label class="block text-xs text-slate-500 mb-1.5">Protected directory</label>
+				<label class="block text-xs text-slate-500 mb-1.5">{$t('htpasswd').protectedDir}</label>
 				<input type="text" bind:value={protectedPath} class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-violet-500 font-mono text-sm" />
 			</div>
 			<div>
-				<label class="block text-xs text-slate-500 mb-1.5">htpasswd file path</label>
+				<label class="block text-xs text-slate-500 mb-1.5">{$t('htpasswd').htpasswdFile}</label>
 				<input type="text" bind:value={htpasswdPath} class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-violet-500 font-mono text-sm" />
 			</div>
 		</div>
@@ -157,12 +158,12 @@
 
 	<!-- Domain Conditions -->
 	<div class="bg-slate-800 rounded-xl p-6">
-		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2">Domain Conditions <span class="text-slate-600 font-normal normal-case text-xs">(optional — restrict auth to specific domains)</span></h2>
+		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2">{$t('htpasswd').domainConditions} <span class="text-slate-600 font-normal normal-case text-xs">{$t('htpasswd').domainConditionsHint}</span></h2>
 		<div class="flex gap-3 mt-4">
 			<input type="text" bind:value={newDomain} placeholder="example.com"
 				onkeydown={(e) => e.key === 'Enter' && addDomain()}
 				class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-violet-500 font-mono text-sm" />
-			<button onclick={addDomain} class="px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors">Add</button>
+			<button onclick={addDomain} class="px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors">{$t('htpasswd').addDomain}</button>
 		</div>
 		{#if domainConditions.length > 0}
 			<div class="mt-3 flex flex-wrap gap-2">
@@ -178,12 +179,12 @@
 
 	<!-- IP Exclusions -->
 	<div class="bg-slate-800 rounded-xl p-6">
-		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2">IP Exclusions <span class="text-slate-600 font-normal normal-case text-xs">(bypass auth for these IPs/CIDRs)</span></h2>
+		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2">{$t('htpasswd').ipExclusions} <span class="text-slate-600 font-normal normal-case text-xs">{$t('htpasswd').ipExclusionsHint}</span></h2>
 		<div class="flex gap-3 mt-4">
 			<input type="text" bind:value={newIp} placeholder="192.168.1.0/24 or 10.0.0.1"
 				onkeydown={(e) => e.key === 'Enter' && addIp()}
 				class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-violet-500 font-mono text-sm" />
-			<button onclick={addIp} class="px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors">Add</button>
+			<button onclick={addIp} class="px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors">{$t('htpasswd').addIp}</button>
 		</div>
 		{#if ipExclusions.length > 0}
 			<div class="mt-3 flex flex-wrap gap-2">
@@ -200,12 +201,12 @@
 	<!-- .htaccess Preview -->
 	<div class="bg-slate-800 rounded-xl p-6">
 		<div class="flex items-center justify-between mb-4">
-			<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider">.htaccess Content</h2>
+			<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider">{$t('htpasswd').htaccessTitle}</h2>
 			<button onclick={() => copy('htaccess', htaccessContent)} class="text-sm px-3 py-1 rounded-md border border-slate-600 hover:border-violet-500 text-slate-400 hover:text-violet-400 transition-colors">
-				{copied['htaccess'] ? '✓ Copied' : 'Copy'}
+				{copied['htaccess'] ? $t('htpasswd').copied : $t('htpasswd').copy}
 			</button>
 		</div>
 		<pre class="bg-slate-900 rounded-lg p-4 text-sm font-mono text-emerald-400 overflow-x-auto whitespace-pre">{htaccessContent}</pre>
-		<p class="text-xs text-slate-600 mt-2">Place this in <code class="text-slate-500">{protectedPath}/.htaccess</code></p>
+		<p class="text-xs text-slate-600 mt-2">{$t('htpasswd').htaccessHint} <code class="text-slate-500">{protectedPath}/.htaccess</code></p>
 	</div>
 </div>

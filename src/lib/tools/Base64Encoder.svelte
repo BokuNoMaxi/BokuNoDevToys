@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { t } from '$lib/i18n';
+
 	let textInput = $state('');
 	let textMode = $state<'encode' | 'decode'>('encode');
 
@@ -60,13 +62,13 @@
 <div class="space-y-6">
 	<!-- Text -->
 	<div class="bg-slate-800 rounded-xl p-6">
-		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">Text</h2>
+		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">{$t('base64').textTab}</h2>
 
 		<div>
-			<label class="block text-xs text-slate-500 mb-1.5">Input</label>
+			<label class="block text-xs text-slate-500 mb-1.5">{$t('base64').input}</label>
 			<textarea
 				bind:value={textInput}
-				placeholder="Text hier eingeben…"
+				placeholder={$t('base64').textPlaceholder}
 				rows="5"
 				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-violet-500 font-mono text-sm resize-y"
 			></textarea>
@@ -76,11 +78,11 @@
 			<button
 				onclick={() => setMode('encode')}
 				class="px-5 py-2.5 rounded-lg text-sm font-medium transition-colors {textMode === 'encode' ? 'bg-violet-600 text-white' : 'bg-slate-700 text-slate-400 hover:text-slate-200 hover:bg-slate-600'}"
-			>Encode →</button>
+			>{$t('base64').encode}</button>
 			<button
 				onclick={() => setMode('decode')}
 				class="px-5 py-2.5 rounded-lg text-sm font-medium transition-colors {textMode === 'decode' ? 'bg-violet-600 text-white' : 'bg-slate-700 text-slate-400 hover:text-slate-200 hover:bg-slate-600'}"
-			>← Decode</button>
+			>{$t('base64').decode}</button>
 		</div>
 
 		{#if textError}
@@ -89,15 +91,15 @@
 
 		<div class="mt-4">
 			<div class="flex items-center justify-between mb-1.5">
-				<label class="text-xs text-slate-500">Output</label>
+				<label class="text-xs text-slate-500">{$t('base64').output}</label>
 				<button onclick={copyText} class="text-xs text-slate-500 hover:text-slate-300 transition-colors">
-					{textCopied ? '✓ Copied' : 'Copy'}
+					{textCopied ? $t('base64').copied : $t('base64').copy}
 				</button>
 			</div>
 			<textarea
 				readonly
 				value={textOutput}
-				placeholder="Ergebnis erscheint hier…"
+				placeholder={$t('base64').resultPlaceholder}
 				rows="5"
 				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-emerald-400 placeholder-slate-700 font-mono text-sm resize-y"
 			></textarea>
@@ -106,10 +108,10 @@
 
 	<!-- Image -->
 	<div class="bg-slate-800 rounded-xl p-6">
-		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">Image → Base64</h2>
+		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">{$t('base64').imageTab} → Base64</h2>
 
 		<label class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-violet-500 transition-colors bg-slate-900">
-			<span class="text-slate-500 text-sm">Bild auswählen</span>
+			<span class="text-slate-500 text-sm">{$t('base64').dropImage}</span>
 			<span class="text-slate-600 text-xs mt-1">PNG, JPG, GIF, SVG, WebP</span>
 			<input type="file" accept="image/*" onchange={handleImageUpload} class="hidden" />
 		</label>
@@ -129,7 +131,7 @@
 					</div>
 					<div class="space-y-2">
 						<button onclick={() => copyImage('datauri')} class="w-full py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-sm transition-colors">
-							{imageCopied ? '✓ Copied' : 'Copy Data URI (src="…")'}
+							{imageCopied ? $t('base64').copied : 'Copy Data URI (src="…")'}
 						</button>
 						<button onclick={() => copyImage('base64only')} class="w-full py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-sm transition-colors">
 							Copy Base64 only

@@ -1,0 +1,17 @@
+# Build output
+build/
+.svelte-kit/
+
+# Dependencies
+node_modules/
+
+# Lock files
+package-lock.json
+
+# Git internals
+.git/
+
+# Static / config noise
+static/
+.vscode/
+README.md

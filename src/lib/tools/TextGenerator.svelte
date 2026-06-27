@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { t } from '$lib/i18n';
+
 	interface Model {
 		id: string;
 		label: string;
@@ -226,36 +228,32 @@
 
 <div class="space-y-6">
 	<div class="bg-slate-800 rounded-xl p-6">
-		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">Einstellungen</h2>
+		<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-5">{$t('textGen').settings}</h2>
 
-		<!-- Model Selector -->
 		<div class="mb-5">
-			<label for="model-select" class="block text-xs text-slate-500 mb-1.5">Modell / Stil</label>
+			<label for="model-select" class="block text-xs text-slate-500 mb-1.5">{$t('textGen').modelStyle}</label>
 			<div class="flex items-center gap-3">
-				<select
-					id="model-select"
-					bind:value={selectedModel}
-					class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-violet-500 appearance-none cursor-pointer"
-				>
+				<select id="model-select" bind:value={selectedModel}
+					class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-violet-500 appearance-none cursor-pointer">
 					{#each MODELS as model}
 						<option value={model}>{model.label} — {model.language}</option>
 					{/each}
 				</select>
-				<span class="text-xs text-slate-600 shrink-0">{selectedModel.sentences.length} Sätze</span>
+				<span class="text-xs text-slate-600 shrink-0">{selectedModel.sentences.length} {$t('textGen').sentences}</span>
 			</div>
 		</div>
 
 		<div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
 			<div>
 				<label for="para-range" class="block text-sm text-slate-400 mb-2">
-					Absätze: <span class="text-violet-400 font-semibold">{paragraphs}</span>
+					{$t('textGen').paragraphs}: <span class="text-violet-400 font-semibold">{paragraphs}</span>
 				</label>
 				<input id="para-range" type="range" min="1" max="20" bind:value={paragraphs} class="w-full accent-violet-500" />
 				<div class="flex justify-between text-xs text-slate-600 mt-1"><span>1</span><span>20</span></div>
 			</div>
 			<div>
 				<label for="chars-range" class="block text-sm text-slate-400 mb-2">
-					Max. Zeichen: <span class="text-violet-400 font-semibold">{maxChars === 0 ? 'unbegrenzt' : maxChars}</span>
+					{$t('textGen').maxChars}: <span class="text-violet-400 font-semibold">{maxChars === 0 ? $t('textGen').unlimited : maxChars}</span>
 				</label>
 				<input id="chars-range" type="range" min="0" max="5000" step="50" bind:value={maxChars} class="w-full accent-violet-500" />
 				<div class="flex justify-between text-xs text-slate-600 mt-1"><span>∞</span><span>5000</span></div>
@@ -263,18 +261,18 @@
 		</div>
 
 		<button onclick={generate} class="mt-5 px-6 py-2.5 bg-violet-600 hover:bg-violet-500 text-white rounded-lg font-medium transition-colors">
-			Generieren
+			{$t('textGen').generate}
 		</button>
 	</div>
 
 	{#if result}
 		<div class="bg-slate-800 rounded-xl p-6">
 			<div class="flex items-center justify-between mb-4">
-				<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider">Ergebnis</h2>
+				<h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider">{$t('textGen').result}</h2>
 				<div class="flex items-center gap-3">
-					<span class="text-xs text-slate-500">{result.length} Zeichen</span>
+					<span class="text-xs text-slate-500">{result.length} {$t('textGen').chars}</span>
 					<button onclick={copy} class="text-sm px-3 py-1 rounded-md border border-slate-600 hover:border-violet-500 text-slate-400 hover:text-violet-400 transition-colors">
-						{copied ? '✓ Kopiert' : 'Kopieren'}
+						{copied ? $t('textGen').copied : $t('textGen').copy}
 					</button>
 				</div>
 			</div>
