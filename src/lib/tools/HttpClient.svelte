@@ -3,14 +3,27 @@
 
 	type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 	type BodyType = 'none' | 'form' | 'json' | 'raw';
-	type Tab = 'headers' | 'body';
+	type Tab = 'auth' | 'headers' | 'body';
+	type AuthType = 'none' | 'basic' | 'bearer';
 
 	interface KV { id: number; key: string; value: string; enabled: boolean }
 
 	let method = $state<Method>('GET');
 	let url = $state('');
-	let activeTab = $state<Tab>('headers');
+	let activeTab = $state<Tab>('auth');
 	let bodyType = $state<BodyType>('none');
+
+	let authType = $state<AuthType>('none');
+	let authUser = $state('');
+	let authPassword = $state('');
+	let authToken = $state('');
+	let showPassword = $state(false);
+
+	let authHeader = $derived.by(() => {
+		if (authType === 'bearer' && authToken.trim()) return `Bearer ${authToken.trim()}`;
+		if (authType === 'basic' && authUser.trim()) return `Basic ${btoa(`${authUser}:${authPassword}`)}`;
+		return '';
+	});
 
 	let headers = $state<KV[]>([{ id: 1, key: '', value: '', enabled: true }]);
 	let formData = $state<KV[]>([{ id: 1, key: '', value: '', enabled: true }]);
@@ -52,6 +65,7 @@
 		loading = true;
 
 		const reqHeaders = new Headers();
+		if (authHeader) reqHeaders.set('Authorization', authHeader);
 		for (const h of headers) {
 			if (h.enabled && h.key.trim() && h.value.trim()) {
 				reqHeaders.set(h.key.trim(), h.value.trim());
@@ -148,6 +162,13 @@
 	<div class="bg-slate-800 rounded-xl overflow-hidden">
 		<div class="flex border-b border-slate-700">
 			<button
+				onclick={() => activeTab = 'auth'}
+				class="px-5 py-3 text-sm font-medium transition-colors {activeTab === 'auth' ? 'text-violet-400 border-b-2 border-violet-500' : 'text-slate-500 hover:text-slate-300'}"
+			>
+				Authorization
+				{#if authType !== 'none'}<span class="ml-1.5 w-1.5 h-1.5 rounded-full bg-violet-400 inline-block"></span>{/if}
+			</button>
+			<button
 				onclick={() => activeTab = 'headers'}
 				class="px-5 py-3 text-sm font-medium transition-colors {activeTab === 'headers' ? 'text-violet-400 border-b-2 border-violet-500' : 'text-slate-500 hover:text-slate-300'}"
 			>
@@ -166,7 +187,63 @@
 		</div>
 
 		<div class="p-4">
-			{#if activeTab === 'headers'}
+			{#if activeTab === 'auth'}
+				<!-- Auth type selector -->
+				<div class="flex gap-2 mb-5">
+					{#each ([['none','Keine'],['basic','Basic Auth'],['bearer','Bearer Token']] as [AuthType, string][]) as [at, label]}
+						<button
+							onclick={() => authType = at}
+							class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {authType === at ? 'bg-violet-600 text-white' : 'bg-slate-900 text-slate-400 hover:text-slate-200'}"
+						>{label}</button>
+					{/each}
+				</div>
+
+				{#if authType === 'none'}
+					<p class="text-slate-600 text-sm text-center py-4">Keine Authentifizierung</p>
+
+				{:else if authType === 'basic'}
+					<div class="space-y-3 max-w-sm">
+						<div>
+							<label for="auth-user" class="block text-xs text-slate-500 mb-1.5">Username</label>
+							<input id="auth-user" type="text" bind:value={authUser} placeholder="admin"
+								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-violet-500 font-mono text-sm" />
+						</div>
+						<div>
+							<label for="auth-pass" class="block text-xs text-slate-500 mb-1.5">Password</label>
+							<div class="relative">
+								<input id="auth-pass" type={showPassword ? 'text' : 'password'} bind:value={authPassword} placeholder="••••••••"
+									class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 pr-12 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-violet-500 font-mono text-sm" />
+								<button onclick={() => showPassword = !showPassword}
+									class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 text-xs transition-colors">
+									{showPassword ? 'Verbergen' : 'Zeigen'}
+								</button>
+							</div>
+						</div>
+						{#if authHeader}
+							<div class="mt-3 bg-slate-900 rounded-lg px-4 py-3">
+								<div class="text-xs text-slate-600 mb-1">Generierter Header</div>
+								<code class="text-xs font-mono text-violet-400 break-all">Authorization: {authHeader}</code>
+							</div>
+						{/if}
+					</div>
+
+				{:else if authType === 'bearer'}
+					<div class="max-w-xl">
+						<label for="auth-token" class="block text-xs text-slate-500 mb-1.5">Bearer Token</label>
+						<textarea id="auth-token" bind:value={authToken} placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9…"
+							rows="3"
+							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-violet-500 font-mono text-xs resize-none"
+						></textarea>
+						{#if authHeader}
+							<div class="mt-3 bg-slate-900 rounded-lg px-4 py-3">
+								<div class="text-xs text-slate-600 mb-1">Generierter Header</div>
+								<code class="text-xs font-mono text-violet-400 break-all">Authorization: {authHeader}</code>
+							</div>
+						{/if}
+					</div>
+				{/if}
+
+			{:else if activeTab === 'headers'}
 				<div class="space-y-2">
 					{#each headers as row (row.id)}
 						<div class="flex gap-2 items-center">
