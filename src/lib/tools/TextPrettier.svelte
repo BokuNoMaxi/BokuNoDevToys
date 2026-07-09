@@ -3,7 +3,6 @@
 
 	let input = $state('');
 	let copied = $state(false);
-	let textareaEl = $state<HTMLTextAreaElement>();
 
 	type Mode = 'auto' | 'single' | 'paragraph' | 'compact';
 	let mode = $state<Mode>('auto');
@@ -73,12 +72,6 @@
 			input = input.slice(0, start) + text + input.slice(end);
 		}
 	}
-
-	function pasteReplace() {
-		input = '';
-		textareaEl?.focus();
-		document.execCommand('paste');
-	}
 </script>
 
 <div class="space-y-4">
@@ -119,18 +112,14 @@
 			<textarea
 				id="tp-input"
 				bind:value={input}
-				bind:this={textareaEl}
 				onpaste={handlePaste}
 				placeholder={$t('textPrettier').placeholder}
 				rows="14"
 				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm resize-y"
 			></textarea>
-			<div class="mt-2 flex gap-3">
-				<button onclick={pasteReplace} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">{$t('textPrettier').pasteReplace}</button>
-				{#if input}
-					<button onclick={() => input = ''} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">{$t('textPrettier').clear}</button>
-				{/if}
-			</div>
+			{#if input}
+				<button onclick={() => input = ''} class="mt-2 text-xs text-slate-300 hover:text-slate-100 transition-colors">{$t('textPrettier').clear}</button>
+			{/if}
 		</div>
 
 		<div class="bg-slate-800 rounded-xl p-6">

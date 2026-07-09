@@ -194,7 +194,6 @@ const en = {
     input: 'Input',
     output: 'Output',
     placeholder: 'Paste your text here…',
-    pasteReplace: 'Paste',
     clear: 'Clear',
     copy: 'Copy',
     copied: '✓ Copied',

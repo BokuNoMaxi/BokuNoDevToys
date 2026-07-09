@@ -196,7 +196,6 @@ const de: Translations = {
     input: 'Eingabe',
     output: 'Ausgabe',
     placeholder: 'Text hier einfügen…',
-    pasteReplace: 'Einfügen',
     clear: 'Leeren',
     copy: 'Kopieren',
     copied: '✓ Kopiert',
