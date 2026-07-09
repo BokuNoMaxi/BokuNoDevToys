@@ -66,8 +66,16 @@
 		const text = e.clipboardData?.getData('text') ?? '';
 		if (text) {
 			e.preventDefault();
-			input = text;
+			const ta = e.target as HTMLTextAreaElement;
+			const start = ta.selectionStart ?? input.length;
+			const end = ta.selectionEnd ?? input.length;
+			input = input.slice(0, start) + text + input.slice(end);
 		}
+	}
+
+	async function pasteReplace() {
+		const text = await navigator.clipboard.readText();
+		if (text) input = text;
 	}
 </script>
 
@@ -114,9 +122,12 @@
 				rows="14"
 				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm resize-y"
 			></textarea>
-			{#if input}
-				<button onclick={() => input = ''} class="mt-2 text-xs text-slate-300 hover:text-slate-100 transition-colors">{$t('textPrettier').clear}</button>
-			{/if}
+			<div class="mt-2 flex gap-3">
+				<button onclick={pasteReplace} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">{$t('textPrettier').pasteReplace}</button>
+				{#if input}
+					<button onclick={() => input = ''} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">{$t('textPrettier').clear}</button>
+				{/if}
+			</div>
 		</div>
 
 		<div class="bg-slate-800 rounded-xl p-6">
