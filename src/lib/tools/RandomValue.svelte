@@ -61,7 +61,10 @@
 
 	{#if history.length > 1}
 		<div class="bg-slate-800 rounded-xl p-6">
-			<h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">{$t('randomValue').history}</h2>
+			<div class="flex items-center justify-between mb-3">
+				<h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">{$t('randomValue').history}</h2>
+				<button onclick={() => history = result ? [result] : []} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">{$t('randomValue').clearHistory}</button>
+			</div>
 			<div class="flex flex-wrap gap-2">
 				{#each history.slice(1) as h}
 					<span class="text-sm text-slate-400 bg-slate-900 rounded px-2 py-1">{h}</span>

@@ -230,6 +230,7 @@ const de: Translations = {
     copy: 'Kopieren',
     copied: '✓ Kopiert',
     history: 'Verlauf',
+    clearHistory: 'Verlauf leeren',
   },
   randomValue: {
     values: 'Werte',
@@ -241,6 +242,7 @@ const de: Translations = {
     copy: 'Kopieren',
     copied: '✓ Kopiert',
     history: 'Verlauf',
+    clearHistory: 'Verlauf leeren',
   },
 };
 

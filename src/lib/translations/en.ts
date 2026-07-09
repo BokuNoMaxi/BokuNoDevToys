@@ -228,6 +228,7 @@ const en = {
     copy: 'Copy',
     copied: '✓ Copied',
     history: 'History',
+    clearHistory: 'Clear history',
   },
   randomValue: {
     values: 'Values',
@@ -239,6 +240,7 @@ const en = {
     copy: 'Copy',
     copied: '✓ Copied',
     history: 'History',
+    clearHistory: 'Clear history',
   },
 } as const;
 
