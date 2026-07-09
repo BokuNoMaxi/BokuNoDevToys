@@ -12,6 +12,8 @@
 	import TimezoneConverter from '$lib/tools/TimezoneConverter.svelte';
 	import DateCalculator from '$lib/tools/DateCalculator.svelte';
 	import TextPrettier from '$lib/tools/TextPrettier.svelte';
+	import RandomInt from '$lib/tools/RandomInt.svelte';
+	import RandomValue from '$lib/tools/RandomValue.svelte';
 
 	let toolId = $derived($page.params.tool ?? '');
 	let toolMeta = $derived(findTool(toolId));
@@ -49,6 +51,10 @@
 			<DateCalculator />
 		{:else if toolId === 'text-prettier'}
 			<TextPrettier />
+		{:else if toolId === 'random-int'}
+			<RandomInt />
+		{:else if toolId === 'random-value'}
+			<RandomValue />
 		{/if}
 	</div>
 {:else}

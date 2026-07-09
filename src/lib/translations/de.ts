@@ -8,6 +8,7 @@ const de: Translations = {
     format: 'Format',
     database: 'Datenbank',
     encoding: 'Encoding',
+    randomizer: 'Randomizer',
   },
   tools: {
     datetime:             { name: 'DateTime Converter',      description: 'Zwischen Timestamps und lesbaren Datumsformaten konvertieren' },
@@ -20,6 +21,8 @@ const de: Translations = {
     'vardump-formatter':  { name: 'var_dump Formatter',      description: 'PHP var_dump Output einfügen und als Baum lesen' },
     'mysql-export-import':{ name: 'MySQL Export / Import',   description: 'mysqldump & mysql Befehle aus Verbindungsparametern oder .env generieren' },
     base64:               { name: 'Base64 Encoder',          description: 'Text und Bilder als Base64 kodieren/dekodieren' },
+    'random-int':         { name: 'Random Integer',          description: 'Zufällige ganze Zahlen in einem definierten Bereich generieren' },
+    'random-value':       { name: 'Random Value',            description: 'Zufälligen Wert aus einer selbst definierten Liste auswählen' },
   },
   home: {
     subtitle: 'Eine Sammlung praktischer Tools für Entwickler — alles läuft direkt im Browser, keine Daten werden übertragen.',
@@ -216,6 +219,28 @@ const de: Translations = {
     invalidBase64: 'Ungültiges Base64',
     dropImage: 'Bild hier ablegen oder klicken',
     imageResult: 'Base64 Ergebnis',
+  },
+  randomInt: {
+    settings: 'Einstellungen',
+    min: 'Von',
+    max: 'Bis',
+    count: 'Anzahl',
+    generate: 'Generieren',
+    result: 'Ergebnis',
+    copy: 'Kopieren',
+    copied: '✓ Kopiert',
+    history: 'Verlauf',
+  },
+  randomValue: {
+    values: 'Werte',
+    valuesLabel: 'Ein Wert pro Zeile',
+    placeholder: 'Ein Wert pro Zeile…',
+    entries: 'Einträge',
+    pick: 'Zufällig wählen',
+    result: 'Ergebnis',
+    copy: 'Kopieren',
+    copied: '✓ Kopiert',
+    history: 'Verlauf',
   },
 };
 

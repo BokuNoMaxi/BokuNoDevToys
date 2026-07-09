@@ -50,6 +50,13 @@ export const categories: Category[] = [
 			{ id: 'base64' },
 		]
 	},
+	{
+		key: 'randomizer',
+		tools: [
+			{ id: 'random-int' },
+			{ id: 'random-value' },
+		]
+	},
 ];
 
 export function findTool(id: string): Tool | undefined {

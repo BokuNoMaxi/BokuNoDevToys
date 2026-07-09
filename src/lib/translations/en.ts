@@ -6,6 +6,7 @@ const en = {
     format: 'Format',
     database: 'Database',
     encoding: 'Encoding',
+    randomizer: 'Randomizer',
   },
   tools: {
     datetime:           { name: 'DateTime Converter',    description: 'Convert between timestamps and human-readable dates' },
@@ -18,6 +19,8 @@ const en = {
     'vardump-formatter':{ name: 'var_dump Formatter',    description: 'Paste PHP var_dump output and read it as a tree' },
     'mysql-export-import': { name: 'MySQL Export / Import', description: 'Generate mysqldump & mysql commands from connection params or .env' },
     base64:             { name: 'Base64 Encoder',        description: 'Encode/decode text and images as Base64' },
+    'random-int':       { name: 'Random Integer',        description: 'Generate random integers within a defined range' },
+    'random-value':     { name: 'Random Value',          description: 'Pick a random value from a self-defined list' },
   },
   home: {
     subtitle: 'A collection of practical tools for developers — everything runs directly in the browser, no data is transmitted.',
@@ -214,6 +217,28 @@ const en = {
     invalidBase64: 'Invalid Base64',
     dropImage: 'Drop image here or click to select',
     imageResult: 'Base64 result',
+  },
+  randomInt: {
+    settings: 'Settings',
+    min: 'From',
+    max: 'To',
+    count: 'Count',
+    generate: 'Generate',
+    result: 'Result',
+    copy: 'Copy',
+    copied: '✓ Copied',
+    history: 'History',
+  },
+  randomValue: {
+    values: 'Values',
+    valuesLabel: 'One value per line',
+    placeholder: 'One value per line…',
+    entries: 'entries',
+    pick: 'Pick random',
+    result: 'Result',
+    copy: 'Copy',
+    copied: '✓ Copied',
+    history: 'History',
   },
 } as const;
 
