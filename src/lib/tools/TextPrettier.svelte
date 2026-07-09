@@ -3,6 +3,7 @@
 
 	let input = $state('');
 	let copied = $state(false);
+	let textareaEl = $state<HTMLTextAreaElement>();
 
 	type Mode = 'auto' | 'single' | 'paragraph' | 'compact';
 	let mode = $state<Mode>('auto');
@@ -73,9 +74,10 @@
 		}
 	}
 
-	async function pasteReplace() {
-		const text = await navigator.clipboard.readText();
-		if (text) input = text;
+	function pasteReplace() {
+		input = '';
+		textareaEl?.focus();
+		document.execCommand('paste');
 	}
 </script>
 
@@ -117,6 +119,7 @@
 			<textarea
 				id="tp-input"
 				bind:value={input}
+				bind:this={textareaEl}
 				onpaste={handlePaste}
 				placeholder={$t('textPrettier').placeholder}
 				rows="14"
