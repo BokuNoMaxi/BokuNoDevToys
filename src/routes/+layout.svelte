@@ -5,6 +5,7 @@
 	import { categories } from '$lib/tools/config';
 	import { lang, t } from '$lib/i18n';
 	import favicon from '$lib/assets/favicon.svg';
+	import logo from '$lib/assets/logo.svg';
 
 	let { children } = $props();
 	let sidebarOpen = $state(false);
@@ -35,9 +36,8 @@
 		{sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
 	">
 		<div class="px-5 py-5 border-b border-slate-800">
-			<a href="/" class="flex items-center gap-2.5">
-				<div class="w-7 h-7 bg-violet-700 rounded-lg flex items-center justify-center text-white font-bold text-sm">B</div>
-				<span class="font-semibold text-slate-100">BokuNoDevToys</span>
+			<a href="/" class="flex items-center">
+				<img src={logo} alt="BokuNo DevToys" class="h-8 w-auto" />
 			</a>
 		</div>
 
@@ -108,7 +108,7 @@
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
 				</svg>
 			</button>
-			<span class="font-semibold text-slate-100">BokuNoDevToys</span>
+			<img src={logo} alt="BokuNo DevToys" class="h-7 w-auto" />
 			<div class="ml-auto flex gap-1" role="group" aria-label="Language">
 				<button onclick={() => lang.set('en')} aria-pressed={$lang === 'en'} aria-label="English" class="text-xs px-2 py-1 rounded transition-colors {$lang === 'en' ? 'bg-violet-700 text-white' : 'text-slate-300'}">EN</button>
 				<button onclick={() => lang.set('de')} aria-pressed={$lang === 'de'} aria-label="Deutsch" class="text-xs px-2 py-1 rounded transition-colors {$lang === 'de' ? 'bg-violet-700 text-white' : 'text-slate-300'}">DE</button>
