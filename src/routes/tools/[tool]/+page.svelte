@@ -14,6 +14,8 @@
 	import TextPrettier from '$lib/tools/TextPrettier.svelte';
 	import RandomInt from '$lib/tools/RandomInt.svelte';
 	import RandomValue from '$lib/tools/RandomValue.svelte';
+	import ErrorLogAnalyzer from '$lib/tools/ErrorLogAnalyzer.svelte';
+	import AccessLogAnalyzer from '$lib/tools/AccessLogAnalyzer.svelte';
 
 	let toolId = $derived($page.params.tool ?? '');
 	let toolMeta = $derived(findTool(toolId));
@@ -55,6 +57,10 @@
 			<RandomInt />
 		{:else if toolId === 'random-value'}
 			<RandomValue />
+		{:else if toolId === 'error-log'}
+			<ErrorLogAnalyzer />
+		{:else if toolId === 'access-log'}
+			<AccessLogAnalyzer />
 		{/if}
 	</div>
 {:else}

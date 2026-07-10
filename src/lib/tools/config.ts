@@ -57,6 +57,13 @@ export const categories: Category[] = [
 			{ id: 'random-value' },
 		]
 	},
+	{
+		key: 'logs',
+		tools: [
+			{ id: 'error-log' },
+			{ id: 'access-log' },
+		]
+	},
 ];
 
 export function findTool(id: string): Tool | undefined {
