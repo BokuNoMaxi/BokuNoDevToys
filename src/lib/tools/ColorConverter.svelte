@@ -155,6 +155,12 @@
 		};
 	});
 
+	let colorPickerEl = $state<HTMLInputElement | undefined>();
+
+	function onPickerChange(e: Event) {
+		input = (e.target as HTMLInputElement).value;
+	}
+
 	function copy(key: string, value: string) {
 		navigator.clipboard.writeText(value);
 		copiedKey = key;
@@ -167,9 +173,27 @@
 		<div>
 			<label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2" for="cc-input">{$t('colorConverter').input}</label>
 			<div class="flex gap-3">
-				{#if result?.data}
-					<div class="w-12 h-11 rounded-lg border border-slate-600 shrink-0" style="background:{result.data.preview}"></div>
-				{/if}
+				<!-- Color swatch — click opens native picker -->
+				<div class="relative shrink-0">
+					<div
+						class="w-12 h-11 rounded-lg border-2 cursor-pointer transition-colors {result?.data ? 'border-slate-600 hover:border-violet-500' : 'border-slate-700 bg-slate-900'}"
+						style={result?.data ? `background:${result.data.preview}` : ''}
+						onclick={() => colorPickerEl?.click()}
+						role="button"
+						tabindex="0"
+						onkeydown={(e) => e.key === 'Enter' && colorPickerEl?.click()}
+						aria-label="Open color picker"
+					></div>
+					<input
+						bind:this={colorPickerEl}
+						type="color"
+						value={result?.data?.hex ?? '#6d28d9'}
+						onchange={onPickerChange}
+						oninput={onPickerChange}
+						class="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+						tabindex="-1"
+					/>
+				</div>
 				<input
 					id="cc-input"
 					type="text"

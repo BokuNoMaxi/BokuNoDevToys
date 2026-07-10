@@ -146,7 +146,7 @@
 							{copiedIdx === i ? $t('schemaAnalyzer').copied : $t('schemaAnalyzer').copy}
 						</button>
 					</div>
-					<pre class="bg-slate-900 rounded-lg px-4 py-3 text-slate-300 text-xs font-mono overflow-x-auto max-h-48 overflow-y-auto whitespace-pre">{JSON.stringify(item.data, null, 2)}</pre>
+					<pre class="bg-slate-900 rounded-lg px-4 py-3 text-slate-300 text-xs font-mono overflow-x-auto whitespace-pre">{JSON.stringify(item.data, null, 2)}</pre>
 				</div>
 			{/each}
 		</div>

@@ -208,6 +208,7 @@
 	];
 
 	let copiedPattern = $state<string | null>(null);
+	let commonPatternsOpen = $state(false);
 	function applyPattern(p: string) {
 		pattern = p;
 		copiedPattern = p;
@@ -411,25 +412,36 @@
 		</div>
 	</div>
 
-	<!-- Common Patterns -->
-	<div class="bg-slate-800 rounded-xl p-6">
-		<h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">{$t('regexTester').commonPatterns}</h2>
-		<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
-			{#each commonPatterns as cp}
-				<button
-					onclick={() => applyPattern(cp.pattern)}
-					class="flex items-start gap-3 text-left px-3 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-700 transition-colors group"
-				>
-					<div class="flex-1 min-w-0">
-						<div class="text-xs font-semibold text-slate-300 group-hover:text-slate-100 transition-colors">{cp.name}</div>
-						<div class="text-xs font-mono text-slate-400 truncate mt-0.5">{cp.pattern}</div>
-					</div>
-					<span class="text-xs text-violet-400 shrink-0 mt-0.5 {copiedPattern === cp.pattern ? 'text-emerald-400' : ''}">
-						{copiedPattern === cp.pattern ? '✓' : '→'}
-					</span>
-				</button>
-			{/each}
-		</div>
+	<!-- Common Patterns (Akkordeon) -->
+	<div class="bg-slate-800 rounded-xl overflow-hidden">
+		<button
+			onclick={() => commonPatternsOpen = !commonPatternsOpen}
+			aria-expanded={commonPatternsOpen}
+			class="w-full flex items-center justify-between px-6 py-4 text-sm font-semibold text-slate-300 uppercase tracking-wider hover:text-slate-100 transition-colors"
+		>
+			<span>{$t('regexTester').commonPatterns}</span>
+			<svg class="w-4 h-4 transition-transform duration-200 {commonPatternsOpen ? 'rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+			</svg>
+		</button>
+		{#if commonPatternsOpen}
+			<div class="px-6 pb-6 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
+				{#each commonPatterns as cp}
+					<button
+						onclick={() => applyPattern(cp.pattern)}
+						class="flex items-start gap-3 text-left px-3 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-700 transition-colors group"
+					>
+						<div class="flex-1 min-w-0">
+							<div class="text-xs font-semibold text-slate-300 group-hover:text-slate-100 transition-colors">{cp.name}</div>
+							<div class="text-xs font-mono text-slate-400 truncate mt-0.5">{cp.pattern}</div>
+						</div>
+						<span class="text-xs shrink-0 mt-0.5 {copiedPattern === cp.pattern ? 'text-emerald-400' : 'text-violet-400'}">
+							{copiedPattern === cp.pattern ? '✓' : '→'}
+						</span>
+					</button>
+				{/each}
+			</div>
+		{/if}
 	</div>
 
 	<!-- Regex Reference -->

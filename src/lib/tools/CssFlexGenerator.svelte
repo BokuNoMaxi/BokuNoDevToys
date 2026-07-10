@@ -85,7 +85,7 @@
 				</div>
 				<div>
 					<label class="block text-xs text-slate-400 mb-1.5">{$t('cssFlex').itemCount}: <span class="text-violet-300 font-mono">{itemCount}</span></label>
-					<input type="range" min="1" max="10" bind:value={itemCount} class="w-full accent-violet-500" />
+					<input type="range" min="1" max="100" bind:value={itemCount} class="w-full accent-violet-500" />
 				</div>
 			</div>
 		</div>
