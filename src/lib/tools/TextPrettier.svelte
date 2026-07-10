@@ -9,6 +9,22 @@
 	let stripHtml = $state(false);
 	type UrlTransform = 'none' | 'encode' | 'decode';
 	let urlTransform = $state<UrlTransform>('none');
+	type CaseTransform = 'none' | 'camel' | 'pascal' | 'snake' | 'kebab';
+	let caseTransform = $state<CaseTransform>('none');
+
+	function toCase(text: string, ct: CaseTransform): string {
+		if (ct === 'none') return text;
+		const words = text
+			.replace(/([a-z])([A-Z])/g, '$1 $2')
+			.split(/[\s\-_]+/)
+			.filter(w => w.length > 0)
+			.map(w => w.toLowerCase());
+		if (ct === 'camel') return words.map((w, i) => i === 0 ? w : w[0].toUpperCase() + w.slice(1)).join('');
+		if (ct === 'pascal') return words.map(w => w[0].toUpperCase() + w.slice(1)).join('');
+		if (ct === 'snake') return words.join('_');
+		if (ct === 'kebab') return words.join('-');
+		return text;
+	}
 
 	function removeHtml(text: string): string {
 		return text
@@ -58,9 +74,11 @@
 
 	let output = $derived.by(() => {
 		const base = prettify(input, mode, stripHtml);
-		if (urlTransform === 'encode') return encodeURIComponent(base);
-		if (urlTransform === 'decode') { try { return decodeURIComponent(base); } catch { return base; } }
-		return base;
+		let result = base;
+		if (urlTransform === 'encode') result = encodeURIComponent(result);
+		else if (urlTransform === 'decode') { try { result = decodeURIComponent(result); } catch { /* keep */ } }
+		result = toCase(result, caseTransform);
+		return result;
 	});
 
 	function copy() {
@@ -123,6 +141,20 @@
 				{/each}
 			</div>
 			<p class="mt-2 text-xs text-slate-300">{$t('textPrettier')[`url${urlTransform.charAt(0).toUpperCase() + urlTransform.slice(1)}Hint` as 'urlNoneHint' | 'urlEncodeHint' | 'urlDecodeHint']}</p>
+		</div>
+
+		<div>
+			<h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">{$t('textPrettier').caseTransform}</h2>
+			<div class="flex flex-wrap gap-2" role="group" aria-label={$t('textPrettier').caseTransformGroupLabel}>
+				{#each (['none', 'camel', 'pascal', 'snake', 'kebab'] as CaseTransform[]) as c}
+					<button
+						onclick={() => caseTransform = c}
+						aria-pressed={caseTransform === c}
+						class="px-4 py-2 rounded-lg text-sm font-medium font-mono transition-colors {caseTransform === c ? 'bg-violet-700 text-white' : 'bg-slate-900 text-slate-300 hover:text-slate-100'}"
+					>{$t('textPrettier')[`case${c.charAt(0).toUpperCase() + c.slice(1)}` as 'caseNone' | 'caseCamel' | 'casePascal' | 'caseSnake' | 'caseKebab']}</button>
+				{/each}
+			</div>
+			<p class="mt-2 text-xs text-slate-300">{$t('textPrettier')[`case${caseTransform.charAt(0).toUpperCase() + caseTransform.slice(1)}Hint` as 'caseNoneHint' | 'caseCamelHint' | 'casePascalHint' | 'caseSnakeHint' | 'caseKebabHint']}</p>
 		</div>
 	</div>
 

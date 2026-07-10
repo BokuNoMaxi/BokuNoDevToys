@@ -22,6 +22,22 @@
 	import CronBuilder from '$lib/tools/CronBuilder.svelte';
 	import IpInfo from '$lib/tools/IpInfo.svelte';
 	import CsvViewer from '$lib/tools/CsvViewer.svelte';
+	import SqlFormatter from '$lib/tools/SqlFormatter.svelte';
+	import ColorConverter from '$lib/tools/ColorConverter.svelte';
+	import XmlToYaml from '$lib/tools/XmlToYaml.svelte';
+	import MarkdownViewer from '$lib/tools/MarkdownViewer.svelte';
+	import PasswordGenerator from '$lib/tools/PasswordGenerator.svelte';
+	import CurlToCode from '$lib/tools/CurlToCode.svelte';
+	import FaviconGenerator from '$lib/tools/FaviconGenerator.svelte';
+	import QrCodeGenerator from '$lib/tools/QrCodeGenerator.svelte';
+	import ColorContrastChecker from '$lib/tools/ColorContrastChecker.svelte';
+	import EmailValidator from '$lib/tools/EmailValidator.svelte';
+	import AspectRatioCalculator from '$lib/tools/AspectRatioCalculator.svelte';
+	import BorderRadiusGenerator from '$lib/tools/BorderRadiusGenerator.svelte';
+	import CssGridGenerator from '$lib/tools/CssGridGenerator.svelte';
+	import CssFlexGenerator from '$lib/tools/CssFlexGenerator.svelte';
+	import SchemaAnalyzer from '$lib/tools/SchemaAnalyzer.svelte';
+	import SvgViewer from '$lib/tools/SvgViewer.svelte';
 
 	let toolId = $derived($page.params.tool ?? '');
 	let toolMeta = $derived(findTool(toolId));
@@ -79,6 +95,38 @@
 			<IpInfo />
 		{:else if toolId === 'csv-viewer'}
 			<CsvViewer />
+		{:else if toolId === 'sql-formatter'}
+			<SqlFormatter />
+		{:else if toolId === 'color-converter'}
+			<ColorConverter />
+		{:else if toolId === 'xml-to-yaml'}
+			<XmlToYaml />
+		{:else if toolId === 'markdown-viewer'}
+			<MarkdownViewer />
+		{:else if toolId === 'password-generator'}
+			<PasswordGenerator />
+		{:else if toolId === 'curl-to-code'}
+			<CurlToCode />
+		{:else if toolId === 'favicon-generator'}
+			<FaviconGenerator />
+		{:else if toolId === 'qr-code-generator'}
+			<QrCodeGenerator />
+		{:else if toolId === 'color-contrast-checker'}
+			<ColorContrastChecker />
+		{:else if toolId === 'email-validator'}
+			<EmailValidator />
+		{:else if toolId === 'aspect-ratio-calculator'}
+			<AspectRatioCalculator />
+		{:else if toolId === 'border-radius-generator'}
+			<BorderRadiusGenerator />
+		{:else if toolId === 'css-grid-generator'}
+			<CssGridGenerator />
+		{:else if toolId === 'css-flex-generator'}
+			<CssFlexGenerator />
+		{:else if toolId === 'schema-analyzer'}
+			<SchemaAnalyzer />
+		{:else if toolId === 'svg-viewer'}
+			<SvgViewer />
 		{/if}
 	</div>
 {:else}

@@ -32,6 +32,10 @@ export const categories: Category[] = [
 		tools: [
 			{ id: 'json-formatter' },
 			{ id: 'vardump-formatter' },
+			{ id: 'sql-formatter' },
+			{ id: 'color-converter' },
+			{ id: 'xml-to-yaml' },
+			{ id: 'markdown-viewer' },
 		]
 	},
 	{
@@ -54,6 +58,10 @@ export const categories: Category[] = [
 			{ id: 'mysql-export-import' },
 			{ id: 'hash-generator' },
 			{ id: 'cron-builder' },
+			{ id: 'password-generator' },
+			{ id: 'curl-to-code' },
+			{ id: 'favicon-generator' },
+			{ id: 'qr-code-generator' },
 		]
 	},
 	{
@@ -63,6 +71,24 @@ export const categories: Category[] = [
 			{ id: 'access-log' },
 			{ id: 'ip-info' },
 			{ id: 'csv-viewer' },
+			{ id: 'schema-analyzer' },
+			{ id: 'svg-viewer' },
+		]
+	},
+	{
+		key: 'validator',
+		tools: [
+			{ id: 'color-contrast-checker' },
+			{ id: 'email-validator' },
+		]
+	},
+	{
+		key: 'frontend',
+		tools: [
+			{ id: 'aspect-ratio-calculator' },
+			{ id: 'border-radius-generator' },
+			{ id: 'css-grid-generator' },
+			{ id: 'css-flex-generator' },
 		]
 	},
 ];

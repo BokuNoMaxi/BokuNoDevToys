@@ -193,6 +193,27 @@
 
 	let explanation = $derived(explainPattern(pattern));
 
+	// ── Common patterns ──────────────────────────────────────────────────────
+	const commonPatterns = [
+		{ name: 'E-Mail',            pattern: '[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}' },
+		{ name: 'URL (http/https)',   pattern: 'https?:\\/\\/[\\w\\-]+(\\.[\\w\\-]+)+([\\w\\-.,@?^=%&:\\/~+#]*[\\w\\-@?^=%&\\/~+#])?' },
+		{ name: 'IPv4',              pattern: '(?:(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)' },
+		{ name: 'Slug',              pattern: '[a-z0-9]+(?:-[a-z0-9]+)*' },
+		{ name: 'Nur Buchstaben',    pattern: '^[a-zA-ZäöüÄÖÜß]+$' },
+		{ name: 'Nur Zahlen',        pattern: '^\\d+$' },
+		{ name: 'Telefon (DE/Int.)', pattern: '\\+?[\\d\\s\\-()]{7,20}' },
+		{ name: 'Hex-Farbe',         pattern: '#(?:[0-9a-fA-F]{3}){1,2}\\b' },
+		{ name: 'Datum DD.MM.YYYY',  pattern: '\\b(0?[1-9]|[12]\\d|3[01])\\.(0?[1-9]|1[0-2])\\.\\d{4}\\b' },
+		{ name: 'PLZ (AT/DE)',       pattern: '\\b\\d{4,5}\\b' },
+	];
+
+	let copiedPattern = $state<string | null>(null);
+	function applyPattern(p: string) {
+		pattern = p;
+		copiedPattern = p;
+		setTimeout(() => { copiedPattern = null; }, 1500);
+	}
+
 	// ── Reference data ───────────────────────────────────────────────────────
 	const refSections = [
 		{
@@ -387,6 +408,27 @@
 					</table>
 				</div>
 			{/if}
+		</div>
+	</div>
+
+	<!-- Common Patterns -->
+	<div class="bg-slate-800 rounded-xl p-6">
+		<h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">{$t('regexTester').commonPatterns}</h2>
+		<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
+			{#each commonPatterns as cp}
+				<button
+					onclick={() => applyPattern(cp.pattern)}
+					class="flex items-start gap-3 text-left px-3 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-700 transition-colors group"
+				>
+					<div class="flex-1 min-w-0">
+						<div class="text-xs font-semibold text-slate-300 group-hover:text-slate-100 transition-colors">{cp.name}</div>
+						<div class="text-xs font-mono text-slate-400 truncate mt-0.5">{cp.pattern}</div>
+					</div>
+					<span class="text-xs text-violet-400 shrink-0 mt-0.5 {copiedPattern === cp.pattern ? 'text-emerald-400' : ''}">
+						{copiedPattern === cp.pattern ? '✓' : '→'}
+					</span>
+				</button>
+			{/each}
 		</div>
 	</div>
 
