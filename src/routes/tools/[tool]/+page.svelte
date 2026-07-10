@@ -16,6 +16,13 @@
 	import RandomValue from '$lib/tools/RandomValue.svelte';
 	import ErrorLogAnalyzer from '$lib/tools/ErrorLogAnalyzer.svelte';
 	import AccessLogAnalyzer from '$lib/tools/AccessLogAnalyzer.svelte';
+	import DiffViewer from '$lib/tools/DiffViewer.svelte';
+	import RegexTester from '$lib/tools/RegexTester.svelte';
+	import HashGenerator from '$lib/tools/HashGenerator.svelte';
+	import CronBuilder from '$lib/tools/CronBuilder.svelte';
+	import CorsChecker from '$lib/tools/CorsChecker.svelte';
+	import IpInfo from '$lib/tools/IpInfo.svelte';
+	import CsvViewer from '$lib/tools/CsvViewer.svelte';
 
 	let toolId = $derived($page.params.tool ?? '');
 	let toolMeta = $derived(findTool(toolId));
@@ -61,6 +68,20 @@
 			<ErrorLogAnalyzer />
 		{:else if toolId === 'access-log'}
 			<AccessLogAnalyzer />
+		{:else if toolId === 'diff-viewer'}
+			<DiffViewer />
+		{:else if toolId === 'regex-tester'}
+			<RegexTester />
+		{:else if toolId === 'hash-generator'}
+			<HashGenerator />
+		{:else if toolId === 'cron-builder'}
+			<CronBuilder />
+		{:else if toolId === 'cors-checker'}
+			<CorsChecker />
+		{:else if toolId === 'ip-info'}
+			<IpInfo />
+		{:else if toolId === 'csv-viewer'}
+			<CsvViewer />
 		{/if}
 	</div>
 {:else}

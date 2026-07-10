@@ -7,6 +7,8 @@
 	type Mode = 'auto' | 'single' | 'paragraph' | 'compact';
 	let mode = $state<Mode>('auto');
 	let stripHtml = $state(false);
+	type UrlTransform = 'none' | 'encode' | 'decode';
+	let urlTransform = $state<UrlTransform>('none');
 
 	function removeHtml(text: string): string {
 		return text
@@ -54,7 +56,12 @@
 		return result;
 	}
 
-	let output = $derived(prettify(input, mode, stripHtml));
+	let output = $derived.by(() => {
+		const base = prettify(input, mode, stripHtml);
+		if (urlTransform === 'encode') return encodeURIComponent(base);
+		if (urlTransform === 'decode') { try { return decodeURIComponent(base); } catch { return base; } }
+		return base;
+	});
 
 	function copy() {
 		navigator.clipboard.writeText(output);
@@ -102,6 +109,20 @@
 			{#if stripHtml}
 				<p class="mt-2 text-xs text-slate-300">{$t('textPrettier').stripHtmlHint}</p>
 			{/if}
+		</div>
+
+		<div>
+			<h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">{$t('textPrettier').urlTransform}</h2>
+			<div class="flex flex-wrap gap-2" role="group" aria-label={$t('textPrettier').urlTransformGroupLabel}>
+				{#each (['none', 'encode', 'decode'] as UrlTransform[]) as u}
+					<button
+						onclick={() => urlTransform = u}
+						aria-pressed={urlTransform === u}
+						class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {urlTransform === u ? 'bg-violet-700 text-white' : 'bg-slate-900 text-slate-300 hover:text-slate-100'}"
+					>{$t('textPrettier')[`url${u.charAt(0).toUpperCase() + u.slice(1)}` as 'urlNone' | 'urlEncode' | 'urlDecode']}</button>
+				{/each}
+			</div>
+			<p class="mt-2 text-xs text-slate-300">{$t('textPrettier')[`url${urlTransform.charAt(0).toUpperCase() + urlTransform.slice(1)}Hint` as 'urlNoneHint' | 'urlEncodeHint' | 'urlDecodeHint']}</p>
 		</div>
 	</div>
 

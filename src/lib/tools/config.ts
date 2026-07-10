@@ -23,12 +23,8 @@ export const categories: Category[] = [
 		tools: [
 			{ id: 'text-generator' },
 			{ id: 'text-prettier' },
-		]
-	},
-	{
-		key: 'webServer',
-		tools: [
-			{ id: 'htpasswd' },
+			{ id: 'diff-viewer' },
+			{ id: 'regex-tester' },
 		]
 	},
 	{
@@ -36,12 +32,6 @@ export const categories: Category[] = [
 		tools: [
 			{ id: 'json-formatter' },
 			{ id: 'vardump-formatter' },
-		]
-	},
-	{
-		key: 'database',
-		tools: [
-			{ id: 'mysql-export-import' },
 		]
 	},
 	{
@@ -58,10 +48,22 @@ export const categories: Category[] = [
 		]
 	},
 	{
-		key: 'logs',
+		key: 'generator',
+		tools: [
+			{ id: 'htpasswd' },
+			{ id: 'mysql-export-import' },
+			{ id: 'hash-generator' },
+			{ id: 'cron-builder' },
+		]
+	},
+	{
+		key: 'analyzer',
 		tools: [
 			{ id: 'error-log' },
 			{ id: 'access-log' },
+			{ id: 'cors-checker' },
+			{ id: 'ip-info' },
+			{ id: 'csv-viewer' },
 		]
 	},
 ];
