@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
 
-	const bases = ['GMT', 'MEZ', 'MESZ'];
+	const bases = ['UTC', 'GMT', 'MEZ', 'MESZ'];
 	const offsets = Array.from({ length: 25 }, (_, i) => i - 12);
-	const fixedOffset: Record<string, number> = { MEZ: 1, MESZ: 2 };
+	const fixedOffset: Record<string, number> = { UTC: 0, MEZ: 1, MESZ: 2 };
 
 	let inputDate = $state(new Date().toISOString().slice(0, 10));
 	let inputTime = $state(new Date().toTimeString().slice(0, 5));
