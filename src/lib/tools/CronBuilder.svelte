@@ -11,11 +11,27 @@
 	let day     = $state(field('*'));
 	let month   = $state(field('*'));
 	let weekday = $state(field('*'));
-	let copied  = $state(false);
+
+	// Command section
+	let cmdUser    = $state('');
+	let cmdCommand = $state('');
+	let cmdParams  = $state('');
+
+	let copied      = $state(false);
+	let copiedFull  = $state(false);
 
 	function val(f: Field) { return f.mode === 'manual' ? f.manual : f.simple; }
 
 	let expression = $derived(`${val(minute)} ${val(hour)} ${val(day)} ${val(month)} ${val(weekday)}`);
+
+	let fullLine = $derived.by(() => {
+		const parts: string[] = [expression];
+		if (cmdUser.trim()) parts.push(cmdUser.trim());
+		if (cmdCommand.trim()) {
+			parts.push(cmdCommand.trim() + (cmdParams.trim() ? ' ' + cmdParams.trim() : ''));
+		}
+		return parts.join('\t');
+	});
 
 	// Minute options
 	const minuteOpts = ['*','0','*/5','*/10','*/15','*/30'];
@@ -63,7 +79,6 @@
 		return v;
 	}
 
-	// Describe expression in plain text
 	let description = $derived.by(() => {
 		const tr = $t('cronBuilder');
 		const parts: string[] = [];
@@ -84,7 +99,7 @@
 		if (mo !== '*') {
 			const months = tr.months;
 			const n = parseInt(mo);
-			parts.push(!isNaN(n) ? `${tr.in ?? 'in'} ${months[n-1] ?? mo}` : mo);
+			parts.push(!isNaN(n) ? `in ${months[n-1] ?? mo}` : mo);
 		}
 		if (wd !== '*') {
 			const days = tr.weekdays;
@@ -95,7 +110,6 @@
 		return parts.join(', ');
 	});
 
-	// Compute next 5 execution times
 	let nextRuns = $derived.by(() => {
 		try {
 			const [m, h, d, mo, wd] = expression.split(' ');
@@ -105,9 +119,9 @@
 			candidate.setSeconds(0, 0);
 			candidate.setMinutes(candidate.getMinutes() + 1);
 
-			function matches(val: string, n: number, min: number, max: number): boolean {
+			function matches(val: string, n: number): boolean {
 				if (val === '*') return true;
-				if (val.startsWith('*/')) { const step = parseInt(val.slice(2)); return (n - min) % step === 0; }
+				if (val.startsWith('*/')) { const step = parseInt(val.slice(2)); return n % step === 0; }
 				if (val.includes(',')) return val.split(',').some(v => parseInt(v) === n);
 				if (val.includes('-')) { const [a,b] = val.split('-').map(Number); return n >= a && n <= b; }
 				return parseInt(val) === n;
@@ -116,13 +130,8 @@
 			let iterations = 0;
 			while (results.length < 5 && iterations < 527040) {
 				iterations++;
-				const cMin = candidate.getMinutes();
-				const cHour = candidate.getHours();
-				const cDay = candidate.getDate();
-				const cMonth = candidate.getMonth() + 1;
-				const cWd = candidate.getDay();
-				if (matches(mo, cMonth, 1, 12) && matches(d, cDay, 1, 31) &&
-					matches(wd, cWd, 0, 6) && matches(h, cHour, 0, 23) && matches(m, cMin, 0, 59)) {
+				if (matches(mo, candidate.getMonth() + 1) && matches(d, candidate.getDate()) &&
+					matches(wd, candidate.getDay()) && matches(h, candidate.getHours()) && matches(m, candidate.getMinutes())) {
 					results.push(candidate.toLocaleString($lang === 'de' ? 'de-AT' : 'en-US', {
 						weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit',
 						hour: '2-digit', minute: '2-digit'
@@ -134,10 +143,10 @@
 		} catch { return []; }
 	});
 
-	function copy() {
-		navigator.clipboard.writeText(expression);
-		copied = true;
-		setTimeout(() => { copied = false; }, 2000);
+	function copy(text: string, which: 'expr' | 'full') {
+		navigator.clipboard.writeText(text);
+		if (which === 'expr') { copied = true; setTimeout(() => { copied = false; }, 2000); }
+		else { copiedFull = true; setTimeout(() => { copiedFull = false; }, 2000); }
 	}
 
 	function setManual(f: Field, v: string) { f.manual = v; }
@@ -190,17 +199,66 @@
 		</div>
 	{/each}
 
+	<!-- Command section -->
+	<div class="bg-slate-800 rounded-xl p-6 space-y-3">
+		<h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">{$t('cronBuilder').command}</h2>
+		<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+			<div>
+				<label for="cron-user" class="block text-xs text-slate-400 mb-1">{$t('cronBuilder').user}</label>
+				<input
+					id="cron-user"
+					bind:value={cmdUser}
+					placeholder="root"
+					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-300 font-mono focus:outline-none focus:border-violet-500 text-sm"
+				/>
+			</div>
+			<div>
+				<label for="cron-cmd" class="block text-xs text-slate-400 mb-1">{$t('cronBuilder').commandLabel}</label>
+				<input
+					id="cron-cmd"
+					bind:value={cmdCommand}
+					placeholder="/usr/bin/php"
+					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-300 font-mono focus:outline-none focus:border-violet-500 text-sm"
+				/>
+			</div>
+			<div>
+				<label for="cron-params" class="block text-xs text-slate-400 mb-1">{$t('cronBuilder').params}</label>
+				<input
+					id="cron-params"
+					bind:value={cmdParams}
+					placeholder="/var/www/html/artisan schedule:run"
+					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-300 font-mono focus:outline-none focus:border-violet-500 text-sm"
+				/>
+			</div>
+		</div>
+	</div>
+
 	<!-- Result -->
 	<div class="bg-slate-800 rounded-xl p-6 space-y-4">
+		<!-- Cron expression -->
 		<div>
 			<div class="flex items-center justify-between mb-2">
 				<h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">{$t('cronBuilder').expression}</h2>
-				<button onclick={copy} class="text-sm px-3 py-1 rounded-md border border-slate-600 hover:border-violet-500 text-slate-300 hover:text-violet-300 transition-colors">
+				<button onclick={() => copy(expression, 'expr')} class="text-sm px-3 py-1 rounded-md border border-slate-600 hover:border-violet-500 text-slate-300 hover:text-violet-300 transition-colors">
 					{copied ? $t('cronBuilder').copied : $t('cronBuilder').copy}
 				</button>
 			</div>
 			<p class="font-mono text-2xl text-emerald-400 bg-slate-900 rounded-lg px-4 py-3 tracking-widest">{expression}</p>
 		</div>
+
+		<!-- Full crontab line -->
+		{#if cmdCommand.trim()}
+			<div>
+				<div class="flex items-center justify-between mb-2">
+					<h3 class="text-xs text-slate-400 uppercase tracking-wider">{$t('cronBuilder').fullLine}</h3>
+					<button onclick={() => copy(fullLine, 'full')} class="text-xs px-3 py-1 rounded-md border border-slate-600 hover:border-violet-500 text-slate-300 hover:text-violet-300 transition-colors">
+						{copiedFull ? $t('cronBuilder').copied : $t('cronBuilder').copy}
+					</button>
+				</div>
+				<p class="font-mono text-sm text-sky-300 bg-slate-900 rounded-lg px-4 py-3 break-all">{fullLine}</p>
+			</div>
+		{/if}
+
 		{#if description}
 			<div>
 				<h3 class="text-xs text-slate-400 uppercase tracking-wider mb-1">{$t('cronBuilder').description}</h3>

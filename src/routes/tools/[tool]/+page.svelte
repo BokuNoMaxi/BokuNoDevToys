@@ -20,7 +20,6 @@
 	import RegexTester from '$lib/tools/RegexTester.svelte';
 	import HashGenerator from '$lib/tools/HashGenerator.svelte';
 	import CronBuilder from '$lib/tools/CronBuilder.svelte';
-	import CorsChecker from '$lib/tools/CorsChecker.svelte';
 	import IpInfo from '$lib/tools/IpInfo.svelte';
 	import CsvViewer from '$lib/tools/CsvViewer.svelte';
 
@@ -76,8 +75,6 @@
 			<HashGenerator />
 		{:else if toolId === 'cron-builder'}
 			<CronBuilder />
-		{:else if toolId === 'cors-checker'}
-			<CorsChecker />
 		{:else if toolId === 'ip-info'}
 			<IpInfo />
 		{:else if toolId === 'csv-viewer'}

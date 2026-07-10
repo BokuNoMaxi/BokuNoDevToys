@@ -1,36 +1,60 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
 
+	type Delim = ',' | ';' | '\t' | '|' | 'auto';
+	type Enclosure = '"' | "'" | 'none' | 'auto';
+	type Escape = '\\' | '"' | 'none' | 'auto';
+
 	let raw = $state('');
 	let fileName = $state('');
 	let dragging = $state(false);
 	let parsed = $state(false);
 	let sortCol = $state(-1);
 	let sortAsc = $state(true);
-	let detectedDelim = $state<',' | ';' | '\t'>(',');
 
-	interface ParsedData { headers: string[]; rows: string[][]; delimiter: ',' | ';' | '\t'; }
+	// Options
+	let optDelim     = $state<Delim>('auto');
+	let optEnclosure = $state<Enclosure>('auto');
+	let optEscape    = $state<Escape>('auto');
+
+	interface ParsedData { headers: string[]; rows: string[][]; delimiter: string; enclosure: string; }
 	let data = $state<ParsedData | null>(null);
 
-	function detectDelimiter(text: string): ',' | ';' | '\t' {
+	function detectDelimiter(text: string): ',' | ';' | '\t' | '|' {
 		const line = text.split('\n')[0] ?? '';
-		const counts = { ',': (line.match(/,/g) ?? []).length, ';': (line.match(/;/g) ?? []).length, '\t': (line.match(/\t/g) ?? []).length };
-		if (counts['\t'] > counts[','] && counts['\t'] > counts[';']) return '\t';
-		if (counts[';'] > counts[',']) return ';';
-		return ',';
+		const counts: Record<string, number> = {
+			',':  (line.match(/,/g)  ?? []).length,
+			';':  (line.match(/;/g)  ?? []).length,
+			'\t': (line.match(/\t/g) ?? []).length,
+			'|':  (line.match(/\|/g) ?? []).length,
+		};
+		return (Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? ',') as ',' | ';' | '\t' | '|';
 	}
 
-	function parseCsv(text: string, delim: string): string[][] {
+	function detectEnclosure(text: string, delim: string): '"' | "'" | 'none' {
+		const line = text.split('\n')[0] ?? '';
+		if (line.includes(`"${delim}`) || line.startsWith('"')) return '"';
+		if (line.includes(`'${delim}`) || line.startsWith("'")) return "'";
+		return 'none';
+	}
+
+	function parseCsv(text: string, delim: string, encl: string, esc: string): string[][] {
 		const rows: string[][] = [];
 		for (const line of text.split('\n')) {
 			if (!line.trim()) continue;
 			const cells: string[] = [];
 			let inQuote = false, cell = '';
+			const hasEncl = encl !== 'none' && encl !== '';
 			for (let i = 0; i < line.length; i++) {
 				const ch = line[i];
-				if (ch === '"') { inQuote = !inQuote; }
-				else if (ch === delim && !inQuote) { cells.push(cell.trim()); cell = ''; }
-				else { cell += ch; }
+				// Handle escape sequences
+				if (hasEncl && esc !== 'none' && ch === esc && i + 1 < line.length) {
+					if (esc === '\\') { cell += line[i + 1]; i++; continue; }
+					if (esc === '"' && ch === encl && line[i + 1] === encl) { cell += encl; i++; continue; }
+				}
+				if (hasEncl && ch === encl) { inQuote = !inQuote; continue; }
+				if (ch === delim && !inQuote) { cells.push(cell.trim()); cell = ''; continue; }
+				cell += ch;
 			}
 			cells.push(cell.trim());
 			rows.push(cells);
@@ -40,11 +64,13 @@
 
 	function load() {
 		if (!raw.trim()) return;
-		const delim = detectDelimiter(raw);
-		detectedDelim = delim;
-		const rows = parseCsv(raw, delim);
+		const delim     = optDelim     === 'auto' ? detectDelimiter(raw) : optDelim;
+		const encl      = optEnclosure === 'auto' ? detectEnclosure(raw, delim) : optEnclosure;
+		const escChar   = optEscape    === 'auto' ? (encl === '"' ? '"' : encl === "'" ? 'none' : 'none') : optEscape;
+
+		const rows = parseCsv(raw, delim, encl, escChar);
 		if (rows.length === 0) { data = null; return; }
-		data = { headers: rows[0], rows: rows.slice(1), delimiter: delim };
+		data = { headers: rows[0], rows: rows.slice(1), delimiter: delim, enclosure: encl };
 		sortCol = -1;
 		sortAsc = true;
 		parsed = true;
@@ -89,7 +115,9 @@
 		return rows;
 	});
 
-	const delimLabel = (d: string) => d === ',' ? $t('csvViewer').delimComma : d === ';' ? $t('csvViewer').delimSemi : $t('csvViewer').delimTab;
+	const delimLabel = (d: string) => ({ ',': 'Komma (,)', ';': 'Semikolon (;)', '\t': 'Tab', '|': 'Pipe (|)', 'auto': $t('csvViewer').auto })[d] ?? d;
+	const enclLabel  = (e: string) => ({ '"': 'Anführungszeichen (")', "'": "Apostroph (')", 'none': $t('csvViewer').none, 'auto': $t('csvViewer').auto })[e] ?? e;
+	const escLabel   = (e: string) => ({ '\\': 'Backslash (\\)', '"': 'Verdopplung (")', 'none': $t('csvViewer').none, 'auto': $t('csvViewer').auto })[e] ?? e;
 </script>
 
 <div class="space-y-4">
@@ -125,6 +153,46 @@
 			class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-xs font-mono resize-y"
 		></textarea>
 
+		<!-- Options -->
+		<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
+			<div>
+				<label class="block text-xs text-slate-400 mb-1.5">{$t('csvViewer').delimiter}</label>
+				<div class="flex flex-wrap gap-1.5">
+					{#each (['auto', ',', ';', '\t', '|'] as Delim[]) as d}
+						<button
+							onclick={() => optDelim = d}
+							aria-pressed={optDelim === d}
+							class="px-2.5 py-1 rounded-md text-xs font-mono transition-colors {optDelim === d ? 'bg-violet-700 text-white' : 'bg-slate-900 text-slate-300 hover:text-slate-100 border border-slate-700'}"
+						>{delimLabel(d)}</button>
+					{/each}
+				</div>
+			</div>
+			<div>
+				<label class="block text-xs text-slate-400 mb-1.5">{$t('csvViewer').enclosure}</label>
+				<div class="flex flex-wrap gap-1.5">
+					{#each (['auto', '"', "'", 'none'] as Enclosure[]) as e}
+						<button
+							onclick={() => optEnclosure = e}
+							aria-pressed={optEnclosure === e}
+							class="px-2.5 py-1 rounded-md text-xs font-mono transition-colors {optEnclosure === e ? 'bg-violet-700 text-white' : 'bg-slate-900 text-slate-300 hover:text-slate-100 border border-slate-700'}"
+						>{enclLabel(e)}</button>
+					{/each}
+				</div>
+			</div>
+			<div>
+				<label class="block text-xs text-slate-400 mb-1.5">{$t('csvViewer').escape}</label>
+				<div class="flex flex-wrap gap-1.5">
+					{#each (['auto', '\\', '"', 'none'] as Escape[]) as e}
+						<button
+							onclick={() => optEscape = e}
+							aria-pressed={optEscape === e}
+							class="px-2.5 py-1 rounded-md text-xs font-mono transition-colors {optEscape === e ? 'bg-violet-700 text-white' : 'bg-slate-900 text-slate-300 hover:text-slate-100 border border-slate-700'}"
+						>{escLabel(e)}</button>
+					{/each}
+				</div>
+			</div>
+		</div>
+
 		<div class="flex gap-3">
 			<button
 				onclick={load}
@@ -145,7 +213,11 @@
 					&nbsp;·&nbsp;
 					<span class="text-sky-400 font-semibold">{data.headers.length}</span> {$t('csvViewer').columns}
 					&nbsp;·&nbsp;
-					<span class="text-slate-400">{$t('csvViewer').delimiter}: {delimLabel(data.delimiter)}</span>
+					<span class="text-slate-400">{$t('csvViewer').delimiter}: <span class="font-mono">{delimLabel(data.delimiter)}</span></span>
+					{#if data.enclosure !== 'none'}
+						&nbsp;·&nbsp;
+						<span class="text-slate-400">{$t('csvViewer').enclosure}: <span class="font-mono">{data.enclosure}</span></span>
+					{/if}
 				</p>
 				{#if data.rows.length > 500}
 					<span class="text-xs text-amber-400">{$t('csvViewer').truncated}</span>
@@ -160,13 +232,12 @@
 									<button
 										onclick={() => toggleSort(ci)}
 										class="flex items-center gap-1 hover:text-slate-200 transition-colors"
-										aria-label="{sortAsc ? $t('csvViewer').sortDesc : $t('csvViewer').sortAsc}"
 									>
 										{header}
 										{#if sortCol === ci}
 											<span class="text-violet-400">{sortAsc ? '↑' : '↓'}</span>
 										{:else}
-											<span class="text-slate-600 opacity-0 group-hover:opacity-100">↕</span>
+											<span class="text-slate-600">↕</span>
 										{/if}
 									</button>
 								</th>

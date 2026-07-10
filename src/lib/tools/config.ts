@@ -61,7 +61,6 @@ export const categories: Category[] = [
 		tools: [
 			{ id: 'error-log' },
 			{ id: 'access-log' },
-			{ id: 'cors-checker' },
 			{ id: 'ip-info' },
 			{ id: 'csv-viewer' },
 		]

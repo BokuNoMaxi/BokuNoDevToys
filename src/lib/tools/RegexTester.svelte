@@ -11,10 +11,9 @@
 	interface MatchGroup { index: number; value: string; groups: (string | undefined)[]; }
 
 	let result = $derived.by((): { highlighted: string; matches: MatchGroup[]; error: string } => {
-		if (!pattern) return { highlighted: testStr, matches: [], error: '' };
+		if (!pattern) return { highlighted: escHtml(testStr), matches: [], error: '' };
 		try {
 			const flags = (flagG ? 'g' : '') + (flagI ? 'i' : '') + (flagM ? 'm' : '') + (flagS ? 's' : '');
-			const re = new RegExp(pattern, flags || 'g');
 			const matches: MatchGroup[] = [];
 			let m: RegExpExecArray | null;
 			const localRe = new RegExp(pattern, flags.includes('g') ? flags : flags + 'g');
@@ -22,7 +21,6 @@
 				matches.push({ index: m.index, value: m[0], groups: m.slice(1) });
 				if (m[0].length === 0) localRe.lastIndex++;
 			}
-			// Build highlighted HTML
 			let highlighted = '';
 			let pos = 0;
 			for (const match of matches) {
@@ -38,10 +36,86 @@
 	});
 
 	function escHtml(s: string) {
-		return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+		return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
 	}
 
 	function clear() { pattern = ''; testStr = ''; }
+
+	// Reference data
+	const refSections = [
+		{
+			title: 'Zeichenklassen',
+			rows: [
+				['.', 'Beliebiges Zeichen (außer Zeilenumbruch, ohne Flag s)'],
+				['\\d', 'Ziffer [0-9]'],
+				['\\D', 'Keine Ziffer'],
+				['\\w', 'Wortzeichen [a-zA-Z0-9_]'],
+				['\\W', 'Kein Wortzeichen'],
+				['\\s', 'Leerzeichen, Tab, Zeilenumbruch'],
+				['\\S', 'Kein Whitespace'],
+				['[abc]', 'Eines der Zeichen a, b oder c'],
+				['[^abc]', 'Keines der Zeichen a, b, c'],
+				['[a-z]', 'Zeichen im Bereich a bis z'],
+				['[a-zA-Z0-9]', 'Buchstaben und Ziffern'],
+			]
+		},
+		{
+			title: 'Quantifizierer',
+			rows: [
+				['*', '0 oder mehr (greedy)'],
+				['+', '1 oder mehr (greedy)'],
+				['?', '0 oder 1 (optional)'],
+				['{n}', 'Genau n mal'],
+				['{n,}', 'Mindestens n mal'],
+				['{n,m}', 'Zwischen n und m mal'],
+				['*?', '0 oder mehr (lazy, so wenig wie möglich)'],
+				['+?', '1 oder mehr (lazy)'],
+			]
+		},
+		{
+			title: 'Anker & Grenzen',
+			rows: [
+				['^', 'Anfang der Zeile (mit Flag m: jede Zeile)'],
+				['$', 'Ende der Zeile (mit Flag m: jede Zeile)'],
+				['\\b', 'Wortgrenze'],
+				['\\B', 'Keine Wortgrenze'],
+				['\\A', 'Absoluter Textanfang'],
+				['\\Z', 'Absolutes Textende'],
+			]
+		},
+		{
+			title: 'Gruppen',
+			rows: [
+				['(abc)', 'Capture Group — wird in Treffer-Tabelle angezeigt'],
+				['(?:abc)', 'Non-Capture Group — gruppiert ohne zu erfassen'],
+				['(?<name>abc)', 'Named Capture Group'],
+				['(?=abc)', 'Lookahead: gefolgt von abc'],
+				['(?!abc)', 'Negativer Lookahead: nicht gefolgt von abc'],
+				['(?<=abc)', 'Lookbehind: nach abc'],
+				['(?<!abc)', 'Negativer Lookbehind: nicht nach abc'],
+			]
+		},
+		{
+			title: 'Alternativen & Escapes',
+			rows: [
+				['a|b', 'a oder b'],
+				['\\n', 'Zeilenumbruch'],
+				['\\t', 'Tabulator'],
+				['\\r', 'Carriage Return'],
+				['\\.', 'Literal-Punkt (Backslash escaped Sonderzeichen)'],
+				['[\\^\\$\\.\\|\\?\\*\\+\\(\\)\\[\\]\\{\\}]', 'Alle Sonderzeichen die escaped werden müssen'],
+			]
+		},
+		{
+			title: 'Flags',
+			rows: [
+				['g', 'Global — alle Treffer finden (nicht nur den ersten)'],
+				['i', 'Case-insensitive — Groß-/Kleinschreibung ignorieren'],
+				['m', 'Multiline — ^ und $ matchen jede Zeile'],
+				['s', 'Dotall — . matcht auch Zeilenumbrüche'],
+			]
+		},
+	];
 </script>
 
 <div class="space-y-4">
@@ -144,6 +218,28 @@
 					</table>
 				</div>
 			{/if}
+		</div>
+	</div>
+
+	<!-- Regex Reference -->
+	<div class="bg-slate-800 rounded-xl p-6">
+		<h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">{$t('regexTester').reference}</h2>
+		<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+			{#each refSections as section}
+				<div>
+					<h3 class="text-xs font-semibold text-violet-300 uppercase tracking-wider mb-2">{section.title}</h3>
+					<table class="w-full text-xs">
+						<tbody>
+							{#each section.rows as [token, desc]}
+								<tr class="border-b border-slate-700/40 last:border-0">
+									<td class="py-1.5 pr-3 font-mono text-amber-300 whitespace-nowrap align-top">{token}</td>
+									<td class="py-1.5 text-slate-400 leading-snug">{desc}</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+			{/each}
 		</div>
 	</div>
 </div>
