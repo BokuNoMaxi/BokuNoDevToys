@@ -10,7 +10,33 @@
 	let { children } = $props();
 	let sidebarOpen = $state(false);
 
-	onMount(() => lang.init());
+	// Accordion state — persisted in cookie
+	const COOKIE_KEY = 'sidebar_open_cats';
+	function readCookie(): Set<string> {
+		if (typeof document === 'undefined') return new Set(categories.map(c => c.key));
+		const raw = document.cookie.split('; ').find(r => r.startsWith(COOKIE_KEY + '='));
+		if (!raw) return new Set(categories.map(c => c.key));
+		try { return new Set(JSON.parse(decodeURIComponent(raw.split('=')[1]))); }
+		catch { return new Set(categories.map(c => c.key)); }
+	}
+	function writeCookie(open: Set<string>) {
+		const val = encodeURIComponent(JSON.stringify([...open]));
+		document.cookie = `${COOKIE_KEY}=${val};path=/;max-age=31536000;SameSite=Lax`;
+	}
+
+	let openCats = $state<Set<string>>(new Set(categories.map(c => c.key)));
+
+	onMount(() => {
+		lang.init();
+		openCats = readCookie();
+	});
+
+	function toggleCat(key: string) {
+		const next = new Set(openCats);
+		if (next.has(key)) next.delete(key); else next.add(key);
+		openCats = next;
+		writeCookie(next);
+	}
 
 	function currentTool() {
 		return $page.params.tool ?? '';
@@ -41,24 +67,38 @@
 			</a>
 		</div>
 
-		<nav class="flex-1 overflow-y-auto py-4 px-3" aria-label="Tools">
+		<nav class="flex-1 overflow-y-auto py-3 px-3" aria-label="Tools">
 			{#each categories as category}
-				<div class="mb-5">
-					<div class="px-3 mb-1.5 text-xs font-semibold text-slate-300 uppercase tracking-wider">
-						{$t('cats')[category.key]}
-					</div>
-					{#each category.tools as tool}
-						<a
-							href="/tools/{tool.id}"
-							onclick={() => sidebarOpen = false}
-							class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors mb-0.5
-								{currentTool() === tool.id
-									? 'bg-violet-700/20 text-violet-300 font-medium'
-									: 'text-slate-300 hover:text-slate-100 hover:bg-slate-800'}"
-						>
-							{($t('tools') as Record<string, {name: string} | undefined>)[tool.id]?.name ?? tool.id}
-						</a>
-					{/each}
+				{@const isOpen = openCats.has(category.key)}
+				{@const hasActive = category.tools.some(t => t.id === currentTool())}
+				<div class="mb-1">
+					<button
+						onclick={() => toggleCat(category.key)}
+						aria-expanded={isOpen}
+						class="w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors
+							{hasActive ? 'text-violet-300' : 'text-slate-400 hover:text-slate-200'}"
+					>
+						<span>{$t('cats')[category.key]}</span>
+						<svg class="w-3.5 h-3.5 transition-transform duration-200 {isOpen ? 'rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+						</svg>
+					</button>
+					{#if isOpen}
+						<div class="mt-0.5 mb-2">
+							{#each category.tools as tool}
+								<a
+									href="/tools/{tool.id}"
+									onclick={() => sidebarOpen = false}
+									class="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-sm transition-colors mb-0.5
+										{currentTool() === tool.id
+											? 'bg-violet-700/20 text-violet-300 font-medium'
+											: 'text-slate-300 hover:text-slate-100 hover:bg-slate-800'}"
+								>
+									{($t('tools') as Record<string, {name: string} | undefined>)[tool.id]?.name ?? tool.id}
+								</a>
+							{/each}
+						</div>
+					{/if}
 				</div>
 			{/each}
 		</nav>

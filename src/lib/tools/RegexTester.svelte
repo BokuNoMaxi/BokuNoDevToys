@@ -41,7 +41,159 @@
 
 	function clear() { pattern = ''; testStr = ''; }
 
-	// Reference data
+	// ── Pattern explanation ──────────────────────────────────────────────────
+	interface Token { token: string; desc: string; color: string; }
+
+	function explainPattern(p: string): Token[] {
+		if (!p) return [];
+		const tokens: Token[] = [];
+		let i = 0;
+
+		// color pool (cycling through for groups)
+		const groupColors = ['text-sky-300','text-emerald-300','text-amber-300','text-violet-300','text-rose-300'];
+		let groupDepth = 0;
+
+		function peek(offset = 0) { return p[i + offset]; }
+
+		function esc(ch: string): Token {
+			const map: Record<string, string> = {
+				'd': 'Ziffer [0-9]', 'D': 'Keine Ziffer', 'w': 'Wortzeichen [a-zA-Z0-9_]',
+				'W': 'Kein Wortzeichen', 's': 'Whitespace', 'S': 'Kein Whitespace',
+				'b': 'Wortgrenze', 'B': 'Keine Wortgrenze',
+				'n': 'Zeilenumbruch', 't': 'Tabulator', 'r': 'Carriage Return',
+				'A': 'Textanfang', 'Z': 'Textende',
+			};
+			return { token: '\\' + ch, desc: map[ch] ?? `Literal "${ch}"`, color: 'text-sky-400' };
+		}
+
+		function quantifierDesc(q: string): string {
+			if (q === '*') return '0 oder mehr';
+			if (q === '+') return '1 oder mehr';
+			if (q === '?') return 'optional (0 oder 1)';
+			const m = q.match(/^\{(\d+)(?:,(\d*))?\}$/);
+			if (m) {
+				if (m[2] === undefined) return `genau ${m[1]}x`;
+				if (m[2] === '') return `mindestens ${m[1]}x`;
+				return `${m[1]}–${m[2]}x`;
+			}
+			return q;
+		}
+
+		function readQuantifier(): string {
+			const next = peek();
+			if (next === '*' || next === '+' || next === '?') {
+				let q = next; i++;
+				if (peek() === '?') { q += '?'; i++; q += ' (lazy)'; }
+				return q;
+			}
+			if (next === '{') {
+				let j = i + 1, raw = '{';
+				while (j < p.length && p[j] !== '}') { raw += p[j]; j++; }
+				if (j < p.length) { raw += '}'; i = j + 1; return raw; }
+			}
+			return '';
+		}
+
+		while (i < p.length) {
+			const ch = p[i];
+
+			if (ch === '\\') {
+				i++;
+				const t = esc(peek());
+				i++;
+				const q = readQuantifier();
+				tokens.push({ ...t, desc: t.desc + (q ? ` — ${quantifierDesc(q)}` : ''), token: t.token + q });
+				continue;
+			}
+
+			if (ch === '[') {
+				let raw = '[', j = i + 1;
+				if (p[j] === '^') { raw += '^'; j++; }
+				while (j < p.length && p[j] !== ']') { raw += p[j]; j++; }
+				raw += ']'; i = j + 1;
+				const negated = raw[1] === '^';
+				const inner = raw.slice(negated ? 2 : 1, -1);
+				const q = readQuantifier();
+				tokens.push({
+					token: raw + q,
+					desc: `${negated ? 'Keines' : 'Eines'} der Zeichen: ${inner}` + (q ? ` — ${quantifierDesc(q)}` : ''),
+					color: 'text-amber-400',
+				});
+				continue;
+			}
+
+			if (ch === '(') {
+				i++;
+				let kind = 'Capture Group';
+				let color = groupColors[groupDepth % groupColors.length];
+				groupDepth++;
+				let prefix = '(';
+				if (peek() === '?' ) {
+					const nc = peek(1);
+					if (nc === ':')  { kind = 'Non-Capture Group'; color = 'text-slate-400'; prefix = '(?:'; i += 2; }
+					else if (nc === '=') { kind = 'Lookahead (gefolgt von …)'; color = 'text-rose-400'; prefix = '(?='; i += 2; }
+					else if (nc === '!') { kind = 'Negativer Lookahead (nicht gefolgt von …)'; color = 'text-rose-400'; prefix = '(?!'; i += 2; }
+					else if (nc === '<') {
+						const nc2 = peek(2);
+						if (nc2 === '=') { kind = 'Lookbehind (nach …)'; color = 'text-rose-400'; prefix = '(?<='; i += 3; }
+						else if (nc2 === '!') { kind = 'Negativer Lookbehind'; color = 'text-rose-400'; prefix = '(?<!'; i += 3; }
+						else {
+							// named group (?<name>
+							let name = ''; let j = i + 2;
+							while (j < p.length && p[j] !== '>') { name += p[j]; j++; }
+							kind = `Named Capture Group "${name}"`; prefix = `(?<${name}>`; i = j + 1;
+						}
+					}
+				}
+				tokens.push({ token: prefix, desc: `Beginn ${kind}`, color });
+				continue;
+			}
+
+			if (ch === ')') {
+				groupDepth = Math.max(0, groupDepth - 1);
+				i++;
+				const q = readQuantifier();
+				tokens.push({ token: ')' + q, desc: 'Ende Gruppe' + (q ? ` — ${quantifierDesc(q)}` : ''), color: 'text-slate-400' });
+				continue;
+			}
+
+			if (ch === '|') {
+				i++;
+				tokens.push({ token: '|', desc: 'Oder (Alternative)', color: 'text-slate-400' });
+				continue;
+			}
+
+			if (ch === '^') {
+				i++;
+				tokens.push({ token: '^', desc: 'Anfang der Zeile', color: 'text-violet-400' });
+				continue;
+			}
+
+			if (ch === '$') {
+				i++;
+				tokens.push({ token: '$', desc: 'Ende der Zeile', color: 'text-violet-400' });
+				continue;
+			}
+
+			if (ch === '.') {
+				i++;
+				const q = readQuantifier();
+				tokens.push({ token: '.' + q, desc: 'Beliebiges Zeichen' + (q ? ` — ${quantifierDesc(q)}` : ''), color: 'text-sky-400' });
+				continue;
+			}
+
+			// Literal character
+			i++;
+			const q = readQuantifier();
+			tokens.push({ token: ch + q, desc: `Literal "${ch}"` + (q ? ` — ${quantifierDesc(q)}` : ''), color: 'text-slate-300' });
+		}
+
+		return tokens;
+	}
+
+	let explanation = $derived(explainPattern(pattern));
+
+	// ── Reference data ───────────────────────────────────────────────────────
 	const refSections = [
 		{
 			title: 'Zeichenklassen',
@@ -79,8 +231,6 @@
 				['$', 'Ende der Zeile (mit Flag m: jede Zeile)'],
 				['\\b', 'Wortgrenze'],
 				['\\B', 'Keine Wortgrenze'],
-				['\\A', 'Absoluter Textanfang'],
-				['\\Z', 'Absolutes Textende'],
 			]
 		},
 		{
@@ -101,9 +251,8 @@
 				['a|b', 'a oder b'],
 				['\\n', 'Zeilenumbruch'],
 				['\\t', 'Tabulator'],
-				['\\r', 'Carriage Return'],
 				['\\.', 'Literal-Punkt (Backslash escaped Sonderzeichen)'],
-				['[\\^\\$\\.\\|\\?\\*\\+\\(\\)\\[\\]\\{\\}]', 'Alle Sonderzeichen die escaped werden müssen'],
+				['[\\^\\$\\.\\|\\?\\*\\+\\(\\)]', 'Sonderzeichen die escaped werden müssen'],
 			]
 		},
 		{
@@ -139,6 +288,28 @@
 				<p role="alert" class="mt-2 text-xs text-red-300">{$t('regexTester').invalidRegex}: {result.error}</p>
 			{/if}
 		</div>
+
+		<!-- Pattern explanation -->
+		{#if explanation.length > 0 && !result.error}
+			<div class="bg-slate-900/70 rounded-lg px-4 py-3">
+				<p class="text-xs text-slate-400 uppercase tracking-wider mb-2">{$t('regexTester').explanation}</p>
+				<div class="flex flex-wrap gap-y-2 gap-x-0">
+					{#each explanation as tok}
+						<div class="group relative">
+							<span class="font-mono text-sm px-1.5 py-0.5 rounded cursor-default border border-transparent hover:border-slate-600 hover:bg-slate-800 transition-colors {tok.color}">{tok.token}</span>
+							<!-- Tooltip -->
+							<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block z-10 pointer-events-none">
+								<div class="bg-slate-700 text-slate-200 text-xs rounded-lg px-3 py-1.5 whitespace-nowrap shadow-lg border border-slate-600 max-w-52 text-center leading-snug">
+									{tok.desc}
+								</div>
+								<div class="w-2 h-2 bg-slate-700 border-r border-b border-slate-600 rotate-45 mx-auto -mt-1"></div>
+							</div>
+						</div>
+					{/each}
+				</div>
+			</div>
+		{/if}
+
 		<div>
 			<span class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">{$t('regexTester').flags}</span>
 			<div class="flex gap-2" role="group" aria-label="Regex flags">
@@ -178,7 +349,6 @@
 					<span class="text-xs bg-violet-700/40 text-violet-300 px-2 py-0.5 rounded-full">{result.matches.length}</span>
 				{/if}
 			</div>
-			<!-- Highlighted text -->
 			<div class="bg-slate-900 rounded-lg px-4 py-3 text-sm font-mono whitespace-pre-wrap break-all min-h-32 max-h-48 overflow-y-auto leading-relaxed text-slate-300 mb-4">
 				{#if testStr}
 					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
@@ -187,7 +357,6 @@
 					<span class="text-slate-500">{$t('regexTester').testPlaceholder}</span>
 				{/if}
 			</div>
-			<!-- Match table -->
 			{#if result.matches.length === 0 && testStr && pattern && !result.error}
 				<p class="text-slate-400 text-sm">{$t('regexTester').noMatches}</p>
 			{:else if result.matches.length > 0}

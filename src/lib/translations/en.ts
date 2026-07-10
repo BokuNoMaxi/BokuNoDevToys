@@ -320,6 +320,7 @@ const en = {
     group: 'Group',
     clear: 'Clear',
     reference: 'Regex Reference',
+    explanation: 'Pattern explanation — hover for details',
   },
   hashGen: {
     input: 'Input',

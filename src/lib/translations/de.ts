@@ -322,6 +322,7 @@ const de: Translations = {
     group: 'Gruppe',
     clear: 'Leeren',
     reference: 'Regex Referenz',
+    explanation: 'Pattern-Erklärung — hover für Details',
   },
   hashGen: {
     input: 'Eingabe',
