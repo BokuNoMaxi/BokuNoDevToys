@@ -5,3 +5,16 @@ services:
     ports:
       - "34291:80"
     restart: unless-stopped
+
+  builder:
+    image: node:20-alpine
+    container_name: devtoys-builder
+    working_dir: /app
+    volumes:
+      - .:/app
+      - devtoys_node_modules:/app/node_modules
+    profiles:
+      - build
+
+volumes:
+  devtoys_node_modules:
