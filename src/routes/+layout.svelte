@@ -41,6 +41,16 @@
 	function currentTool() {
 		return $page.params.tool ?? '';
 	}
+
+	const catMeta: Record<string, { icon: string; color: string; border: string }> = {
+		dateTime:  { icon: '📅', color: 'text-sky-400',     border: 'border-sky-500' },
+		text:      { icon: '📝', color: 'text-emerald-400', border: 'border-emerald-500' },
+		format:    { icon: '🔧', color: 'text-amber-400',   border: 'border-amber-500' },
+		security:  { icon: '🔐', color: 'text-red-400',     border: 'border-red-500' },
+		generator: { icon: '⚙️', color: 'text-violet-400',  border: 'border-violet-500' },
+		analyzer:  { icon: '🔍', color: 'text-cyan-400',    border: 'border-cyan-500' },
+		frontend:  { icon: '🖼️', color: 'text-pink-400',    border: 'border-pink-500' },
+	};
 </script>
 
 <svelte:head>
@@ -67,32 +77,40 @@
 			</a>
 		</div>
 
-		<nav class="flex-1 overflow-y-auto py-3 px-3" aria-label="Tools">
+		<nav class="flex-1 overflow-y-auto py-2 px-2" aria-label="Tools">
 			{#each categories as category}
 				{@const isOpen = openCats.has(category.key)}
 				{@const hasActive = category.tools.some(t => t.id === currentTool())}
+				{@const meta = catMeta[category.key] ?? { icon: '•', color: 'text-slate-400', border: 'border-slate-500' }}
 				<div class="mb-1">
+					<!-- Category header -->
 					<button
 						onclick={() => toggleCat(category.key)}
 						aria-expanded={isOpen}
-						class="w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors
-							{hasActive ? 'text-violet-300' : 'text-slate-400 hover:text-slate-200'}"
+						class="w-full flex items-center gap-2 px-2 py-2 rounded-lg transition-colors group
+							{hasActive ? 'bg-slate-800/60' : 'hover:bg-slate-800/40'}"
 					>
-						<span>{$t('cats')[category.key]}</span>
-						<svg class="w-3.5 h-3.5 transition-transform duration-200 {isOpen ? 'rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+						<span class="text-base leading-none">{meta.icon}</span>
+						<span class="flex-1 text-left text-xs font-bold uppercase tracking-widest
+							{hasActive ? meta.color : 'text-slate-400 group-hover:text-slate-200'}">
+							{$t('cats')[category.key]}
+						</span>
+						<svg class="w-3 h-3 shrink-0 transition-transform duration-200 {isOpen ? 'rotate-180' : ''} text-slate-500 group-hover:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
 						</svg>
 					</button>
+
+					<!-- Tool list -->
 					{#if isOpen}
-						<div class="mt-0.5 mb-2">
+						<div class="ml-3 mt-0.5 mb-2 border-l-2 {hasActive ? meta.border : 'border-slate-700/60'} pl-2">
 							{#each category.tools as tool}
 								<a
 									href="/tools/{tool.id}"
 									onclick={() => sidebarOpen = false}
-									class="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-sm transition-colors mb-0.5
+									class="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm transition-colors mb-0.5
 										{currentTool() === tool.id
 											? 'bg-violet-700/20 text-violet-300 font-medium'
-											: 'text-slate-300 hover:text-slate-100 hover:bg-slate-800'}"
+											: 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/60'}"
 								>
 									{($t('tools') as Record<string, {name: string} | undefined>)[tool.id]?.name ?? tool.id}
 								</a>
