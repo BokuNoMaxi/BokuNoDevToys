@@ -24,8 +24,9 @@ export const categories: Category[] = [
 	{
 		key: 'dateTime',
 		tools: [
-			{ id: 'date-calculator' },
+			// DE: DateTime Converter, Zeitrechner, Zeitzonen Umrechner
 			{ id: 'datetime' },
+			{ id: 'date-calculator' },
 			{ id: 'timezone-converter' },
 		]
 	},
@@ -43,17 +44,20 @@ export const categories: Category[] = [
 	{
 		key: 'frontend',
 		tools: [
-			{ id: 'aspect-ratio-calculator' },
+			// DE: Border-Radius, Box Shadow, Clip Path, CSS Flex, CSS Grid,
+			//     Einheiten Konverter, Farbkontrast-Prüfer, Farbpaletten,
+			//     Glassmorphism, Gradient, Seitenverhältnis-Rechner
 			{ id: 'border-radius-generator' },
 			{ id: 'box-shadow-generator' },
 			{ id: 'clip-path-generator' },
-			{ id: 'color-contrast-checker' },
-			{ id: 'color-palette-generator' },
 			{ id: 'css-flex-generator' },
 			{ id: 'css-grid-generator' },
+			{ id: 'unit-converter' },
+			{ id: 'color-contrast-checker' },
+			{ id: 'color-palette-generator' },
 			{ id: 'glassmorphism-generator' },
 			{ id: 'gradient-generator' },
-			{ id: 'unit-converter' },
+			{ id: 'aspect-ratio-calculator' },
 		]
 	},
 	{
