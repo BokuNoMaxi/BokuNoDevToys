@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
 	import { marked } from 'marked';
+	import DOMPurify from 'dompurify';
 
 	let input = $state('');
 	let copied = $state(false);
 
 	let rendered = $derived.by(() => {
 		if (!input.trim()) return '';
-		return marked(input) as string;
+		return DOMPurify.sanitize(marked(input) as string);
 	});
 
 	function copy() {

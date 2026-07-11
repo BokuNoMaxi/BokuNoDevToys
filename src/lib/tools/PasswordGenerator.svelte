@@ -32,9 +32,18 @@
 	}
 
 	function generateOne(charset: string, len: number): string {
-		const arr = new Uint32Array(len);
-		crypto.getRandomValues(arr);
-		return Array.from(arr, v => charset[v % charset.length]).join('');
+		// Rejection sampling: Werte oberhalb des größten Vielfachen der
+		// Charset-Länge verwerfen, sonst sind frühe Zeichen überrepräsentiert
+		const limit = Math.floor(0x100000000 / charset.length) * charset.length;
+		const out: string[] = [];
+		while (out.length < len) {
+			const arr = new Uint32Array(len - out.length);
+			crypto.getRandomValues(arr);
+			for (const v of arr) {
+				if (v < limit && out.length < len) out.push(charset[v % charset.length]);
+			}
+		}
+		return out.join('');
 	}
 
 	function generate() {

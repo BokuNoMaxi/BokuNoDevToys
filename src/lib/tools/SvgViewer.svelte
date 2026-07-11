@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
+	import DOMPurify from 'dompurify';
 
 	let svgCode = $state('');
 	let bg = $state<'white' | 'gray' | 'black' | 'checker'>('checker');
@@ -43,15 +44,9 @@
 		} catch { return null; }
 	});
 
-	function sanitizeSvg(raw: string): string {
-		return raw
-			.replace(/<script[\s\S]*?<\/script>/gi, '')
-			.replace(/\son\w+="[^"]*"/g, '')
-			.replace(/\son\w+='[^']*'/g, '')
-			.replace(/javascript:/gi, '');
-	}
-
-	let safeHtml = $derived(svgCode ? sanitizeSvg(svgCode) : '');
+	let safeHtml = $derived(svgCode
+		? DOMPurify.sanitize(svgCode, { USE_PROFILES: { svg: true, svgFilters: true } })
+		: '');
 
 	const bgStyles: Record<string, string> = {
 		white:   'background:#fff',

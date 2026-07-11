@@ -25,6 +25,7 @@
 	},
 	"dependencies": {
 		"bcryptjs": "^3.0.3",
+		"dompurify": "^3.4.11",
 		"marked": "^18.0.6",
 		"qrcode": "^1.5.4",
 		"sql-formatter": "^15.8.2"
