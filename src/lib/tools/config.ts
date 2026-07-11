@@ -77,7 +77,13 @@ export const categories: Category[] = [
 			{ id: 'border-radius-generator' },
 			{ id: 'css-grid-generator' },
 			{ id: 'css-flex-generator' },
+			{ id: 'box-shadow-generator' },
+			{ id: 'gradient-generator' },
+			{ id: 'glassmorphism-generator' },
+			{ id: 'clip-path-generator' },
 			{ id: 'color-contrast-checker' },
+			{ id: 'color-palette-generator' },
+			{ id: 'unit-converter' },
 		]
 	},
 ];

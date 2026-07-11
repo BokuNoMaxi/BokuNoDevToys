@@ -37,6 +37,12 @@
 	import CssFlexGenerator from '$lib/tools/CssFlexGenerator.svelte';
 	import SchemaAnalyzer from '$lib/tools/SchemaAnalyzer.svelte';
 	import SvgViewer from '$lib/tools/SvgViewer.svelte';
+	import BoxShadowGenerator from '$lib/tools/BoxShadowGenerator.svelte';
+	import GradientGenerator from '$lib/tools/GradientGenerator.svelte';
+	import UnitConverter from '$lib/tools/UnitConverter.svelte';
+	import ColorPaletteGenerator from '$lib/tools/ColorPaletteGenerator.svelte';
+	import GlassmorphismGenerator from '$lib/tools/GlassmorphismGenerator.svelte';
+	import ClipPathGenerator from '$lib/tools/ClipPathGenerator.svelte';
 
 	let toolId = $derived($page.params.tool ?? '');
 	let toolMeta = $derived(findTool(toolId));
@@ -124,6 +130,18 @@
 			<SchemaAnalyzer />
 		{:else if toolId === 'svg-viewer'}
 			<SvgViewer />
+		{:else if toolId === 'box-shadow-generator'}
+			<BoxShadowGenerator />
+		{:else if toolId === 'gradient-generator'}
+			<GradientGenerator />
+		{:else if toolId === 'unit-converter'}
+			<UnitConverter />
+		{:else if toolId === 'color-palette-generator'}
+			<ColorPaletteGenerator />
+		{:else if toolId === 'glassmorphism-generator'}
+			<GlassmorphismGenerator />
+		{:else if toolId === 'clip-path-generator'}
+			<ClipPathGenerator />
 		{/if}
 	</div>
 {:else}
