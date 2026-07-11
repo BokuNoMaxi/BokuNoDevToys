@@ -25,6 +25,7 @@ export const categories: Category[] = [
 			{ id: 'text-prettier' },
 			{ id: 'diff-viewer' },
 			{ id: 'regex-tester' },
+			{ id: 'markdown-viewer' },
 		]
 	},
 	{
@@ -33,35 +34,29 @@ export const categories: Category[] = [
 			{ id: 'json-formatter' },
 			{ id: 'vardump-formatter' },
 			{ id: 'sql-formatter' },
-			{ id: 'color-converter' },
 			{ id: 'xml-to-yaml' },
-			{ id: 'markdown-viewer' },
-		]
-	},
-	{
-		key: 'encoding',
-		tools: [
 			{ id: 'base64' },
+			{ id: 'color-converter' },
 		]
 	},
 	{
-		key: 'randomizer',
+		key: 'security',
 		tools: [
-			{ id: 'random-int' },
-			{ id: 'random-value' },
+			{ id: 'htpasswd' },
+			{ id: 'hash-generator' },
+			{ id: 'password-generator' },
 		]
 	},
 	{
 		key: 'generator',
 		tools: [
-			{ id: 'htpasswd' },
 			{ id: 'mysql-export-import' },
-			{ id: 'hash-generator' },
 			{ id: 'cron-builder' },
-			{ id: 'password-generator' },
 			{ id: 'curl-to-code' },
 			{ id: 'favicon-generator' },
 			{ id: 'qr-code-generator' },
+			{ id: 'random-int' },
+			{ id: 'random-value' },
 		]
 	},
 	{
@@ -76,19 +71,13 @@ export const categories: Category[] = [
 		]
 	},
 	{
-		key: 'validator',
-		tools: [
-			{ id: 'color-contrast-checker' },
-			{ id: 'email-validator' },
-		]
-	},
-	{
 		key: 'frontend',
 		tools: [
 			{ id: 'aspect-ratio-calculator' },
 			{ id: 'border-radius-generator' },
 			{ id: 'css-grid-generator' },
 			{ id: 'css-flex-generator' },
+			{ id: 'color-contrast-checker' },
 		]
 	},
 ];

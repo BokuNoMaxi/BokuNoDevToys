@@ -31,7 +31,6 @@
 	import FaviconGenerator from '$lib/tools/FaviconGenerator.svelte';
 	import QrCodeGenerator from '$lib/tools/QrCodeGenerator.svelte';
 	import ColorContrastChecker from '$lib/tools/ColorContrastChecker.svelte';
-	import EmailValidator from '$lib/tools/EmailValidator.svelte';
 	import AspectRatioCalculator from '$lib/tools/AspectRatioCalculator.svelte';
 	import BorderRadiusGenerator from '$lib/tools/BorderRadiusGenerator.svelte';
 	import CssGridGenerator from '$lib/tools/CssGridGenerator.svelte';
@@ -113,8 +112,6 @@
 			<QrCodeGenerator />
 		{:else if toolId === 'color-contrast-checker'}
 			<ColorContrastChecker />
-		{:else if toolId === 'email-validator'}
-			<EmailValidator />
 		{:else if toolId === 'aspect-ratio-calculator'}
 			<AspectRatioCalculator />
 		{:else if toolId === 'border-radius-generator'}
