@@ -13,47 +13,47 @@ export const categories: Category[] = [
 	{
 		key: 'dateTime',
 		tools: [
+			{ id: 'date-calculator' },
 			{ id: 'datetime' },
 			{ id: 'timezone-converter' },
-			{ id: 'date-calculator' },
 		]
 	},
 	{
 		key: 'text',
 		tools: [
+			{ id: 'diff-viewer' },
+			{ id: 'markdown-viewer' },
+			{ id: 'regex-tester' },
 			{ id: 'text-generator' },
 			{ id: 'text-prettier' },
-			{ id: 'diff-viewer' },
-			{ id: 'regex-tester' },
-			{ id: 'markdown-viewer' },
 		]
 	},
 	{
 		key: 'format',
 		tools: [
-			{ id: 'json-formatter' },
-			{ id: 'vardump-formatter' },
-			{ id: 'sql-formatter' },
-			{ id: 'xml-to-yaml' },
 			{ id: 'base64' },
 			{ id: 'color-converter' },
+			{ id: 'json-formatter' },
+			{ id: 'sql-formatter' },
+			{ id: 'vardump-formatter' },
+			{ id: 'xml-to-yaml' },
 		]
 	},
 	{
 		key: 'security',
 		tools: [
-			{ id: 'htpasswd' },
 			{ id: 'hash-generator' },
+			{ id: 'htpasswd' },
 			{ id: 'password-generator' },
 		]
 	},
 	{
 		key: 'generator',
 		tools: [
-			{ id: 'mysql-export-import' },
 			{ id: 'cron-builder' },
 			{ id: 'curl-to-code' },
 			{ id: 'favicon-generator' },
+			{ id: 'mysql-export-import' },
 			{ id: 'qr-code-generator' },
 			{ id: 'random-int' },
 			{ id: 'random-value' },
@@ -62,10 +62,10 @@ export const categories: Category[] = [
 	{
 		key: 'analyzer',
 		tools: [
-			{ id: 'error-log' },
 			{ id: 'access-log' },
-			{ id: 'ip-info' },
 			{ id: 'csv-viewer' },
+			{ id: 'error-log' },
+			{ id: 'ip-info' },
 			{ id: 'schema-analyzer' },
 			{ id: 'svg-viewer' },
 		]
@@ -75,14 +75,14 @@ export const categories: Category[] = [
 		tools: [
 			{ id: 'aspect-ratio-calculator' },
 			{ id: 'border-radius-generator' },
-			{ id: 'css-grid-generator' },
-			{ id: 'css-flex-generator' },
 			{ id: 'box-shadow-generator' },
-			{ id: 'gradient-generator' },
-			{ id: 'glassmorphism-generator' },
 			{ id: 'clip-path-generator' },
 			{ id: 'color-contrast-checker' },
 			{ id: 'color-palette-generator' },
+			{ id: 'css-flex-generator' },
+			{ id: 'css-grid-generator' },
+			{ id: 'glassmorphism-generator' },
+			{ id: 'gradient-generator' },
 			{ id: 'unit-converter' },
 		]
 	},
