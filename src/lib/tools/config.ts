@@ -35,6 +35,7 @@ export const categories: Category[] = [
 		tools: [
 			{ id: 'base64' },
 			{ id: 'color-converter' },
+			{ id: 'html-viewer' },
 			{ id: 'json-formatter' },
 			{ id: 'sql-formatter' },
 			{ id: 'vardump-formatter' },

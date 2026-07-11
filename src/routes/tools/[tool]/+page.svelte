@@ -8,6 +8,7 @@
 	import Base64Encoder from '$lib/tools/Base64Encoder.svelte';
 	import MySQLExportImport from '$lib/tools/MySQLExportImport.svelte';
 	import JsonFormatter from '$lib/tools/JsonFormatter.svelte';
+	import HtmlViewer from '$lib/tools/HtmlViewer.svelte';
 	import VarDumpFormatter from '$lib/tools/VarDumpFormatter.svelte';
 	import TimezoneConverter from '$lib/tools/TimezoneConverter.svelte';
 	import DateCalculator from '$lib/tools/DateCalculator.svelte';
@@ -89,6 +90,8 @@
 			<Base64Encoder />
 		{:else if toolId === 'mysql-export-import'}
 			<MySQLExportImport />
+		{:else if toolId === 'html-viewer'}
+			<HtmlViewer />
 		{:else if toolId === 'json-formatter'}
 			<JsonFormatter />
 		{:else if toolId === 'vardump-formatter'}
