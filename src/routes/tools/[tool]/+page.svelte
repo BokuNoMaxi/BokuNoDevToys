@@ -47,10 +47,29 @@
 	let toolId = $derived($page.params.tool ?? '');
 	let toolMeta = $derived(findTool(toolId));
 	let toolTrans = $derived($t('tools')[toolId as keyof ReturnType<typeof $t>['tools']]);
+
+	const SITE = 'https://devtoys.bokunocompany.at';
+	let pageTitle = $derived(toolTrans ? `${toolTrans.name} — BokuNoDevToys` : 'BokuNoDevToys');
+	let pageDesc = $derived(toolTrans?.description ?? '');
+	let canonical = $derived(`${SITE}/tools/${toolId}`);
 </script>
 
 <svelte:head>
-	<title>{toolTrans ? `${toolTrans.name} — BokuNoDevToys` : 'BokuNoDevToys'}</title>
+	<title>{pageTitle}</title>
+	{#if toolTrans}
+		<meta name="description" content={pageDesc} />
+		<link rel="canonical" href={canonical} />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="BokuNoDevToys" />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={pageDesc} />
+		<meta property="og:url" content={canonical} />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={pageTitle} />
+		<meta name="twitter:description" content={pageDesc} />
+	{:else}
+		<meta name="robots" content="noindex" />
+	{/if}
 </svelte:head>
 
 {#if toolMeta}

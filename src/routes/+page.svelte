@@ -13,7 +13,27 @@
 </script>
 
 <svelte:head>
-	<title>BokuNoDevToys — Developer Tools</title>
+	<title>BokuNoDevToys — Free Online Developer Tools</title>
+	<meta name="description" content="Free browser-based developer tools: JSON formatter, regex tester, QR code generator, CSS generators, hash & password generators and many more. Everything runs client-side — no data leaves your browser." />
+	<link rel="canonical" href="https://devtoys.bokunocompany.at/" />
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="BokuNoDevToys" />
+	<meta property="og:title" content="BokuNoDevToys — Free Online Developer Tools" />
+	<meta property="og:description" content="Free browser-based developer tools. Everything runs client-side — no data leaves your browser." />
+	<meta property="og:url" content="https://devtoys.bokunocompany.at/" />
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:title" content="BokuNoDevToys — Free Online Developer Tools" />
+	<meta name="twitter:description" content="Free browser-based developer tools. Everything runs client-side — no data leaves your browser." />
+	{@html `<script type="application/ld+json">${JSON.stringify({
+		'@context': 'https://schema.org',
+		'@type': 'WebApplication',
+		name: 'BokuNoDevToys',
+		url: 'https://devtoys.bokunocompany.at/',
+		applicationCategory: 'DeveloperApplication',
+		operatingSystem: 'Any',
+		offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+		description: 'Free browser-based developer tools. Everything runs client-side — no data leaves your browser.'
+	})}</scr` + `ipt>`}
 </svelte:head>
 
 <div class="max-w-4xl mx-auto">
