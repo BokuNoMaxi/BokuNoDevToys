@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
+	import { fetchHtmlViaProxy } from '$lib/corsProxy';
 
 	let tab = $state<'url' | 'paste'>('paste');
 	let urlInput = $state('');
@@ -63,10 +64,7 @@
 		error = '';
 		results = [];
 		try {
-			const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(urlInput)}`;
-			const res = await fetch(proxy);
-			const json = await res.json();
-			const html: string = json.contents ?? '';
+			const html = await fetchHtmlViaProxy(urlInput.trim());
 			results = extractSchemas(html);
 			if (results.length === 0) error = $t('schemaAnalyzer').noSchema;
 		} catch (e) {
@@ -107,7 +105,7 @@
 						{fetching ? $t('schemaAnalyzer').fetching : $t('schemaAnalyzer').fetch}
 					</button>
 				</div>
-				<p class="mt-1.5 text-xs text-slate-400">Uses allorigins.win as CORS proxy</p>
+				<p class="mt-1.5 text-xs text-slate-400">{$t('schemaAnalyzer').proxyNote}</p>
 			</div>
 		{:else}
 			<div>

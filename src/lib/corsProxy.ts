@@ -1,10 +1,10 @@
-// Shared helper for fetching third-party pages client-side via a public CORS
-// proxy (allorigins.win). The proxy is a free, unauthenticated service and is
-// occasionally flaky (transient 500/522), so requests are retried with a
-// short backoff before surfacing an error to the user.
+// Shared helper for fetching third-party pages client-side via our own
+// self-hosted CORS proxy (corsproxy.bokunocompany.at), API-compatible with
+// allorigins.win. Requests are still retried with a short backoff to absorb
+// transient network blips or proxy restarts.
 
-const GET_ENDPOINT = (url: string) => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
-const RAW_ENDPOINT = (url: string) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+const GET_ENDPOINT = (url: string) => `https://corsproxy.bokunocompany.at/get?url=${encodeURIComponent(url)}`;
+const RAW_ENDPOINT = (url: string) => `https://corsproxy.bokunocompany.at/raw?url=${encodeURIComponent(url)}`;
 
 export function isHttpUrl(u: string): boolean {
 	try {
