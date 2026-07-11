@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
+	import { isHttpUrl, fetchHtmlViaProxy } from '$lib/corsProxy';
 
 	type Mode = 'url' | 'paste';
 	let mode = $state<Mode>('url');
@@ -10,13 +11,6 @@
 
 	type Status = 'pass' | 'warn' | 'fail';
 	interface Check { key: string; label: string; status: Status; detail: string; weight: number; }
-
-	function isHttpUrl(u: string): boolean {
-		try {
-			const parsed = new URL(u);
-			return parsed.protocol === 'http:' || parsed.protocol === 'https:';
-		} catch { return false; }
-	}
 
 	function analyzeHtml(html: string): Check[] {
 		const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -164,14 +158,10 @@
 		error = '';
 		checks = null;
 		try {
-			const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(urlInput.trim())}`;
-			const res = await fetch(proxy, { signal: AbortSignal.timeout(15000) });
-			const json = await res.json();
-			const html: string = json.contents ?? '';
-			if (!html) { error = $t('seoScore').fetchError; return; }
+			const html = await fetchHtmlViaProxy(urlInput.trim());
 			checks = analyzeHtml(html);
-		} catch (e) {
-			error = (e as Error).message || $t('seoScore').fetchError;
+		} catch {
+			error = $t('seoScore').fetchError;
 		} finally {
 			fetching = false;
 		}

@@ -1,10 +1,33 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
+	import { isHttpUrl, fetchHtmlViaProxy } from '$lib/corsProxy';
 
+	type Mode = 'paste' | 'url';
+	let mode = $state<Mode>('paste');
 	let input = $state('');
+	let urlInput = $state('');
+	let fetching = $state(false);
+	let fetchError = $state('');
 	let stripHtml = $state(true);
 	let ngramSize = $state<1 | 2 | 3>(1);
 	let lang = $state<'en' | 'de'>('en');
+
+	async function fetchFromUrl() {
+		if (!urlInput.trim() || !isHttpUrl(urlInput.trim())) {
+			fetchError = $t('keywordDensity').invalidUrl;
+			return;
+		}
+		fetching = true;
+		fetchError = '';
+		try {
+			input = await fetchHtmlViaProxy(urlInput.trim());
+			stripHtml = true;
+		} catch {
+			fetchError = $t('keywordDensity').fetchError;
+		} finally {
+			fetching = false;
+		}
+	}
 
 	const STOPWORDS: Record<'en' | 'de', Set<string>> = {
 		en: new Set(['a','an','the','and','or','but','if','then','else','of','at','by','for','with','about','against','between','into','through','during','before','after','above','below','to','from','up','down','in','out','on','off','over','under','again','further','once','is','are','was','were','be','been','being','have','has','had','having','do','does','did','doing','will','would','should','could','can','may','might','must','shall','i','you','he','she','it','we','they','them','this','that','these','those','not','no','so','than','too','very','just','also','as','it\'s']),
@@ -62,6 +85,28 @@
 
 <div class="space-y-4">
 	<div class="bg-slate-800 rounded-xl p-6 space-y-4">
+		<div class="flex gap-2">
+			<button onclick={() => mode = 'paste'} class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {mode === 'paste' ? 'bg-violet-700 text-white' : 'bg-slate-900 text-slate-300 hover:text-slate-100'}">{$t('keywordDensity').pasteTab}</button>
+			<button onclick={() => mode = 'url'} class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {mode === 'url' ? 'bg-violet-700 text-white' : 'bg-slate-900 text-slate-300 hover:text-slate-100'}">{$t('keywordDensity').urlTab}</button>
+		</div>
+
+		{#if mode === 'url'}
+			<div class="flex gap-3">
+				<input
+					type="text"
+					bind:value={urlInput}
+					placeholder="https://example.com"
+					class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 font-mono text-sm focus:outline-none focus:border-violet-500"
+					onkeydown={(e) => e.key === 'Enter' && fetchFromUrl()}
+				/>
+				<button onclick={fetchFromUrl} disabled={fetching} class="px-4 py-2.5 bg-violet-700 hover:bg-violet-800 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition-colors whitespace-nowrap">
+					{fetching ? $t('keywordDensity').fetching : $t('keywordDensity').fetch}
+				</button>
+			</div>
+			<p class="text-xs text-slate-400">{$t('keywordDensity').proxyNote}</p>
+			{#if fetchError}<p class="text-red-300 text-sm">{fetchError}</p>{/if}
+		{/if}
+
 		<div class="flex items-center justify-between">
 			<label class="text-xs font-semibold text-slate-300 uppercase tracking-wider" for="kd-input">{$t('keywordDensity').inputLabel}</label>
 			<div class="flex items-center gap-3">

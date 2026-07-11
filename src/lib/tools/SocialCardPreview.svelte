@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
+	import { isHttpUrl, fetchHtmlViaProxy } from '$lib/corsProxy';
 
 	type Mode = 'manual' | 'url';
 	let mode = $state<Mode>('manual');
@@ -13,13 +14,6 @@
 	let fetchUrl = $state('');
 	let fetching = $state(false);
 	let error = $state('');
-
-	function isHttpUrl(u: string): boolean {
-		try {
-			const p = new URL(u);
-			return p.protocol === 'http:' || p.protocol === 'https:';
-		} catch { return false; }
-	}
 
 	// Only allow http(s) image URLs into <img src> to prevent scheme abuse (javascript:, data:, etc.)
 	function safeImageUrl(u: string): string {
@@ -42,12 +36,7 @@
 		fetching = true;
 		error = '';
 		try {
-			const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(fetchUrl.trim())}`;
-			const res = await fetch(proxy, { signal: AbortSignal.timeout(15000) });
-			const json = await res.json();
-			const html: string = json.contents ?? '';
-			if (!html) { error = $t('socialCard').fetchError; return; }
-
+			const html = await fetchHtmlViaProxy(fetchUrl.trim());
 			const doc = new DOMParser().parseFromString(html, 'text/html');
 			const get = (sel: string, attr = 'content') => doc.querySelector(sel)?.getAttribute(attr)?.trim() ?? '';
 
@@ -56,8 +45,8 @@
 			ogImage = get('meta[property="og:image"]');
 			ogUrl = get('meta[property="og:url"]') || fetchUrl.trim();
 			siteName = get('meta[property="og:site_name"]') || safeDisplayUrl(fetchUrl.trim());
-		} catch (e) {
-			error = (e as Error).message || $t('socialCard').fetchError;
+		} catch {
+			error = $t('socialCard').fetchError;
 		} finally {
 			fetching = false;
 		}
