@@ -1,6 +1,7 @@
 <script lang="ts">
 	import VarDumpNode, { type VDNode } from '$lib/components/VarDumpNode.svelte';
 	import { t } from '$lib/i18n';
+	import { openPopoutText } from '$lib/popout';
 
 	let input = $state('');
 	let parsed = $state<VDNode | null>(null);
@@ -112,6 +113,31 @@
 		return parseValue();
 	}
 
+	// Serialize a parsed tree back to canonical, fully-expanded var_dump text (for popout).
+	function nodeToText(node: VDNode, indent = ''): string {
+		switch (node.type) {
+			case 'null': return 'NULL';
+			case 'bool': return `bool(${node.value ? 'true' : 'false'})`;
+			case 'int': return `int(${node.value})`;
+			case 'float': return `float(${node.value})`;
+			case 'string': return `string(${node.length}) "${node.value}"`;
+			case 'array':
+			case 'object': {
+				const children = node.children ?? [];
+				const header = node.type === 'array'
+					? `array(${children.length})`
+					: `object(${node.className})#${node.objectId} (${children.length})`;
+				if (children.length === 0) return `${header} {\n${indent}}`;
+				const childIndent = indent + '  ';
+				const body = children.map(c => {
+					const keyStr = typeof c.key === 'number' ? `[${c.key}]` : `["${c.key}"]`;
+					return `${childIndent}${keyStr}=>\n${childIndent}${nodeToText(c.value, childIndent)}`;
+				}).join('\n');
+				return `${header} {\n${body}\n${indent}}`;
+			}
+		}
+	}
+
 	// ────────────────────────────────────────────────────────────────────────
 
 	function format() {
@@ -155,7 +181,10 @@
 
 	{#if parsed !== null}
 		<div class="bg-slate-800 rounded-xl p-6">
-			<h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">{$t('vardump').result}</h2>
+			<div class="flex items-center justify-between mb-4">
+				<h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">{$t('vardump').result}</h2>
+				<button onclick={() => openPopoutText($t('vardump').result, nodeToText(parsed))} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">{$t('vardump').popout}</button>
+			</div>
 			<div class="bg-slate-900 rounded-lg p-4 font-mono text-sm overflow-x-auto max-h-[600px] overflow-y-auto">
 				<VarDumpNode node={parsed} />
 			</div>

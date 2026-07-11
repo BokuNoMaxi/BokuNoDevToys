@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
 	import DOMPurify from 'dompurify';
+	import { openPopoutText, openPopoutHtml } from '$lib/popout';
 
 	let input = $state('');
 	let indentSize = $state(2);
@@ -145,7 +146,10 @@
 		<div class="flex items-center justify-between mb-3">
 			<h2 class="text-xs font-semibold text-slate-300 uppercase tracking-wider">{$t('htmlViewer').formatted}</h2>
 			{#if result.formatted}
-				<button onclick={copy} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">{copied ? $t('htmlViewer').copied : $t('htmlViewer').copy}</button>
+				<div class="flex items-center gap-3">
+					<button onclick={() => openPopoutText($t('htmlViewer').formatted, result.formatted)} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">{$t('htmlViewer').popout}</button>
+					<button onclick={copy} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">{copied ? $t('htmlViewer').copied : $t('htmlViewer').copy}</button>
+				</div>
 			{/if}
 		</div>
 		<pre class="bg-slate-900 rounded-lg px-4 py-3 text-emerald-400 text-xs font-mono overflow-x-auto min-h-24 max-h-[32rem] overflow-y-auto whitespace-pre">{result.formatted || $t('htmlViewer').placeholder}</pre>
@@ -153,7 +157,12 @@
 
 	<!-- Rendered preview -->
 	<div class="bg-slate-800 rounded-xl p-6">
-		<h2 class="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-3">{$t('htmlViewer').preview}</h2>
+		<div class="flex items-center justify-between mb-3">
+			<h2 class="text-xs font-semibold text-slate-300 uppercase tracking-wider">{$t('htmlViewer').preview}</h2>
+			{#if safeHtml}
+				<button onclick={() => openPopoutHtml($t('htmlViewer').preview, safeHtml)} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">{$t('htmlViewer').popout}</button>
+			{/if}
+		</div>
 		<div class="bg-white rounded-lg px-6 py-5 min-h-24 max-h-[32rem] overflow-y-auto text-black">
 			{#if safeHtml}
 				<!-- eslint-disable-next-line svelte/no-at-html-tags -->

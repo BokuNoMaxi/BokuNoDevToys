@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
 	import { format } from 'sql-formatter';
+	import { openPopoutText } from '$lib/popout';
 
 	type Dialect = 'mysql' | 'postgresql' | 'sqlite' | 'sql';
 	let input = $state('');
@@ -62,7 +63,10 @@
 		<div class="flex items-center justify-between mb-3">
 			<h2 class="text-xs font-semibold text-slate-300 uppercase tracking-wider">{$t('sqlFormatter').result}</h2>
 			{#if result.output}
-				<button onclick={copy} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">{copied ? $t('sqlFormatter').copied : $t('sqlFormatter').copy}</button>
+				<div class="flex items-center gap-3">
+					<button onclick={() => openPopoutText($t('sqlFormatter').result, result.output)} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">{$t('sqlFormatter').popout}</button>
+					<button onclick={copy} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">{copied ? $t('sqlFormatter').copied : $t('sqlFormatter').copy}</button>
+				</div>
 			{/if}
 		</div>
 		{#if result.error}

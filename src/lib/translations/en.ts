@@ -188,6 +188,7 @@ const en = {
     invalidDump: 'Could not parse var_dump output',
     empty: 'Nothing pasted yet.',
     inputLabel: 'var_dump input',
+    popout: 'Open in window',
   },
   mysql: {
     host: 'Host',
@@ -223,6 +224,7 @@ const en = {
     clear: 'Clear',
     error: 'SQL Error',
     empty: 'Result appears here…',
+    popout: 'Open in window',
   },
   colorConverter: {
     input: 'Color Input',
@@ -255,6 +257,7 @@ const en = {
     copy: 'Copy',
     copied: '✓ Copied',
     clear: 'Clear',
+    popout: 'Open in window',
   },
   htmlViewer: {
     input: 'HTML Input',
@@ -265,6 +268,7 @@ const en = {
     copy: 'Copy',
     copied: '✓ Copied',
     clear: 'Clear',
+    popout: 'Open in window',
   },
   passwordGen: {
     length: 'Length',

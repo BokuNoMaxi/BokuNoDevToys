@@ -2,6 +2,7 @@
 	import { t } from '$lib/i18n';
 	import { marked } from 'marked';
 	import DOMPurify from 'dompurify';
+	import { openPopoutHtml } from '$lib/popout';
 
 	let input = $state('');
 	let copied = $state(false);
@@ -16,6 +17,22 @@
 		copied = true;
 		setTimeout(() => { copied = false; }, 1500);
 	}
+
+	const POPOUT_PROSE_CSS = `
+		h1 { font-size: 1.5rem; font-weight: 700; margin: 0.75rem 0; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem; }
+		h2 { font-size: 1.25rem; font-weight: 600; margin: 0.75rem 0; }
+		h3 { font-size: 1.1rem; font-weight: 600; margin: 0.5rem 0; }
+		p { margin: 0.5rem 0; line-height: 1.7; }
+		a { color: #6d28d9; }
+		code { background: #f1f5f9; color: #be185d; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+		pre { background: #f1f5f9; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 0.75rem 0; }
+		pre code { background: none; padding: 0; }
+		ul, ol { padding-left: 1.5rem; margin: 0.5rem 0; }
+		blockquote { border-left: 3px solid #6d28d9; padding-left: 1rem; margin: 0.75rem 0; color: #475569; font-style: italic; }
+		table { border-collapse: collapse; width: 100%; margin: 0.75rem 0; }
+		th, td { padding: 0.5rem 0.75rem; border: 1px solid #e2e8f0; text-align: left; }
+		th { background: #f1f5f9; }
+	`;
 </script>
 
 <div class="space-y-4">
@@ -40,7 +57,12 @@
 		</div>
 
 		<div class="bg-slate-800 rounded-xl p-6">
-			<h2 class="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-3">{$t('markdownViewer').preview}</h2>
+			<div class="flex items-center justify-between mb-3">
+				<h2 class="text-xs font-semibold text-slate-300 uppercase tracking-wider">{$t('markdownViewer').preview}</h2>
+				{#if rendered}
+					<button onclick={() => openPopoutHtml($t('markdownViewer').preview, rendered, POPOUT_PROSE_CSS)} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">{$t('markdownViewer').popout}</button>
+				{/if}
+			</div>
 			<div class="bg-slate-900 rounded-lg px-6 py-5 min-h-32 overflow-y-auto max-h-[calc(100vh-200px)] prose-md">
 				{#if rendered}
 					<!-- eslint-disable-next-line svelte/no-at-html-tags -->

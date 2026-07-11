@@ -190,6 +190,7 @@ const de: Translations = {
     invalidDump: 'var_dump Output konnte nicht geparst werden',
     empty: 'Noch nichts eingefügt.',
     inputLabel: 'var_dump Eingabe',
+    popout: 'In Fenster öffnen',
   },
   mysql: {
     host: 'Host',
@@ -225,6 +226,7 @@ const de: Translations = {
     clear: 'Leeren',
     error: 'SQL-Fehler',
     empty: 'Ergebnis erscheint hier…',
+    popout: 'In Fenster öffnen',
   },
   colorConverter: {
     input: 'Farb-Eingabe',
@@ -257,6 +259,7 @@ const de: Translations = {
     copy: 'Kopieren',
     copied: '✓ Kopiert',
     clear: 'Leeren',
+    popout: 'In Fenster öffnen',
   },
   htmlViewer: {
     input: 'HTML Eingabe',
@@ -267,6 +270,7 @@ const de: Translations = {
     copy: 'Kopieren',
     copied: '✓ Kopiert',
     clear: 'Leeren',
+    popout: 'In Fenster öffnen',
   },
   passwordGen: {
     length: 'Länge',
