@@ -17,7 +17,6 @@ export const categories: Category[] = [
 			{ id: 'csv-viewer' },
 			{ id: 'error-log' },
 			{ id: 'ip-info' },
-			{ id: 'schema-analyzer' },
 			{ id: 'svg-viewer' },
 		]
 	},
@@ -79,6 +78,19 @@ export const categories: Category[] = [
 			{ id: 'hash-generator' },
 			{ id: 'htpasswd' },
 			{ id: 'password-generator' },
+		]
+	},
+	{
+		key: 'seo',
+		tools: [
+			// DE: Keyword Dichte Analyzer, Robots & Sitemap Prüfer, Schema Analyzer,
+			//     SEO Score Analyzer, SERP-Vorschau, Social Card Vorschau
+			{ id: 'keyword-density-analyzer' },
+			{ id: 'robots-sitemap-validator' },
+			{ id: 'schema-analyzer' },
+			{ id: 'seo-score-analyzer' },
+			{ id: 'serp-preview' },
+			{ id: 'social-card-preview' },
 		]
 	},
 	{

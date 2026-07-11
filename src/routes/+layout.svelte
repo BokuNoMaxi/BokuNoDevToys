@@ -50,6 +50,7 @@
 		generator: { icon: '⚙️', color: 'text-violet-400',  border: 'border-violet-500' },
 		analyzer:  { icon: '🔍', color: 'text-cyan-400',    border: 'border-cyan-500' },
 		frontend:  { icon: '🖼️', color: 'text-pink-400',    border: 'border-pink-500' },
+		seo:       { icon: '📈', color: 'text-lime-400',    border: 'border-lime-500' },
 	};
 </script>
 

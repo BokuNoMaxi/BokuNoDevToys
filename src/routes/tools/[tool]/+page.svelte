@@ -44,6 +44,11 @@
 	import ColorPaletteGenerator from '$lib/tools/ColorPaletteGenerator.svelte';
 	import GlassmorphismGenerator from '$lib/tools/GlassmorphismGenerator.svelte';
 	import ClipPathGenerator from '$lib/tools/ClipPathGenerator.svelte';
+	import SeoScoreAnalyzer from '$lib/tools/SeoScoreAnalyzer.svelte';
+	import SerpPreview from '$lib/tools/SerpPreview.svelte';
+	import SocialCardPreview from '$lib/tools/SocialCardPreview.svelte';
+	import RobotsSitemapValidator from '$lib/tools/RobotsSitemapValidator.svelte';
+	import KeywordDensityAnalyzer from '$lib/tools/KeywordDensityAnalyzer.svelte';
 
 	let toolId = $derived($page.params.tool ?? '');
 	let toolMeta = $derived(findTool(toolId));
@@ -164,6 +169,16 @@
 			<GlassmorphismGenerator />
 		{:else if toolId === 'clip-path-generator'}
 			<ClipPathGenerator />
+		{:else if toolId === 'seo-score-analyzer'}
+			<SeoScoreAnalyzer />
+		{:else if toolId === 'serp-preview'}
+			<SerpPreview />
+		{:else if toolId === 'social-card-preview'}
+			<SocialCardPreview />
+		{:else if toolId === 'robots-sitemap-validator'}
+			<RobotsSitemapValidator />
+		{:else if toolId === 'keyword-density-analyzer'}
+			<KeywordDensityAnalyzer />
 		{/if}
 	</div>
 {:else}
