@@ -11,21 +11,22 @@ export interface Category {
 
 export const categories: Category[] = [
 	{
+		key: 'analyzer',
+		tools: [
+			{ id: 'access-log' },
+			{ id: 'csv-viewer' },
+			{ id: 'error-log' },
+			{ id: 'ip-info' },
+			{ id: 'schema-analyzer' },
+			{ id: 'svg-viewer' },
+		]
+	},
+	{
 		key: 'dateTime',
 		tools: [
 			{ id: 'date-calculator' },
 			{ id: 'datetime' },
 			{ id: 'timezone-converter' },
-		]
-	},
-	{
-		key: 'text',
-		tools: [
-			{ id: 'diff-viewer' },
-			{ id: 'markdown-viewer' },
-			{ id: 'regex-tester' },
-			{ id: 'text-generator' },
-			{ id: 'text-prettier' },
 		]
 	},
 	{
@@ -37,37 +38,6 @@ export const categories: Category[] = [
 			{ id: 'sql-formatter' },
 			{ id: 'vardump-formatter' },
 			{ id: 'xml-to-yaml' },
-		]
-	},
-	{
-		key: 'security',
-		tools: [
-			{ id: 'hash-generator' },
-			{ id: 'htpasswd' },
-			{ id: 'password-generator' },
-		]
-	},
-	{
-		key: 'generator',
-		tools: [
-			{ id: 'cron-builder' },
-			{ id: 'curl-to-code' },
-			{ id: 'favicon-generator' },
-			{ id: 'mysql-export-import' },
-			{ id: 'qr-code-generator' },
-			{ id: 'random-int' },
-			{ id: 'random-value' },
-		]
-	},
-	{
-		key: 'analyzer',
-		tools: [
-			{ id: 'access-log' },
-			{ id: 'csv-viewer' },
-			{ id: 'error-log' },
-			{ id: 'ip-info' },
-			{ id: 'schema-analyzer' },
-			{ id: 'svg-viewer' },
 		]
 	},
 	{
@@ -84,6 +54,36 @@ export const categories: Category[] = [
 			{ id: 'glassmorphism-generator' },
 			{ id: 'gradient-generator' },
 			{ id: 'unit-converter' },
+		]
+	},
+	{
+		key: 'generator',
+		tools: [
+			{ id: 'cron-builder' },
+			{ id: 'curl-to-code' },
+			{ id: 'favicon-generator' },
+			{ id: 'mysql-export-import' },
+			{ id: 'qr-code-generator' },
+			{ id: 'random-int' },
+			{ id: 'random-value' },
+		]
+	},
+	{
+		key: 'security',
+		tools: [
+			{ id: 'hash-generator' },
+			{ id: 'htpasswd' },
+			{ id: 'password-generator' },
+		]
+	},
+	{
+		key: 'text',
+		tools: [
+			{ id: 'diff-viewer' },
+			{ id: 'markdown-viewer' },
+			{ id: 'regex-tester' },
+			{ id: 'text-generator' },
+			{ id: 'text-prettier' },
 		]
 	},
 ];
