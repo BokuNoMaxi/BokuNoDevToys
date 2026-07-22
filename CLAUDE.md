@@ -19,7 +19,7 @@ SvelteKit-Projekt mit Dev-Tools im Browser. Läuft produktiv via Docker unter ht
 
 ## Arbeitsweise
 
-**Immer direkt im Projektverzeichnis `/home/pi/BokuNoDevToys/` arbeiten** — nie in Worktrees oder anderen Verzeichnissen, da Docker von hier baut und ein `git pull` sonst nötig wäre.
+**Immer direkt im Projektverzeichnis `/mnt/data/claude/BokuNoDevToys/` auf `srv-ubuntu` (10.0.0.3) arbeiten** — nie in Worktrees oder anderen Verzeichnissen, da Docker von hier baut und ein `git pull` sonst nötig wäre. (Vormals lief das Projekt auf dem Raspberry Pi unter `/home/pi/BokuNoDevToys/` — dorthin nicht mehr deployen.)
 
 ## Barrierefreiheit (WCAG 2.1 AAA — Pflicht)
 
@@ -86,7 +86,7 @@ Die Seite muss zu 100% barrierefrei sein. Folgende Regeln gelten für **jede neu
 Nach jeder Änderung — erst Docker neu bauen, dann committen:
 
 ```bash
-cd /home/pi/BokuNoDevToys
+cd /mnt/data/claude/BokuNoDevToys
 docker compose down && docker compose build --no-cache && docker compose up -d
 
 git add <dateien>
