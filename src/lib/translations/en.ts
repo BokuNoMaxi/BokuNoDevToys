@@ -61,6 +61,9 @@ const en = {
   home: {
     subtitle: 'A collection of practical tools for developers — everything runs directly in the browser, no data is transmitted.',
     footer: 'All tools run client-side in the browser. No API calls, no data sharing.',
+    searchLabel: 'Search tools',
+    searchPlaceholder: 'Search for a tool…',
+    noResults: 'No tools found.',
   },
   nav: {
     notFound: 'Tool not found',

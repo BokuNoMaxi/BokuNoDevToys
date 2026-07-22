@@ -83,12 +83,37 @@ Die Seite muss zu 100% barrierefrei sein. Folgende Regeln gelten für **jede neu
 
 ## Build & Deploy
 
-Nach jeder Änderung — erst Docker neu bauen, dann committen:
+**Dies ist eine Live-Seite** (https://devtoys.bokunocompany.at/) — Deploys dürfen die Seite
+nicht unnötig offline nehmen. Der `devtoys`-Service mountet `./build` als
+`:ro`-Volume nach `/usr/share/nginx/html` (siehe `docker-compose.yml`); nginx liest die
+Dateien direkt vom Host, das Docker-Image selbst muss dafür nicht neu gebaut werden.
+
+### Schneller Weg (Standardfall — reine Code-/Content-Änderungen, keine neuen Dependencies)
 
 ```bash
 cd /mnt/data/claude/BokuNoDevToys
-docker compose down && docker compose build --no-cache && docker compose up -d
+docker compose run --rm builder npm run build   # baut nur ./build neu, Seite bleibt online
+docker compose restart devtoys                  # <1s Unterbrechung, kein Image-Rebuild
+```
 
+`npm run build` überschreibt `./build` komplett (rm + neu anlegen) — dadurch verliert der
+schon laufende Container seinen Mount-Bezug auf das Verzeichnis (zeigt sonst 403 statt der
+neuen Seite). Der `restart` behebt das, indem er den Mount neu aufsetzt; da kein Image
+gebaut/neu gezogen wird, ist der Container in unter einer Sekunde wieder da.
+
+### Voller Rebuild (nur nötig bei Änderungen an `package.json`, `Dockerfile` oder `nginx.conf`)
+
+```bash
+cd /mnt/data/claude/BokuNoDevToys
+docker compose build --no-cache && docker compose up -d
+```
+
+Das baut das komplette Image neu (inkl. `npm ci`) und ist deutlich langsamer — für reine
+Tool-/Übersetzungs-Änderungen nicht nötig.
+
+### Danach committen
+
+```bash
 git add <dateien>
 git commit -m "Beschreibung"
 git push

@@ -5,6 +5,8 @@ services:
     ports:
       - "34291:80"
     restart: unless-stopped
+    volumes:
+      - ./build:/usr/share/nginx/html:ro
 
   builder:
     image: node:20-alpine

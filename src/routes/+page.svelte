@@ -10,6 +10,24 @@
 		database: '🗄️',
 		encoding: '🔤',
 	};
+
+	let query = $state('');
+
+	let filteredCategories = $derived.by(() => {
+		const q = query.trim().toLowerCase();
+		if (!q) return categories;
+		const tools = $t('tools');
+		return categories
+			.map((category) => ({
+				...category,
+				tools: category.tools.filter((tool) => {
+					const meta = tools[tool.id as keyof typeof tools];
+					const haystack = `${meta?.name ?? tool.id} ${meta?.description ?? ''}`.toLowerCase();
+					return haystack.includes(q);
+				}),
+			}))
+			.filter((category) => category.tools.length > 0);
+	});
 </script>
 
 <svelte:head>
@@ -42,8 +60,27 @@
 		<p class="mt-2 text-slate-300">{$t('home').subtitle}</p>
 	</div>
 
-	<div class="space-y-8">
-		{#each categories as category}
+	<div class="mb-8">
+		<label for="tool-search" class="sr-only">{$t('home').searchLabel}</label>
+		<div class="relative">
+			<svg class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z"/>
+			</svg>
+			<input
+				id="tool-search"
+				type="text"
+				bind:value={query}
+				placeholder={$t('home').searchPlaceholder}
+				class="w-full bg-slate-800 border border-slate-700 rounded-lg pl-11 pr-4 py-2.5 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm"
+			/>
+		</div>
+	</div>
+
+	<div class="space-y-8" aria-live="polite">
+		{#if filteredCategories.length === 0}
+			<p class="text-sm text-slate-300">{$t('home').noResults}</p>
+		{/if}
+		{#each filteredCategories as category}
 			{@const tools = $t('tools')}
 			{@const cats = $t('cats')}
 			<div>

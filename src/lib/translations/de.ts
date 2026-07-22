@@ -63,6 +63,9 @@ const de: Translations = {
   home: {
     subtitle: 'Eine Sammlung praktischer Tools für Entwickler — alles läuft direkt im Browser, keine Daten werden übertragen.',
     footer: 'Alle Tools laufen clientseitig im Browser. Keine API-Calls, keine Datenweitergabe.',
+    searchLabel: 'Tools durchsuchen',
+    searchPlaceholder: 'Tool suchen…',
+    noResults: 'Keine Tools gefunden.',
   },
   nav: {
     notFound: 'Tool nicht gefunden',
