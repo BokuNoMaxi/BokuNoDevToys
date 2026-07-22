@@ -13,19 +13,23 @@
 
 	// Accordion state — persisted in cookie
 	const COOKIE_KEY = 'sidebar_open_cats';
+	const FAVORITES_KEY = '__favorites__'; // reserved key, not a real category
+	function defaultOpenCats(): Set<string> {
+		return new Set([...categories.map(c => c.key), FAVORITES_KEY]);
+	}
 	function readCookie(): Set<string> {
-		if (typeof document === 'undefined') return new Set(categories.map(c => c.key));
+		if (typeof document === 'undefined') return defaultOpenCats();
 		const raw = document.cookie.split('; ').find(r => r.startsWith(COOKIE_KEY + '='));
-		if (!raw) return new Set(categories.map(c => c.key));
+		if (!raw) return defaultOpenCats();
 		try { return new Set(JSON.parse(decodeURIComponent(raw.split('=')[1]))); }
-		catch { return new Set(categories.map(c => c.key)); }
+		catch { return defaultOpenCats(); }
 	}
 	function writeCookie(open: Set<string>) {
 		const val = encodeURIComponent(JSON.stringify([...open]));
 		document.cookie = `${COOKIE_KEY}=${val};path=/;max-age=31536000;SameSite=Lax`;
 	}
 
-	let openCats = $state<Set<string>>(new Set(categories.map(c => c.key)));
+	let openCats = $state<Set<string>>(defaultOpenCats());
 	let navQuery = $state('');
 
 	onMount(() => {
@@ -124,27 +128,38 @@
 
 		<nav class="flex-1 overflow-y-auto py-2 px-2" aria-label="Tools" aria-live="polite">
 			{#if filteredFavoriteTools.length > 0}
+				{@const isFavoritesOpen = navQuery.trim() ? true : openCats.has(FAVORITES_KEY)}
 				<div class="mb-1">
-					<div class="w-full flex items-center gap-2 px-2 py-2">
+					<button
+						onclick={() => toggleCat(FAVORITES_KEY)}
+						aria-expanded={isFavoritesOpen}
+						class="w-full flex items-center gap-2 px-2 py-2 rounded-lg transition-colors group hover:bg-slate-800/40"
+					>
 						<span class="text-base leading-none text-amber-400" aria-hidden="true">★</span>
 						<span class="flex-1 text-left text-xs font-bold uppercase tracking-widest text-amber-400">
 							{$t('nav').favoritesTitle}
 						</span>
-					</div>
-					<div class="ml-3 mt-0.5 mb-2 border-l-2 border-amber-500/60 pl-2">
-						{#each filteredFavoriteTools as tool}
-							<a
-								href="/tools/{tool.id}"
-								onclick={() => sidebarOpen = false}
-								class="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm transition-colors mb-0.5
-									{currentTool() === tool.id
-										? 'bg-violet-700/20 text-violet-300 font-medium'
-										: 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/60'}"
-							>
-								{($t('tools') as Record<string, {name: string} | undefined>)[tool.id]?.name ?? tool.id}
-							</a>
-						{/each}
-					</div>
+						<svg class="w-3 h-3 shrink-0 transition-transform duration-200 {isFavoritesOpen ? 'rotate-180' : ''} text-slate-500 group-hover:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+						</svg>
+					</button>
+
+					{#if isFavoritesOpen}
+						<div class="ml-3 mt-0.5 mb-2 border-l-2 border-amber-500/60 pl-2">
+							{#each filteredFavoriteTools as tool}
+								<a
+									href="/tools/{tool.id}"
+									onclick={() => sidebarOpen = false}
+									class="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm transition-colors mb-0.5
+										{currentTool() === tool.id
+											? 'bg-violet-700/20 text-violet-300 font-medium'
+											: 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/60'}"
+								>
+									{($t('tools') as Record<string, {name: string} | undefined>)[tool.id]?.name ?? tool.id}
+								</a>
+							{/each}
+						</div>
+					{/if}
 				</div>
 			{/if}
 			{#if navQuery.trim() && filteredNavCategories.length === 0 && filteredFavoriteTools.length === 0}
