@@ -68,6 +68,9 @@ const en = {
   nav: {
     notFound: 'Tool not found',
     goToDatetime: 'Go to DateTime Converter',
+    searchLabel: 'Search tools',
+    searchPlaceholder: 'Search…',
+    noResults: 'No matches',
   },
   datetime: {
     currentTime: 'Current Time',

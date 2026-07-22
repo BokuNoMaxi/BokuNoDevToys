@@ -70,6 +70,9 @@ const de: Translations = {
   nav: {
     notFound: 'Tool nicht gefunden',
     goToDatetime: 'Zum DateTime Converter',
+    searchLabel: 'Tools durchsuchen',
+    searchPlaceholder: 'Suchen…',
+    noResults: 'Keine Treffer',
   },
   datetime: {
     currentTime: 'Aktuelle Zeit',

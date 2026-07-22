@@ -25,6 +25,7 @@
 	}
 
 	let openCats = $state<Set<string>>(new Set(categories.map(c => c.key)));
+	let navQuery = $state('');
 
 	onMount(() => {
 		lang.init();
@@ -37,6 +38,22 @@
 		openCats = next;
 		writeCookie(next);
 	}
+
+	let filteredNavCategories = $derived.by(() => {
+		const q = navQuery.trim().toLowerCase();
+		if (!q) return categories;
+		const tools = $t('tools');
+		return categories
+			.map((category) => ({
+				...category,
+				tools: category.tools.filter((tool) => {
+					const meta = tools[tool.id as keyof typeof tools];
+					const haystack = `${meta?.name ?? tool.id} ${meta?.description ?? ''}`.toLowerCase();
+					return haystack.includes(q);
+				}),
+			}))
+			.filter((category) => category.tools.length > 0);
+	});
 
 	function currentTool() {
 		return $page.params.tool ?? '';
@@ -78,9 +95,28 @@
 			</a>
 		</div>
 
-		<nav class="flex-1 overflow-y-auto py-2 px-2" aria-label="Tools">
-			{#each categories as category}
-				{@const isOpen = openCats.has(category.key)}
+		<div class="px-3 pt-3">
+			<label for="nav-search" class="sr-only">{$t('nav').searchLabel}</label>
+			<div class="relative">
+				<svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z"/>
+				</svg>
+				<input
+					id="nav-search"
+					type="text"
+					bind:value={navQuery}
+					placeholder={$t('nav').searchPlaceholder}
+					class="w-full bg-slate-800 border border-slate-700 rounded-lg pl-8 pr-3 py-1.5 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-xs"
+				/>
+			</div>
+		</div>
+
+		<nav class="flex-1 overflow-y-auto py-2 px-2" aria-label="Tools" aria-live="polite">
+			{#if filteredNavCategories.length === 0}
+				<p class="px-2 py-2 text-xs text-slate-300">{$t('nav').noResults}</p>
+			{/if}
+			{#each filteredNavCategories as category}
+				{@const isOpen = navQuery.trim() ? true : openCats.has(category.key)}
 				{@const hasActive = category.tools.some(t => t.id === currentTool())}
 				{@const meta = catMeta[category.key] ?? { icon: '•', color: 'text-slate-400', border: 'border-slate-500' }}
 				<div class="mb-1">
