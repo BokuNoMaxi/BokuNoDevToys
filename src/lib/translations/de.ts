@@ -714,13 +714,14 @@ const de: Translations = {
     explanationTitle: 'Erklärung',
     fillRequired: 'Bitte die Pflichtfelder ausfüllen.',
     rsync: {
-      sourceLegend: 'Quelle & Ziel',
+      description: 'Synchronisiert Dateien/Verzeichnisse effizient (nur Unterschiede werden übertragen) — lokal oder über SSH zu/von einem entfernten Server, ideal für Backups und Deployments.',
+      sourceLegend: 'Quelle',
+      destLegend: 'Ziel',
       optionsLegend: 'Optionen',
-      source: 'Quellpfad', sourcePlaceholder: '/pfad/zur/quelle',
-      remoteGroupLabel: 'Ziel', localLabel: 'Lokal', remoteLabel: 'Entfernt (SSH)',
-      destUser: 'Benutzer', destUserPlaceholder: 'benutzer',
-      destHost: 'Host', destHostPlaceholder: 'example.com',
-      destPath: 'Zielpfad', destPathPlaceholder: '/pfad/zum/ziel',
+      localLabel: 'Lokal', remoteLabel: 'Entfernt (SSH)',
+      path: 'Pfad', pathPlaceholderLocal: '/pfad/zur/quelle', pathPlaceholderRemote: '/pfad/auf/server',
+      user: 'Benutzer', userPlaceholder: 'benutzer',
+      host: 'Host', hostPlaceholder: 'example.com',
       archive: 'Archiv-Modus (-a)', verbose: 'Ausführlich (-v)', compress: 'Komprimieren (-z)',
       humanReadable: 'Lesbare Größenangaben (-h)',
       delete: 'Dateien im Ziel löschen, die in der Quelle fehlen (--delete)',
@@ -729,6 +730,7 @@ const de: Translations = {
       exclude: 'Ausschlussmuster', excludePlaceholder: '*.log',
     },
     ssh: {
+      description: 'Baut eine sichere Verbindung zu einem entfernten Server auf, um interaktiv zu arbeiten oder einen einzelnen Befehl remote auszuführen.',
       connectionLegend: 'Verbindung',
       optionsLegend: 'Optionen',
       user: 'Benutzer', userPlaceholder: 'benutzer',
@@ -739,6 +741,7 @@ const de: Translations = {
       allocateTty: 'Pseudo-Terminal erzwingen (-t)', forwardAgent: 'SSH-Agent weiterleiten (-A)',
     },
     diskUsage: {
+      description: 'Zeigt an, wie viel Speicherplatz Dateien/Verzeichnisse belegen (du) oder wie voll die eingehängten Dateisysteme sind (df) — hilfreich, um vollzulaufenden Speicher zu finden.',
       optionsLegend: 'Optionen',
       toolGroupLabel: 'Tool', duLabel: 'du', dfLabel: 'df',
       path: 'Pfad', pathPlaceholder: '.',
@@ -746,6 +749,7 @@ const de: Translations = {
       maxDepth: 'Maximale Tiefe', maxDepthPlaceholder: '2',
     },
     symlink: {
+      description: 'Erstellt einen Verweis (Link) auf eine bestehende Datei oder ein Verzeichnis, ohne die Daten zu duplizieren.',
       detailsLegend: 'Link-Details',
       typeGroupLabel: 'Link-Typ', softLabel: 'Symbolisch (-s)', hardLabel: 'Hardlink',
       target: 'Ziel (bestehende Datei/Verzeichnis)', targetPlaceholder: '/pfad/zum/ziel',
@@ -753,6 +757,7 @@ const de: Translations = {
       force: 'Bestehenden Link überschreiben (-f)',
     },
     tar: {
+      description: 'Bündelt mehrere Dateien/Verzeichnisse in ein einziges Archiv (optional komprimiert) oder entpackt ein bestehendes Archiv wieder.',
       archiveLegend: 'Archiv',
       filesLegend: 'Dateien',
       packModeGroupLabel: 'Modus', packLabel: 'Packen', unpackLabel: 'Entpacken',
@@ -764,6 +769,7 @@ const de: Translations = {
       verbose: 'Ausführlich (-v)',
     },
     find: {
+      description: 'Durchsucht ein Verzeichnis rekursiv nach Dateien anhand von Name, Typ, Größe oder Änderungsdatum und kann optional einen Befehl auf die Treffer anwenden.',
       locationLegend: 'Suchort',
       filtersLegend: 'Filter',
       actionLegend: 'Aktion',
@@ -777,6 +783,7 @@ const de: Translations = {
       execCmdHint: 'Wird als -exec BEFEHL {} \\; angehängt — Argumente bei Bedarf selbst in Anführungszeichen setzen.',
     },
     permissions: {
+      description: 'Ändert Zugriffsrechte (chmod) oder Besitzer/Gruppe (chown) einer Datei oder eines Verzeichnisses.',
       targetLegend: 'Ziel',
       chmodLegend: 'Chmod-Modus',
       chownLegend: 'Besitzer',
@@ -792,6 +799,7 @@ const de: Translations = {
       chownGroup: 'Gruppe (optional)', chownGroupPlaceholder: 'www-data',
     },
     grep: {
+      description: 'Durchsucht Dateien nach einem Textmuster und zeigt die passenden Zeilen an.',
       searchLegend: 'Suche',
       optionsLegend: 'Optionen',
       pattern: 'Muster', patternPlaceholder: 'TODO',
@@ -802,6 +810,7 @@ const de: Translations = {
       contextLinesPlaceholder: '3',
     },
     sshKeygen: {
+      description: 'Erzeugt ein neues SSH-Schlüsselpaar (privat + öffentlich) zur passwortlosen Authentifizierung gegenüber Servern.',
       optionsLegend: 'Optionen',
       keyTypeGroupLabel: 'Key-Typ', ed25519Label: 'ed25519', rsaLabel: 'RSA', ecdsaLabel: 'ECDSA',
       bits: 'Bits', bitsPlaceholder: '4096',

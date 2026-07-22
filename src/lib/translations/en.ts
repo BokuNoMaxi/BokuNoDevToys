@@ -712,13 +712,14 @@ const en = {
     explanationTitle: 'Explanation',
     fillRequired: 'Please fill in the required fields.',
     rsync: {
-      sourceLegend: 'Source & Destination',
+      description: 'Efficiently synchronizes files/directories (only transferring differences) — locally or over SSH to/from a remote server, ideal for backups and deployments.',
+      sourceLegend: 'Source',
+      destLegend: 'Destination',
       optionsLegend: 'Options',
-      source: 'Source path', sourcePlaceholder: '/path/to/source',
-      remoteGroupLabel: 'Destination', localLabel: 'Local', remoteLabel: 'Remote (SSH)',
-      destUser: 'User', destUserPlaceholder: 'user',
-      destHost: 'Host', destHostPlaceholder: 'example.com',
-      destPath: 'Destination path', destPathPlaceholder: '/path/to/destination',
+      localLabel: 'Local', remoteLabel: 'Remote (SSH)',
+      path: 'Path', pathPlaceholderLocal: '/path/to/source', pathPlaceholderRemote: '/path/on/server',
+      user: 'User', userPlaceholder: 'user',
+      host: 'Host', hostPlaceholder: 'example.com',
       archive: 'Archive mode (-a)', verbose: 'Verbose (-v)', compress: 'Compress (-z)',
       humanReadable: 'Human-readable sizes (-h)',
       delete: 'Delete files in destination that are gone from source (--delete)',
@@ -727,6 +728,7 @@ const en = {
       exclude: 'Exclude pattern', excludePlaceholder: '*.log',
     },
     ssh: {
+      description: 'Opens a secure connection to a remote server for interactive work or to run a single command remotely.',
       connectionLegend: 'Connection',
       optionsLegend: 'Options',
       user: 'User', userPlaceholder: 'user',
@@ -737,6 +739,7 @@ const en = {
       allocateTty: 'Force pseudo-terminal allocation (-t)', forwardAgent: 'Forward SSH agent (-A)',
     },
     diskUsage: {
+      description: 'Shows how much disk space files/directories use (du) or how full the mounted filesystems are (df) — useful for tracking down what\'s filling up storage.',
       optionsLegend: 'Options',
       toolGroupLabel: 'Tool', duLabel: 'du', dfLabel: 'df',
       path: 'Path', pathPlaceholder: '.',
@@ -744,6 +747,7 @@ const en = {
       maxDepth: 'Max depth', maxDepthPlaceholder: '2',
     },
     symlink: {
+      description: 'Creates a reference (link) to an existing file or directory without duplicating the data.',
       detailsLegend: 'Link Details',
       typeGroupLabel: 'Link type', softLabel: 'Symbolic (-s)', hardLabel: 'Hard link',
       target: 'Target (existing file/dir)', targetPlaceholder: '/path/to/target',
@@ -751,6 +755,7 @@ const en = {
       force: 'Overwrite existing link (-f)',
     },
     tar: {
+      description: 'Bundles multiple files/directories into a single archive (optionally compressed), or extracts an existing archive.',
       archiveLegend: 'Archive',
       filesLegend: 'Files',
       packModeGroupLabel: 'Mode', packLabel: 'Pack', unpackLabel: 'Unpack',
@@ -762,6 +767,7 @@ const en = {
       verbose: 'Verbose (-v)',
     },
     find: {
+      description: 'Recursively searches a directory for files by name, type, size or modification time, and can optionally run a command on the results.',
       locationLegend: 'Search Location',
       filtersLegend: 'Filters',
       actionLegend: 'Action',
@@ -775,6 +781,7 @@ const en = {
       execCmdHint: 'Appended as -exec CMD {} \\; — quote arguments yourself if needed.',
     },
     permissions: {
+      description: 'Changes access permissions (chmod) or the owner/group (chown) of a file or directory.',
       targetLegend: 'Target',
       chmodLegend: 'Chmod Mode',
       chownLegend: 'Owner',
@@ -790,6 +797,7 @@ const en = {
       chownGroup: 'Group (optional)', chownGroupPlaceholder: 'www-data',
     },
     grep: {
+      description: 'Searches files for a text pattern and shows the matching lines.',
       searchLegend: 'Search',
       optionsLegend: 'Options',
       pattern: 'Pattern', patternPlaceholder: 'TODO',
@@ -800,6 +808,7 @@ const en = {
       contextLinesPlaceholder: '3',
     },
     sshKeygen: {
+      description: 'Generates a new SSH key pair (private + public) for passwordless authentication to servers.',
       optionsLegend: 'Options',
       keyTypeGroupLabel: 'Key type', ed25519Label: 'ed25519', rsaLabel: 'RSA', ecdsaLabel: 'ECDSA',
       bits: 'Bits', bitsPlaceholder: '4096',

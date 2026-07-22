@@ -28,14 +28,22 @@
 
 	// --- rsync ---
 	let rsyncState = $state({
-		source: '', isRemote: false, destUser: '', destHost: '', destPath: '',
+		sourceIsRemote: false, sourceUser: '', sourceHost: '', sourcePath: '',
+		destIsRemote: false, destUser: '', destHost: '', destPath: '',
 		archive: true, verbose: true, compress: false, humanReadable: true,
 		delete: false, dryRun: false, useSsh: false, sshPort: '', exclude: '',
 	});
 
+	function rsyncEndpoint(isRemote: boolean, user: string, host: string, path: string): string {
+		return isRemote
+			? `${user.trim() ? escapeShell(user.trim()) + '@' : ''}${escapeShell(host.trim())}:${escapeShell(path.trim())}`
+			: escapeShell(path.trim());
+	}
+
 	function buildRsync(s: typeof rsyncState) {
-		const dest = s.isRemote ? s.destHost.trim() && s.destPath.trim() : s.destPath.trim();
-		if (!s.source.trim() || !dest) return { cmd: '', flags: [] as string[] };
+		const srcReady = s.sourceIsRemote ? s.sourceHost.trim() && s.sourcePath.trim() : s.sourcePath.trim();
+		const destReady = s.destIsRemote ? s.destHost.trim() && s.destPath.trim() : s.destPath.trim();
+		if (!srcReady || !destReady) return { cmd: '', flags: [] as string[] };
 		const flags: string[] = [];
 		const shortFlags: string[] = [];
 		if (s.archive) { shortFlags.push('a'); flags.push('archive'); }
@@ -48,12 +56,8 @@
 		if (s.dryRun) { parts.push('--dry-run'); flags.push('dryRun'); }
 		if (s.useSsh && s.sshPort.trim()) { parts.push(`-e "ssh -p ${digits(s.sshPort)}"`); flags.push('useSsh'); }
 		if (s.exclude.trim()) { parts.push(`--exclude=${escapeShell(s.exclude.trim())}`); flags.push('exclude'); }
-		parts.push(escapeShell(s.source.trim()));
-		parts.push(
-			s.isRemote
-				? `${s.destUser.trim() ? escapeShell(s.destUser.trim()) + '@' : ''}${escapeShell(s.destHost.trim())}:${escapeShell(s.destPath.trim())}`
-				: escapeShell(s.destPath.trim())
-		);
+		parts.push(rsyncEndpoint(s.sourceIsRemote, s.sourceUser, s.sourceHost, s.sourcePath));
+		parts.push(rsyncEndpoint(s.destIsRemote, s.destUser, s.destHost, s.destPath));
 		return { cmd: parts.join(' ').replace(/\s+/g, ' ').trim(), flags };
 	}
 
@@ -292,41 +296,71 @@
 	<div class="bg-slate-800 rounded-xl p-6 space-y-5">
 		{#if mode === 'rsync'}
 			{@const lc = $t('linuxCommandGenerator').rsync}
+			<p class="text-sm text-slate-300">{lc.description}</p>
 			<fieldset class="space-y-3">
 				<legend class="text-xs text-slate-300 font-medium uppercase">{lc.sourceLegend}</legend>
-				<div>
-					<label for="rsync-source" class="block text-xs text-slate-300 mb-1.5">{lc.source}</label>
-					<input id="rsync-source" type="text" bind:value={rsyncState.source} placeholder={lc.sourcePlaceholder}
-						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+				<div role="group" aria-label={lc.sourceLegend} class="flex gap-2">
+					<button onclick={() => rsyncState.sourceIsRemote = false} aria-pressed={!rsyncState.sourceIsRemote}
+						class="text-xs px-3 py-1.5 rounded-lg transition-colors {!rsyncState.sourceIsRemote ? 'bg-violet-700 text-white' : 'bg-slate-900 text-slate-300 hover:text-white'}">{lc.localLabel}</button>
+					<button onclick={() => rsyncState.sourceIsRemote = true} aria-pressed={rsyncState.sourceIsRemote}
+						class="text-xs px-3 py-1.5 rounded-lg transition-colors {rsyncState.sourceIsRemote ? 'bg-violet-700 text-white' : 'bg-slate-900 text-slate-300 hover:text-white'}">{lc.remoteLabel}</button>
 				</div>
-				<div role="group" aria-label={lc.remoteGroupLabel} class="flex gap-2">
-					<button onclick={() => rsyncState.isRemote = false} aria-pressed={!rsyncState.isRemote}
-						class="text-xs px-3 py-1.5 rounded-lg transition-colors {!rsyncState.isRemote ? 'bg-violet-700 text-white' : 'bg-slate-900 text-slate-300 hover:text-white'}">{lc.localLabel}</button>
-					<button onclick={() => rsyncState.isRemote = true} aria-pressed={rsyncState.isRemote}
-						class="text-xs px-3 py-1.5 rounded-lg transition-colors {rsyncState.isRemote ? 'bg-violet-700 text-white' : 'bg-slate-900 text-slate-300 hover:text-white'}">{lc.remoteLabel}</button>
-				</div>
-				{#if rsyncState.isRemote}
+				{#if rsyncState.sourceIsRemote}
 					<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
 						<div>
-							<label for="rsync-dest-user" class="block text-xs text-slate-300 mb-1.5">{lc.destUser}</label>
-							<input id="rsync-dest-user" type="text" bind:value={rsyncState.destUser} placeholder={lc.destUserPlaceholder}
+							<label for="rsync-source-user" class="block text-xs text-slate-300 mb-1.5">{lc.user}</label>
+							<input id="rsync-source-user" type="text" bind:value={rsyncState.sourceUser} placeholder={lc.userPlaceholder}
 								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 						</div>
 						<div>
-							<label for="rsync-dest-host" class="block text-xs text-slate-300 mb-1.5">{lc.destHost}</label>
-							<input id="rsync-dest-host" type="text" bind:value={rsyncState.destHost} placeholder={lc.destHostPlaceholder}
+							<label for="rsync-source-host" class="block text-xs text-slate-300 mb-1.5">{lc.host}</label>
+							<input id="rsync-source-host" type="text" bind:value={rsyncState.sourceHost} placeholder={lc.hostPlaceholder}
 								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 						</div>
 						<div>
-							<label for="rsync-dest-path" class="block text-xs text-slate-300 mb-1.5">{lc.destPath}</label>
-							<input id="rsync-dest-path" type="text" bind:value={rsyncState.destPath} placeholder={lc.destPathPlaceholder}
+							<label for="rsync-source-path" class="block text-xs text-slate-300 mb-1.5">{lc.path}</label>
+							<input id="rsync-source-path" type="text" bind:value={rsyncState.sourcePath} placeholder={lc.pathPlaceholderRemote}
 								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 						</div>
 					</div>
 				{:else}
 					<div>
-						<label for="rsync-dest-path-local" class="block text-xs text-slate-300 mb-1.5">{lc.destPath}</label>
-						<input id="rsync-dest-path-local" type="text" bind:value={rsyncState.destPath} placeholder={lc.destPathPlaceholder}
+						<label for="rsync-source-path-local" class="block text-xs text-slate-300 mb-1.5">{lc.path}</label>
+						<input id="rsync-source-path-local" type="text" bind:value={rsyncState.sourcePath} placeholder={lc.pathPlaceholderLocal}
+							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+					</div>
+				{/if}
+			</fieldset>
+			<fieldset class="space-y-3">
+				<legend class="text-xs text-slate-300 font-medium uppercase">{lc.destLegend}</legend>
+				<div role="group" aria-label={lc.destLegend} class="flex gap-2">
+					<button onclick={() => rsyncState.destIsRemote = false} aria-pressed={!rsyncState.destIsRemote}
+						class="text-xs px-3 py-1.5 rounded-lg transition-colors {!rsyncState.destIsRemote ? 'bg-violet-700 text-white' : 'bg-slate-900 text-slate-300 hover:text-white'}">{lc.localLabel}</button>
+					<button onclick={() => rsyncState.destIsRemote = true} aria-pressed={rsyncState.destIsRemote}
+						class="text-xs px-3 py-1.5 rounded-lg transition-colors {rsyncState.destIsRemote ? 'bg-violet-700 text-white' : 'bg-slate-900 text-slate-300 hover:text-white'}">{lc.remoteLabel}</button>
+				</div>
+				{#if rsyncState.destIsRemote}
+					<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+						<div>
+							<label for="rsync-dest-user" class="block text-xs text-slate-300 mb-1.5">{lc.user}</label>
+							<input id="rsync-dest-user" type="text" bind:value={rsyncState.destUser} placeholder={lc.userPlaceholder}
+								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+						</div>
+						<div>
+							<label for="rsync-dest-host" class="block text-xs text-slate-300 mb-1.5">{lc.host}</label>
+							<input id="rsync-dest-host" type="text" bind:value={rsyncState.destHost} placeholder={lc.hostPlaceholder}
+								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+						</div>
+						<div>
+							<label for="rsync-dest-path" class="block text-xs text-slate-300 mb-1.5">{lc.path}</label>
+							<input id="rsync-dest-path" type="text" bind:value={rsyncState.destPath} placeholder={lc.pathPlaceholderRemote}
+								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+						</div>
+					</div>
+				{:else}
+					<div>
+						<label for="rsync-dest-path-local" class="block text-xs text-slate-300 mb-1.5">{lc.path}</label>
+						<input id="rsync-dest-path-local" type="text" bind:value={rsyncState.destPath} placeholder={lc.pathPlaceholderLocal}
 							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 					</div>
 				{/if}
@@ -357,6 +391,7 @@
 			</fieldset>
 		{:else if mode === 'ssh'}
 			{@const lc = $t('linuxCommandGenerator').ssh}
+			<p class="text-sm text-slate-300">{lc.description}</p>
 			<fieldset class="space-y-3">
 				<legend class="text-xs text-slate-300 font-medium uppercase">{lc.connectionLegend}</legend>
 				<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -394,6 +429,7 @@
 			</fieldset>
 		{:else if mode === 'diskUsage'}
 			{@const lc = $t('linuxCommandGenerator').diskUsage}
+			<p class="text-sm text-slate-300">{lc.description}</p>
 			<fieldset class="space-y-3">
 				<legend class="text-xs text-slate-300 font-medium uppercase">{lc.optionsLegend}</legend>
 				<div role="group" aria-label={lc.toolGroupLabel} class="flex gap-2">
@@ -421,6 +457,7 @@
 			</fieldset>
 		{:else if mode === 'symlink'}
 			{@const lc = $t('linuxCommandGenerator').symlink}
+			<p class="text-sm text-slate-300">{lc.description}</p>
 			<fieldset class="space-y-3">
 				<legend class="text-xs text-slate-300 font-medium uppercase">{lc.detailsLegend}</legend>
 				<div role="group" aria-label={lc.typeGroupLabel} class="flex gap-2">
@@ -443,6 +480,7 @@
 			</fieldset>
 		{:else if mode === 'tar'}
 			{@const lc = $t('linuxCommandGenerator').tar}
+			<p class="text-sm text-slate-300">{lc.description}</p>
 			<fieldset class="space-y-3">
 				<legend class="text-xs text-slate-300 font-medium uppercase">{lc.archiveLegend}</legend>
 				<div role="group" aria-label={lc.packModeGroupLabel} class="flex gap-2">
@@ -483,6 +521,7 @@
 			</fieldset>
 		{:else if mode === 'find'}
 			{@const lc = $t('linuxCommandGenerator').find}
+			<p class="text-sm text-slate-300">{lc.description}</p>
 			<fieldset class="space-y-3">
 				<legend class="text-xs text-slate-300 font-medium uppercase">{lc.locationLegend}</legend>
 				<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -554,6 +593,7 @@
 			</fieldset>
 		{:else if mode === 'permissions'}
 			{@const lc = $t('linuxCommandGenerator').permissions}
+			<p class="text-sm text-slate-300">{lc.description}</p>
 			<fieldset class="space-y-3">
 				<legend class="text-xs text-slate-300 font-medium uppercase">{lc.targetLegend}</legend>
 				<div role="group" aria-label={lc.actionGroupLabel} class="flex gap-2">
@@ -633,6 +673,7 @@
 			{/if}
 		{:else if mode === 'grep'}
 			{@const lc = $t('linuxCommandGenerator').grep}
+			<p class="text-sm text-slate-300">{lc.description}</p>
 			<fieldset class="space-y-3">
 				<legend class="text-xs text-slate-300 font-medium uppercase">{lc.searchLegend}</legend>
 				<div>
@@ -675,6 +716,7 @@
 			</fieldset>
 		{:else if mode === 'sshKeygen'}
 			{@const lc = $t('linuxCommandGenerator').sshKeygen}
+			<p class="text-sm text-slate-300">{lc.description}</p>
 			<fieldset class="space-y-3">
 				<legend class="text-xs text-slate-300 font-medium uppercase">{lc.optionsLegend}</legend>
 				<div role="group" aria-label={lc.keyTypeGroupLabel} class="flex gap-2">
