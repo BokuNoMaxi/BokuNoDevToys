@@ -50,6 +50,7 @@
 	import SocialCardPreview from '$lib/tools/SocialCardPreview.svelte';
 	import RobotsSitemapValidator from '$lib/tools/RobotsSitemapValidator.svelte';
 	import KeywordDensityAnalyzer from '$lib/tools/KeywordDensityAnalyzer.svelte';
+	import LinuxCommandGenerator from '$lib/tools/LinuxCommandGenerator.svelte';
 
 	let toolId = $derived($page.params.tool ?? '');
 	let toolMeta = $derived(findTool(toolId));
@@ -196,6 +197,8 @@
 			<RobotsSitemapValidator />
 		{:else if toolId === 'keyword-density-analyzer'}
 			<KeywordDensityAnalyzer />
+		{:else if toolId === 'linux-command-generator'}
+			<LinuxCommandGenerator />
 		{/if}
 	</div>
 {:else}

@@ -66,6 +66,7 @@ export const categories: Category[] = [
 			{ id: 'cron-builder' },
 			{ id: 'curl-to-code' },
 			{ id: 'favicon-generator' },
+			{ id: 'linux-command-generator' },
 			{ id: 'mysql-export-import' },
 			{ id: 'qr-code-generator' },
 			{ id: 'random-int' },
