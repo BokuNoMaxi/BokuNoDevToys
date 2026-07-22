@@ -9,6 +9,8 @@
 		path: string;
 		status: number;
 		bytes: number;
+		userAgent: string;
+		botName: string | null;   // null = not recognized as a bot
 	}
 
 	interface DaySummary {
@@ -17,23 +19,86 @@
 		uniqueIPs: number;
 		errors: number;
 		bytes: number;
+		bots: number;
 		hourly: number[];               // [0..23]
 		statuses: Record<string, number>;
 		topPaths: [string, number][];
 		topIPs: [string, number][];
+		topBots: [string, number][];
 	}
+
+	type FilterMode = 'all' | 'bots' | 'humans';
 
 	let fileName = $state('');
 	let entries = $state<LogEntry[]>([]);
 	let days = $state<string[]>([]);
 	let selectedDay = $state('');
+	let filterMode = $state<FilterMode>('all');
 	let summary = $state<DaySummary | null>(null);
 	let parseError = $state('');
 	let dragging = $state(false);
 	let hoveredHour = $state<number | null>(null);
 
-	// Combined Log Format: IP - user [date] "METHOD path proto" status bytes ["ref" "ua"]
-	const LOG_RE = /^(\S+)\s+\S+\s+\S+\s+\[(\d{2}\/\w+\/\d{4}):(\d{2}):\d{2}:\d{2}\s[^\]]+\]\s+"(\S+)\s+([^"]*?)\s+\S+"\s+(\d+)\s+(\S+)/;
+	// Combined Log Format: IP - user [date] "METHOD path proto" status bytes "ref" "ua"
+	const LOG_RE = /^(\S+)\s+\S+\s+\S+\s+\[(\d{2}\/\w+\/\d{4}):(\d{2}):\d{2}:\d{2}\s[^\]]+\]\s+"(\S+)\s+([^"]*?)\s+\S+"\s+(\d+)\s+(\S+)(?:\s+"[^"]*"\s+"([^"]*)")?/;
+
+	// Known bot/crawler signatures, checked in order (most specific first).
+	// Falls back to a generic bot/crawler/spider heuristic if nothing matches.
+	const BOT_PATTERNS: [RegExp, string][] = [
+		[/googlebot/i, 'Googlebot'],
+		[/bingbot/i, 'Bingbot'],
+		[/slurp/i, 'Yahoo Slurp'],
+		[/duckduckbot/i, 'DuckDuckBot'],
+		[/baiduspider/i, 'Baiduspider'],
+		[/yandexbot/i, 'YandexBot'],
+		[/sogou/i, 'Sogou'],
+		[/exabot/i, 'Exabot'],
+		[/facebookexternalhit|facebot/i, 'Facebook Bot'],
+		[/twitterbot/i, 'Twitterbot'],
+		[/linkedinbot/i, 'LinkedInBot'],
+		[/whatsapp/i, 'WhatsApp'],
+		[/telegrambot/i, 'TelegramBot'],
+		[/discordbot/i, 'Discordbot'],
+		[/slackbot/i, 'Slackbot'],
+		[/ahrefsbot/i, 'AhrefsBot'],
+		[/semrushbot/i, 'SemrushBot'],
+		[/mj12bot/i, 'MJ12bot'],
+		[/dotbot/i, 'DotBot'],
+		[/blexbot/i, 'BLEXBot'],
+		[/petalbot/i, 'PetalBot'],
+		[/dataforseobot/i, 'DataForSeoBot'],
+		[/seznambot/i, 'SeznamBot'],
+		[/uptimerobot/i, 'UptimeRobot'],
+		[/pingdom/i, 'Pingdom'],
+		[/statuscake/i, 'StatusCake'],
+		[/applebot/i, 'Applebot'],
+		[/gptbot/i, 'GPTBot'],
+		[/chatgpt-user/i, 'ChatGPT-User'],
+		[/claudebot/i, 'ClaudeBot'],
+		[/anthropic-ai/i, 'Anthropic-AI'],
+		[/perplexitybot/i, 'PerplexityBot'],
+		[/ccbot/i, 'CCBot'],
+		[/bytespider/i, 'Bytespider'],
+		[/amazonbot/i, 'Amazonbot'],
+		[/curl\//i, 'curl'],
+		[/wget/i, 'Wget'],
+		[/python-requests|python-urllib/i, 'Python-Client'],
+		[/go-http-client/i, 'Go-http-client'],
+		[/okhttp/i, 'okhttp'],
+		[/scrapy/i, 'Scrapy'],
+		[/node-fetch|axios/i, 'Node-Client'],
+		[/postmanruntime/i, 'PostmanRuntime'],
+		[/headlesschrome|phantomjs/i, 'Headless Browser'],
+		[/bot|crawl|spider/i, 'Bot (generic)'],
+	];
+
+	function detectBot(userAgent: string): string | null {
+		if (!userAgent) return null;
+		for (const [re, name] of BOT_PATTERNS) {
+			if (re.test(userAgent)) return name;
+		}
+		return null;
+	}
 
 	function parseLog(text: string) {
 		const parsed: LogEntry[] = [];
@@ -42,6 +107,7 @@
 			if (!line.trim()) continue;
 			const m = line.match(LOG_RE);
 			if (!m) { unparsed++; continue; }
+			const userAgent = m[8] ?? '';
 			parsed.push({
 				ip: m[1],
 				date: m[2],
@@ -50,17 +116,24 @@
 				path: m[5].split('?')[0] || '/',
 				status: parseInt(m[6]),
 				bytes: m[7] === '-' ? 0 : parseInt(m[7]) || 0,
+				userAgent,
+				botName: detectBot(userAgent),
 			});
 		}
 		return { parsed, unparsed };
 	}
 
-	function buildSummary(date: string, data: LogEntry[]): DaySummary {
-		const dayEntries = data.filter(e => e.date === date);
+	function buildSummary(date: string, data: LogEntry[], filter: FilterMode): DaySummary {
+		let dayEntries = data.filter(e => e.date === date);
+		if (filter === 'bots') dayEntries = dayEntries.filter(e => e.botName !== null);
+		if (filter === 'humans') dayEntries = dayEntries.filter(e => e.botName === null);
+
 		const hourly = Array(24).fill(0);
 		const statuses: Record<string, number> = {};
 		const pathCount = new Map<string, number>();
 		const ipCount = new Map<string, number>();
+		const botCount = new Map<string, number>();
+		let bots = 0;
 
 		for (const e of dayEntries) {
 			hourly[e.hour]++;
@@ -68,21 +141,31 @@
 			statuses[sg] = (statuses[sg] ?? 0) + 1;
 			pathCount.set(e.path, (pathCount.get(e.path) ?? 0) + 1);
 			ipCount.set(e.ip, (ipCount.get(e.ip) ?? 0) + 1);
+			if (e.botName !== null) {
+				bots++;
+				botCount.set(e.botName, (botCount.get(e.botName) ?? 0) + 1);
+			}
 		}
 
 		const topPaths = [...pathCount.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10);
 		const topIPs = [...ipCount.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10);
+		const topBots = [...botCount.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10);
 		const uniqueIPs = ipCount.size;
 		const errors = dayEntries.filter(e => e.status >= 400).length;
 		const bytes = dayEntries.reduce((s, e) => s + e.bytes, 0);
 
-		return { date, total: dayEntries.length, uniqueIPs, errors, bytes, hourly, statuses, topPaths, topIPs };
+		return { date, total: dayEntries.length, uniqueIPs, errors, bytes, bots, hourly, statuses, topPaths, topIPs, topBots };
 	}
 
 	function selectDay(day: string) {
 		selectedDay = day;
-		summary = buildSummary(day, entries);
+		summary = buildSummary(day, entries, filterMode);
 		hoveredHour = null;
+	}
+
+	function setFilter(mode: FilterMode) {
+		filterMode = mode;
+		if (selectedDay) summary = buildSummary(selectedDay, entries, filterMode);
 	}
 
 	function loadFile(file: File) {
@@ -130,7 +213,7 @@
 	}
 
 	function clear() {
-		fileName = ''; entries = []; days = []; selectedDay = ''; summary = null; parseError = '';
+		fileName = ''; entries = []; days = []; selectedDay = ''; summary = null; parseError = ''; filterMode = 'all';
 	}
 
 	function formatBytes(b: number): string {
@@ -224,13 +307,33 @@
 			</div>
 		{/if}
 
+		<!-- Bot filter -->
+		<div class="bg-slate-800 rounded-xl p-6">
+			<div class="flex items-center gap-3" role="group" aria-label={$t('accessLog').filterGroupLabel}>
+				<span class="text-xs text-slate-300">{$t('accessLog').filterGroupLabel}</span>
+				{#each [
+					{ mode: 'all' as FilterMode, label: $t('accessLog').filterAll },
+					{ mode: 'bots' as FilterMode, label: $t('accessLog').filterBotsOnly },
+					{ mode: 'humans' as FilterMode, label: $t('accessLog').filterHumansOnly },
+				] as f}
+					<button
+						onclick={() => setFilter(f.mode)}
+						aria-pressed={filterMode === f.mode}
+						class="text-xs px-3 py-1.5 rounded-lg transition-colors
+							{filterMode === f.mode ? 'bg-violet-700 text-white' : 'bg-slate-700 text-slate-200 hover:bg-slate-600 hover:text-white'}"
+					>{f.label}</button>
+				{/each}
+			</div>
+		</div>
+
 		<!-- Stat tiles -->
-		<div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+		<div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
 			{#each [
 				{ label: $t('accessLog').totalRequests, value: summary.total.toLocaleString(), color: 'text-violet-300' },
 				{ label: $t('accessLog').uniqueIPs, value: summary.uniqueIPs.toLocaleString(), color: 'text-sky-400' },
 				{ label: $t('accessLog').errors, value: summary.errors.toLocaleString(), color: 'text-red-300' },
 				{ label: $t('accessLog').bytesTransferred, value: formatBytes(summary.bytes), color: 'text-emerald-400' },
+				{ label: $t('accessLog').bots, value: summary.bots.toLocaleString(), color: 'text-amber-400' },
 			] as tile}
 				<div class="bg-slate-800 rounded-xl p-4">
 					<p class="text-xs text-slate-300 mb-1">{tile.label}</p>
@@ -362,6 +465,29 @@
 					{/each}
 				</div>
 			</div>
+		</div>
+
+		<!-- Top bots -->
+		<div class="bg-slate-800 rounded-xl p-6">
+			<h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">{$t('accessLog').topBots}</h2>
+			{#if summary.topBots.length > 0}
+				<div class="space-y-2">
+					{#each summary.topBots as [name, count]}
+						{@const pct = summary.total > 0 ? count / summary.total * 100 : 0}
+						<div>
+							<div class="flex items-center justify-between mb-0.5">
+								<span class="text-xs font-mono text-slate-300 truncate max-w-[75%]" title={name}>{name}</span>
+								<span class="text-xs text-slate-400 shrink-0 ml-2">{count}</span>
+							</div>
+							<div class="h-1 bg-slate-700 rounded">
+								<div class="h-1 bg-amber-500 rounded" style="width: {pct}%"></div>
+							</div>
+						</div>
+					{/each}
+				</div>
+			{:else}
+				<p class="text-xs text-slate-300">{$t('accessLog').noBots}</p>
+			{/if}
 		</div>
 	{/if}
 </div>

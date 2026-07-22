@@ -617,6 +617,13 @@ const en = {
     statusCodes: 'Status Codes',
     topPaths: 'Top 10 Paths',
     topIPs: 'Top 10 IPs',
+    bots: 'Bot Requests',
+    topBots: 'Top 10 Bots',
+    noBots: 'No bots detected.',
+    filterGroupLabel: 'Filter by bots',
+    filterAll: 'All',
+    filterBotsOnly: 'Bots only',
+    filterHumansOnly: 'Humans only',
   },
   diffViewer: {
     original: 'Original',

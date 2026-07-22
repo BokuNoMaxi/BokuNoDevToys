@@ -619,6 +619,13 @@ const de: Translations = {
     statusCodes: 'Statuscodes',
     topPaths: 'Top 10 Pfade',
     topIPs: 'Top 10 IPs',
+    bots: 'Bot-Anfragen',
+    topBots: 'Top 10 Bots',
+    noBots: 'Keine Bots erkannt.',
+    filterGroupLabel: 'Nach Bots filtern',
+    filterAll: 'Alle',
+    filterBotsOnly: 'Nur Bots',
+    filterHumansOnly: 'Nur Menschen',
   },
   diffViewer: {
     original: 'Original',
