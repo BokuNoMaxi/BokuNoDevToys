@@ -71,6 +71,9 @@ const en = {
     searchLabel: 'Search tools',
     searchPlaceholder: 'Search…',
     noResults: 'No matches',
+    favoritesTitle: 'Favorites',
+    addFavorite: 'Add to favorites',
+    removeFavorite: 'Remove from favorites',
   },
   datetime: {
     currentTime: 'Current Time',

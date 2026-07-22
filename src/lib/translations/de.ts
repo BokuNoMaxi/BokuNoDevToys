@@ -73,6 +73,9 @@ const de: Translations = {
     searchLabel: 'Tools durchsuchen',
     searchPlaceholder: 'Suchen…',
     noResults: 'Keine Treffer',
+    favoritesTitle: 'Favoriten',
+    addFavorite: 'Zu Favoriten hinzufügen',
+    removeFavorite: 'Aus Favoriten entfernen',
   },
   datetime: {
     currentTime: 'Aktuelle Zeit',

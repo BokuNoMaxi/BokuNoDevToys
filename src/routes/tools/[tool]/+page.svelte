@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import { findTool } from '$lib/tools/config';
 	import { t } from '$lib/i18n';
+	import { favorites } from '$lib/favorites';
 	import DateTimeConverter from '$lib/tools/DateTimeConverter.svelte';
 	import TextGenerator from '$lib/tools/TextGenerator.svelte';
 	import HtpasswdGenerator from '$lib/tools/HtpasswdGenerator.svelte';
@@ -58,6 +59,13 @@
 	let pageTitle = $derived(toolTrans ? `${toolTrans.name} — BokuNoDevToys` : 'BokuNoDevToys');
 	let pageDesc = $derived(toolTrans?.description ?? '');
 	let canonical = $derived(`${SITE}/tools/${toolId}`);
+
+	// Refresh the favorites cookie's lifetime on every tool visit, so favorites
+	// only get lost through an explicit cookie clear, not inactivity.
+	$effect(() => {
+		toolId;
+		favorites.touch();
+	});
 </script>
 
 <svelte:head>
@@ -80,9 +88,18 @@
 
 {#if toolMeta}
 	<div class="max-w-4xl mx-auto">
-		<div class="mb-6">
-			<h1 class="text-2xl font-bold text-slate-100">{toolTrans?.name ?? toolId}</h1>
-			<p class="text-slate-500 mt-1 text-sm">{toolTrans?.description ?? ''}</p>
+		<div class="mb-6 flex items-start justify-between gap-3">
+			<div>
+				<h1 class="text-2xl font-bold text-slate-100">{toolTrans?.name ?? toolId}</h1>
+				<p class="text-slate-500 mt-1 text-sm">{toolTrans?.description ?? ''}</p>
+			</div>
+			<button
+				onclick={() => favorites.toggle(toolId)}
+				aria-pressed={$favorites.has(toolId)}
+				aria-label={$favorites.has(toolId) ? $t('nav').removeFavorite : $t('nav').addFavorite}
+				class="shrink-0 text-2xl leading-none transition-colors
+					{$favorites.has(toolId) ? 'text-amber-400' : 'text-slate-300 hover:text-amber-400'}"
+			>{$favorites.has(toolId) ? '★' : '☆'}</button>
 		</div>
 
 		{#if toolId === 'datetime'}

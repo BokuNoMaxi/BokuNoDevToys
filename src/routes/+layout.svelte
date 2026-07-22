@@ -4,6 +4,7 @@
 	import { page } from '$app/stores';
 	import { categories } from '$lib/tools/config';
 	import { lang, t } from '$lib/i18n';
+	import { favorites } from '$lib/favorites';
 	import favicon from '$lib/assets/favicon.svg';
 	import logo from '$lib/assets/logo.svg';
 
@@ -30,6 +31,7 @@
 	onMount(() => {
 		lang.init();
 		openCats = readCookie();
+		favorites.init();
 	});
 
 	function toggleCat(key: string) {
@@ -39,20 +41,29 @@
 		writeCookie(next);
 	}
 
+	function matchesQuery(toolId: string, q: string): boolean {
+		if (!q) return true;
+		const tools = $t('tools');
+		const meta = tools[toolId as keyof typeof tools];
+		const haystack = `${meta?.name ?? toolId} ${meta?.description ?? ''}`.toLowerCase();
+		return haystack.includes(q);
+	}
+
 	let filteredNavCategories = $derived.by(() => {
 		const q = navQuery.trim().toLowerCase();
 		if (!q) return categories;
-		const tools = $t('tools');
 		return categories
 			.map((category) => ({
 				...category,
-				tools: category.tools.filter((tool) => {
-					const meta = tools[tool.id as keyof typeof tools];
-					const haystack = `${meta?.name ?? tool.id} ${meta?.description ?? ''}`.toLowerCase();
-					return haystack.includes(q);
-				}),
+				tools: category.tools.filter((tool) => matchesQuery(tool.id, q)),
 			}))
 			.filter((category) => category.tools.length > 0);
+	});
+
+	let filteredFavoriteTools = $derived.by(() => {
+		const q = navQuery.trim().toLowerCase();
+		const allTools = categories.flatMap((c) => c.tools);
+		return allTools.filter((tool) => $favorites.has(tool.id) && matchesQuery(tool.id, q));
 	});
 
 	function currentTool() {
@@ -112,7 +123,31 @@
 		</div>
 
 		<nav class="flex-1 overflow-y-auto py-2 px-2" aria-label="Tools" aria-live="polite">
-			{#if filteredNavCategories.length === 0}
+			{#if filteredFavoriteTools.length > 0}
+				<div class="mb-1">
+					<div class="w-full flex items-center gap-2 px-2 py-2">
+						<span class="text-base leading-none text-amber-400" aria-hidden="true">★</span>
+						<span class="flex-1 text-left text-xs font-bold uppercase tracking-widest text-amber-400">
+							{$t('nav').favoritesTitle}
+						</span>
+					</div>
+					<div class="ml-3 mt-0.5 mb-2 border-l-2 border-amber-500/60 pl-2">
+						{#each filteredFavoriteTools as tool}
+							<a
+								href="/tools/{tool.id}"
+								onclick={() => sidebarOpen = false}
+								class="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm transition-colors mb-0.5
+									{currentTool() === tool.id
+										? 'bg-violet-700/20 text-violet-300 font-medium'
+										: 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/60'}"
+							>
+								{($t('tools') as Record<string, {name: string} | undefined>)[tool.id]?.name ?? tool.id}
+							</a>
+						{/each}
+					</div>
+				</div>
+			{/if}
+			{#if navQuery.trim() && filteredNavCategories.length === 0 && filteredFavoriteTools.length === 0}
 				<p class="px-2 py-2 text-xs text-slate-300">{$t('nav').noResults}</p>
 			{/if}
 			{#each filteredNavCategories as category}
