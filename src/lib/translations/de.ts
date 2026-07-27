@@ -934,6 +934,8 @@ const de: Translations = {
     empty: 'Noch keine Daten.',
     sortAsc: 'Aufsteigend sortieren',
     sortDesc: 'Absteigend sortieren',
+    popout: 'In Fenster öffnen',
+    export: 'Als CSV exportieren',
   },
 };
 

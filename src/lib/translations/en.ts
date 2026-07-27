@@ -932,6 +932,8 @@ const en = {
     empty: 'No data yet.',
     sortAsc: 'Sort ascending',
     sortDesc: 'Sort descending',
+    popout: 'Open in window',
+    export: 'Export as CSV',
   },
 } as const;
 

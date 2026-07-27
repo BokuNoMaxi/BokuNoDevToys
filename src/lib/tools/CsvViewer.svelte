@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
+	import { openPopoutHtml } from '$lib/popout';
 
 	type Delim = ',' | ';' | '\t' | '|' | 'auto';
 	type Enclosure = '"' | "'" | 'none' | 'auto';
@@ -118,6 +119,46 @@
 	const delimLabel = (d: string) => ({ ',': 'Komma (,)', ';': 'Semikolon (;)', '\t': 'Tab', '|': 'Pipe (|)', 'auto': $t('csvViewer').auto })[d] ?? d;
 	const enclLabel  = (e: string) => ({ '"': 'Anführungszeichen (")', "'": "Apostroph (')", 'none': $t('csvViewer').none, 'auto': $t('csvViewer').auto })[e] ?? e;
 	const escLabel   = (e: string) => ({ '\\': 'Backslash (\\)', '"': 'Verdopplung (")', 'none': $t('csvViewer').none, 'auto': $t('csvViewer').auto })[e] ?? e;
+
+	function escapeHtml(s: string): string {
+		return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+	}
+
+	const POPOUT_CSV_CSS = `
+		table { border-collapse: collapse; width: max-content; min-width: 100%; }
+		th, td { padding: 0.4rem 0.85rem; border: 1px solid #e2e8f0; text-align: left; white-space: nowrap; }
+		th { background: #f1f5f9; position: sticky; top: 0; }
+		tr:nth-child(even) td { background: #f8fafc; }
+	`;
+
+	function popoutCsv() {
+		if (!data) return;
+		const headers = data.headers;
+		const thead = `<tr>${headers.map(h => `<th>${escapeHtml(h)}</th>`).join('')}</tr>`;
+		const tbody = displayRows
+			.map(row => `<tr>${headers.map((_, ci) => `<td>${escapeHtml(row[ci] ?? '')}</td>`).join('')}</tr>`)
+			.join('');
+		openPopoutHtml(fileName || $t('csvViewer').input, `<table><thead>${thead}</thead><tbody>${tbody}</tbody></table>`, POPOUT_CSV_CSS);
+	}
+
+	function csvEscape(v: string): string {
+		return /[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v;
+	}
+
+	function exportCsv() {
+		if (!data) return;
+		const headers = data.headers;
+		const lines = [headers, ...displayRows].map((row) =>
+			headers.map((_, ci) => csvEscape(row[ci] ?? '')).join(',')
+		);
+		const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = (fileName ? fileName.replace(/\.[^.]+$/, '') : 'export') + '.csv';
+		a.click();
+		URL.revokeObjectURL(url);
+	}
 </script>
 
 <div class="space-y-4">
@@ -222,6 +263,10 @@
 				{#if data.rows.length > 500}
 					<span class="text-xs text-amber-400">{$t('csvViewer').truncated}</span>
 				{/if}
+				<div class="ml-auto flex gap-4">
+					<button onclick={exportCsv} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">{$t('csvViewer').export}</button>
+					<button onclick={popoutCsv} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">{$t('csvViewer').popout}</button>
+				</div>
 			</div>
 			<div class="overflow-x-auto">
 				<table class="w-full text-xs border-collapse">
