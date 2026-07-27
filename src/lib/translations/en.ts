@@ -934,6 +934,10 @@ const en = {
     sortDesc: 'Sort descending',
     popout: 'Open in window',
     export: 'Export as CSV',
+    columnsVisible: 'Visible columns',
+    showAll: 'Show all',
+    hideAll: 'Hide all',
+    noColumnsVisible: 'No columns visible. Please select at least one column.',
   },
 } as const;
 

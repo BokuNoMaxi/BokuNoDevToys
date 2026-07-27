@@ -12,6 +12,7 @@
 	let parsed = $state(false);
 	let sortCol = $state(-1);
 	let sortAsc = $state(true);
+	let hiddenCols = $state<Set<number>>(new Set());
 
 	// Options
 	let optDelim     = $state<Delim>('auto');
@@ -74,10 +75,17 @@
 		data = { headers: rows[0], rows: rows.slice(1), delimiter: delim, enclosure: encl };
 		sortCol = -1;
 		sortAsc = true;
+		hiddenCols = new Set();
 		parsed = true;
 	}
 
-	function clear() { raw = ''; fileName = ''; data = null; parsed = false; sortCol = -1; }
+	function clear() { raw = ''; fileName = ''; data = null; parsed = false; sortCol = -1; hiddenCols = new Set(); }
+
+	function toggleCol(ci: number) {
+		const next = new Set(hiddenCols);
+		if (next.has(ci)) next.delete(ci); else next.add(ci);
+		hiddenCols = next;
+	}
 
 	function loadFile(file: File) {
 		fileName = file.name;
@@ -116,6 +124,11 @@
 		return rows;
 	});
 
+	let visibleColIndices = $derived.by(() => {
+		if (!data) return [];
+		return data.headers.map((_, ci) => ci).filter((ci) => !hiddenCols.has(ci));
+	});
+
 	const delimLabel = (d: string) => ({ ',': 'Komma (,)', ';': 'Semikolon (;)', '\t': 'Tab', '|': 'Pipe (|)', 'auto': $t('csvViewer').auto })[d] ?? d;
 	const enclLabel  = (e: string) => ({ '"': 'Anführungszeichen (")', "'": "Apostroph (')", 'none': $t('csvViewer').none, 'auto': $t('csvViewer').auto })[e] ?? e;
 	const escLabel   = (e: string) => ({ '\\': 'Backslash (\\)', '"': 'Verdopplung (")', 'none': $t('csvViewer').none, 'auto': $t('csvViewer').auto })[e] ?? e;
@@ -133,10 +146,10 @@
 
 	function popoutCsv() {
 		if (!data) return;
-		const headers = data.headers;
-		const thead = `<tr>${headers.map(h => `<th>${escapeHtml(h)}</th>`).join('')}</tr>`;
+		const cols = visibleColIndices;
+		const thead = `<tr>${cols.map(ci => `<th>${escapeHtml(data!.headers[ci])}</th>`).join('')}</tr>`;
 		const tbody = displayRows
-			.map(row => `<tr>${headers.map((_, ci) => `<td>${escapeHtml(row[ci] ?? '')}</td>`).join('')}</tr>`)
+			.map(row => `<tr>${cols.map(ci => `<td>${escapeHtml(row[ci] ?? '')}</td>`).join('')}</tr>`)
 			.join('');
 		openPopoutHtml(fileName || $t('csvViewer').input, `<table><thead>${thead}</thead><tbody>${tbody}</tbody></table>`, POPOUT_CSV_CSS);
 	}
@@ -147,10 +160,11 @@
 
 	function exportCsv() {
 		if (!data) return;
-		const headers = data.headers;
-		const lines = [headers, ...displayRows].map((row) =>
-			headers.map((_, ci) => csvEscape(row[ci] ?? '')).join(',')
-		);
+		const cols = visibleColIndices;
+		const lines = [
+			cols.map((ci) => csvEscape(data!.headers[ci])).join(','),
+			...displayRows.map((row) => cols.map((ci) => csvEscape(row[ci] ?? '')).join(',')),
+		];
 		const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
 		const url = URL.createObjectURL(blob);
 		const a = document.createElement('a');
@@ -268,17 +282,37 @@
 					<button onclick={popoutCsv} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">{$t('csvViewer').popout}</button>
 				</div>
 			</div>
+
+			<fieldset class="mb-4 pb-4 border-b border-slate-700">
+				<legend class="text-xs text-slate-300 font-medium uppercase mb-2">{$t('csvViewer').columnsVisible}</legend>
+				<div class="flex gap-3 mb-2">
+					<button onclick={() => hiddenCols = new Set()} class="text-xs text-violet-300 hover:text-violet-200 transition-colors">{$t('csvViewer').showAll}</button>
+					<button onclick={() => hiddenCols = new Set(data!.headers.map((_, ci) => ci))} class="text-xs text-violet-300 hover:text-violet-200 transition-colors">{$t('csvViewer').hideAll}</button>
+				</div>
+				<div class="flex flex-wrap gap-x-4 gap-y-1.5 max-h-32 overflow-y-auto">
+					{#each data.headers as header, ci}
+						<label class="flex items-center gap-1.5 text-xs text-slate-300">
+							<input type="checkbox" checked={!hiddenCols.has(ci)} onchange={() => toggleCol(ci)} class="rounded border-slate-600 bg-slate-900" />
+							<span class="font-mono">{header}</span>
+						</label>
+					{/each}
+				</div>
+			</fieldset>
+
+			{#if visibleColIndices.length === 0}
+				<p class="text-sm text-slate-300">{$t('csvViewer').noColumnsVisible}</p>
+			{:else}
 			<div class="overflow-x-auto">
 				<table class="w-full text-xs border-collapse">
 					<thead>
 						<tr class="border-b border-slate-700">
-							{#each data.headers as header, ci}
+							{#each visibleColIndices as ci}
 								<th class="text-left py-2 px-3 text-slate-400 font-semibold whitespace-nowrap">
 									<button
 										onclick={() => toggleSort(ci)}
 										class="flex items-center gap-1 hover:text-slate-200 transition-colors"
 									>
-										{header}
+										{data.headers[ci]}
 										{#if sortCol === ci}
 											<span class="text-violet-400">{sortAsc ? '↑' : '↓'}</span>
 										{:else}
@@ -292,7 +326,7 @@
 					<tbody>
 						{#each displayRows as row, ri}
 							<tr class="border-b border-slate-800/50 {ri % 2 === 0 ? '' : 'bg-slate-900/20'} hover:bg-slate-700/20">
-								{#each data.headers as _, ci}
+								{#each visibleColIndices as ci}
 									<td class="py-1.5 px-3 text-slate-300 font-mono max-w-xs truncate" title={row[ci] ?? ''}>{row[ci] ?? ''}</td>
 								{/each}
 							</tr>
@@ -300,6 +334,7 @@
 					</tbody>
 				</table>
 			</div>
+			{/if}
 		</div>
 	{:else if parsed}
 		<div class="bg-slate-800 rounded-xl p-6">

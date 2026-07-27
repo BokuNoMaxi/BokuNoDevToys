@@ -936,6 +936,10 @@ const de: Translations = {
     sortDesc: 'Absteigend sortieren',
     popout: 'In Fenster öffnen',
     export: 'Als CSV exportieren',
+    columnsVisible: 'Sichtbare Spalten',
+    showAll: 'Alle anzeigen',
+    hideAll: 'Alle ausblenden',
+    noColumnsVisible: 'Keine Spalten sichtbar. Bitte mindestens eine Spalte auswählen.',
   },
 };
 
