@@ -51,6 +51,7 @@
 	import RobotsSitemapValidator from '$lib/tools/RobotsSitemapValidator.svelte';
 	import KeywordDensityAnalyzer from '$lib/tools/KeywordDensityAnalyzer.svelte';
 	import LinuxCommandGenerator from '$lib/tools/LinuxCommandGenerator.svelte';
+	import YtDlpDownloader from '$lib/tools/YtDlpDownloader.svelte';
 
 	let toolId = $derived($page.params.tool ?? '');
 	let toolMeta = $derived(findTool(toolId));
@@ -199,6 +200,8 @@
 			<KeywordDensityAnalyzer />
 		{:else if toolId === 'linux-command-generator'}
 			<LinuxCommandGenerator />
+		{:else if toolId === 'yt-dlp'}
+			<YtDlpDownloader />
 		{/if}
 	</div>
 {:else}

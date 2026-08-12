@@ -83,6 +83,7 @@
 		analyzer:  { icon: '🔍', color: 'text-cyan-400',    border: 'border-cyan-500' },
 		frontend:  { icon: '🖼️', color: 'text-pink-400',    border: 'border-pink-500' },
 		seo:       { icon: '📈', color: 'text-lime-400',    border: 'border-lime-500' },
+		scraper:   { icon: '⬇️', color: 'text-orange-400',  border: 'border-orange-500' },
 	};
 </script>
 

@@ -74,6 +74,12 @@ export const categories: Category[] = [
 		]
 	},
 	{
+		key: 'scraper',
+		tools: [
+			{ id: 'yt-dlp' },
+		]
+	},
+	{
 		key: 'security',
 		tools: [
 			{ id: 'hash-generator' },
