@@ -23,14 +23,14 @@
 	</section>
 
 	<section class="mb-8">
-		<h2 class="text-xl font-semibold text-violet-300 mb-4">{$t('impressum').license}</h2>
-		<p class="text-slate-300 mb-4">
-			{$t('impressum').licenseText}
-		</p>
+		<h2 class="text-xl font-semibold text-violet-300 mb-4">{$t('impressum').sourceCode}</h2>
 		<p class="text-slate-300 mb-4">
 			<a href="https://github.com/BokuNoMaxi/BokuNoDevToys" target="_blank" rel="noopener noreferrer" class="text-violet-400 hover:text-violet-300 underline">
-				{$t('impressum').sourceLink}
+				{$t('impressum').sourceLinkText}
 			</a>
+		</p>
+		<p class="text-slate-300 text-sm">
+			BokuNoDevToys is released under the GNU Affero General Public License v3.0 (AGPL-3.0-only). If you operate this application as a network service, you must provide access to the source code to all users.
 		</p>
 	</section>
 
