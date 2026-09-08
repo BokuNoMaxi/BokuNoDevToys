@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Copyright (C) 2026 Markus Ketterer
+
 import { writable } from 'svelte/store';
 
 const COOKIE_KEY = 'devtoys_favorites';

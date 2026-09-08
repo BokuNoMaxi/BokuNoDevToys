@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Copyright (C) 2026 Markus Ketterer
+
 // Shared helper for fetching third-party pages client-side via our own
 // self-hosted CORS proxy (corsproxy.bokunocompany.at), API-compatible with
 // allorigins.win. Requests are still retried with a short backoff to absorb

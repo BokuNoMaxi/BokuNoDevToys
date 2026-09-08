@@ -995,6 +995,23 @@ const en = {
     hideAll: 'Hide all',
     noColumnsVisible: 'No columns visible. Please select at least one column.',
   },
+  footer: {
+    sourceCode: 'Source code (AGPL-3.0) on GitHub',
+  },
+  impressum: {
+    title: 'Legal Notice',
+    description: 'Legal information and imprint for BokuNoDevToys',
+    responsible: 'Responsible Party',
+    license: 'License',
+    licenseText: 'BokuNoDevToys is released under the GNU Affero General Public License v3.0 (AGPL-3.0-only). If you operate this application as a network service, you must provide access to the source code to all users.',
+    sourceLink: 'View source code on GitHub',
+    liability: 'Liability',
+    liabilityText: 'The information and tools provided on this website are offered as-is without any warranty. The operator assumes no liability for damages resulting from the use or non-use of the provided tools, data, or services.',
+    thirdParty: 'Third-Party Content',
+    thirdPartyText: 'This application may link to external websites. The operator is not responsible for their content, accuracy, or compliance with laws.',
+    contact: 'Contact & Questions',
+    contactText: 'For license inquiries, alternative licensing terms, or other questions regarding BokuNoDevToys, please visit the project on GitHub.',
+  },
 } as const;
 
 export default en;

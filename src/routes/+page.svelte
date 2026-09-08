@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: AGPL-3.0-only
+     Copyright (C) 2026 Markus Ketterer -->
 <script lang="ts">
 	import { categories } from '$lib/tools/config';
 	import { t } from '$lib/i18n';
