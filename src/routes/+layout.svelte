@@ -241,6 +241,8 @@
 		</div>
 		<p class="px-5 pb-4 text-xs text-slate-500 text-center">
 			BokuNoDevToys &copy; {new Date().getFullYear()} • <span title="Git commit hash" class="font-mono">{commitHash}</span>
+			<br />
+			<a href="/impressum" class="text-slate-400 hover:text-slate-300 transition-colors">Impressum / Legal</a>
 		</p>
 	</aside>
 

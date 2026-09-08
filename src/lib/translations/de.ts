@@ -1000,6 +1000,20 @@ const de: Translations = {
   footer: {
     sourceCode: 'Quellcode (AGPL-3.0) auf GitHub',
   },
+  impressum: {
+    title: 'Impressum',
+    description: 'Rechtliche Informationen und Impressum für BokuNoDevToys',
+    responsible: 'Verantwortliche Person',
+    license: 'Lizenz',
+    licenseText: 'BokuNoDevToys wird unter der GNU Affero General Public License v3.0 (AGPL-3.0-only) veröffentlicht. Wenn Sie diese Anwendung als Netzwerkservice betreiben, müssen Sie allen Nutzern Zugriff auf den Quellcode bieten.',
+    sourceLink: 'Quellcode auf GitHub ansehen',
+    liability: 'Haftungsausschluss',
+    liabilityText: 'Die auf dieser Webseite bereitgestellten Informationen und Tools werden ohne jegliche Gewährleistung angeboten. Der Betreiber übernimmt keine Haftung für Schäden, die sich aus der Nutzung oder Nichtnutzung der bereitgestellten Tools, Daten oder Services ergeben.',
+    thirdParty: 'Inhalte von Dritten',
+    thirdPartyText: 'Diese Anwendung kann auf externe Webseiten verlinken. Der Betreiber ist nicht verantwortlich für deren Inhalte, Richtigkeit oder rechtliche Konformität.',
+    contact: 'Kontakt & Fragen',
+    contactText: 'Für Lizenzfragen, alternative Lizenzbedingungen oder andere Fragen zu BokuNoDevToys besuchen Sie bitte das Projekt auf GitHub.',
+  },
 };
 
 export default de;
