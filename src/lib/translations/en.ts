@@ -995,6 +995,9 @@ const en = {
     hideAll: 'Hide all',
     noColumnsVisible: 'No columns visible. Please select at least one column.',
   },
+  footer: {
+    sourceCode: 'Source code (AGPL-3.0) on GitHub',
+  },
 } as const;
 
 export default en;

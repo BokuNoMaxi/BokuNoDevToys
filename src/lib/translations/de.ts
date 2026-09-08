@@ -997,6 +997,9 @@ const de: Translations = {
     hideAll: 'Alle ausblenden',
     noColumnsVisible: 'Keine Spalten sichtbar. Bitte mindestens eine Spalte auswählen.',
   },
+  footer: {
+    sourceCode: 'Quellcode (AGPL-3.0) auf GitHub',
+  },
 };
 
 export default de;
