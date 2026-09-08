@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Copyright (C) 2026 Markus Ketterer
+
 import { writable, derived } from 'svelte/store';
 import en from './translations/en';
 import de from './translations/de';

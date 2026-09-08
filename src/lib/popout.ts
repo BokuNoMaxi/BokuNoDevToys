@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Copyright (C) 2026 Markus Ketterer
+
 // Opens tool output in a separate browser window/tab for easier reading.
 // Both helpers build the popout document via DOM APIs (never document.write
 // with interpolated strings) so plain text content can't be interpreted as
