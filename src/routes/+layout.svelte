@@ -7,6 +7,7 @@
 	import { categories } from '$lib/tools/config';
 	import { lang, t } from '$lib/i18n';
 	import { favorites } from '$lib/favorites';
+	import { commitHash } from '$lib/build';
 	import favicon from '$lib/assets/favicon.svg';
 	import logo from '$lib/assets/logo.svg';
 
@@ -238,7 +239,9 @@
 				>DE</button>
 			</div>
 		</div>
-		<p class="px-5 pb-4 text-xs text-slate-400 text-center">BokuNoDevToys &copy; {new Date().getFullYear()}</p>
+		<p class="px-5 pb-4 text-xs text-slate-500 text-center">
+			BokuNoDevToys &copy; {new Date().getFullYear()} • <span title="Git commit hash" class="font-mono">{commitHash}</span>
+		</p>
 	</aside>
 
 	<div class="flex-1 flex flex-col min-w-0">

@@ -1,7 +1,10 @@
 services:
   devtoys:
     container_name: devtoys
-    build: .
+    build:
+      context: .
+      args:
+        COMMIT_HASH: ${COMMIT_HASH:-dev}
     ports:
       - "34291:80"
     restart: unless-stopped
