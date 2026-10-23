@@ -1,0 +1,23 @@
+{
+  "name": "devtoys-mcp-server",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "MCP server for BokuNoDevToys - exposes all dev tools via Claude",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4",
+    "marked": "^18.0.6",
+    "sql-formatter": "^15.8.2",
+    "dompurify": "^3.4.11",
+    "bcryptjs": "^3.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
