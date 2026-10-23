@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
+	import { valueRows, pickRandom, shuffleRows } from '$lib/core/random';
 
 	let valuesText = $state('');
 	let result = $state('');
@@ -9,26 +10,17 @@
 	let copiedShuffle = $state(false);
 
 	function rows() {
-		return valuesText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+		return valueRows(valuesText);
 	}
 
 	function isMultiCol() {
 		return rows().some(r => r.includes(':'));
 	}
 
-	function shuffle<T>(arr: T[]): T[] {
-		const a = [...arr];
-		for (let i = a.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			[a[i], a[j]] = [a[j], a[i]];
-		}
-		return a;
-	}
-
 	function pick() {
 		const list = rows();
 		if (list.length === 0) return;
-		const picked = list[Math.floor(Math.random() * list.length)];
+		const picked = pickRandom(list);
 		result = picked;
 		shuffleResult = [];
 		history = [picked, ...history].slice(0, 10);
@@ -38,19 +30,7 @@
 	function doShuffle() {
 		const list = rows();
 		if (list.length === 0) return;
-
-		if (isMultiCol()) {
-			// Split each row into columns, shuffle each column independently
-			const split = list.map(r => r.split(':').map(c => c.trim()));
-			const colCount = Math.max(...split.map(r => r.length));
-			const cols = Array.from({ length: colCount }, (_, ci) =>
-				shuffle(split.map(r => r[ci] ?? ''))
-			);
-			shuffleResult = list.map((_, ri) => cols.map(col => col[ri]).join(' : '));
-		} else {
-			shuffleResult = shuffle(list);
-		}
-
+		shuffleResult = shuffleRows(list);
 		result = '';
 		copiedShuffle = false;
 	}

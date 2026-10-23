@@ -1,5 +1,5 @@
 <script lang="ts">
-	import bcrypt from 'bcryptjs';
+	import { htpasswdEntry as createHtpasswdEntry } from '$lib/core/security';
 	import { t } from '$lib/i18n';
 
 	let username = $state('');
@@ -25,9 +25,7 @@
 		if (!username.trim() || !password.trim()) { error = $t('htpasswd').requiredFields; return; }
 		generating = true;
 		try {
-			const salt = await bcrypt.genSalt(10);
-			const hash = await bcrypt.hash(password, salt);
-			htpasswdEntry = `${username.trim()}:${hash}`;
+			htpasswdEntry = await createHtpasswdEntry(username, password);
 		} catch (e) {
 			error = $t('htpasswd').hashError;
 		}

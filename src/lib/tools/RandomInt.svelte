@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
+	import { randomInts } from '$lib/core/random';
 
 	let min = $state(1);
 	let max = $state(100);
@@ -10,9 +11,7 @@
 
 	function generate() {
 		if (min > max) [min, max] = [max, min];
-		const nums = Array.from({ length: count }, () =>
-			Math.floor(Math.random() * (max - min + 1)) + min
-		);
+		const nums = randomInts(min, max, count);
 		result = nums;
 		history = [...nums, ...history].slice(0, 20);
 		copied = false;

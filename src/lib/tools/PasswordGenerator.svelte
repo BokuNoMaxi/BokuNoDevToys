@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
+	import { buildCharset, calcEntropy, generatePassword } from '$lib/core/security';
 
 	let length = $state(20);
 	let useUpper = $state(true);
@@ -12,44 +13,14 @@
 	let copiedIndex = $state<number | null>(null);
 	let copiedAll = $state(false);
 
-	const UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	const LOWER = 'abcdefghijklmnopqrstuvwxyz';
-	const NUMS  = '0123456789';
-	const SYMS  = '!@#$%^&*()-_=+[]{}|;:,.<>?';
-
-	function buildCharset(): string {
-		let cs = '';
-		if (useUpper)   cs += UPPER;
-		if (useLower)   cs += LOWER;
-		if (useNumbers) cs += NUMS;
-		if (useSymbols) cs += SYMS;
-		if (extraChars) cs += extraChars;
-		return cs;
-	}
-
-	function calcEntropy(charset: number, len: number): number {
-		return Math.round(len * Math.log2(charset));
-	}
-
-	function generateOne(charset: string, len: number): string {
-		// Rejection sampling: Werte oberhalb des größten Vielfachen der
-		// Charset-Länge verwerfen, sonst sind frühe Zeichen überrepräsentiert
-		const limit = Math.floor(0x100000000 / charset.length) * charset.length;
-		const out: string[] = [];
-		while (out.length < len) {
-			const arr = new Uint32Array(len - out.length);
-			crypto.getRandomValues(arr);
-			for (const v of arr) {
-				if (v < limit && out.length < len) out.push(charset[v % charset.length]);
-			}
-		}
-		return out.join('');
+	function buildCharsetNow(): string {
+		return buildCharset({ upper: useUpper, lower: useLower, numbers: useNumbers, symbols: useSymbols, extraChars });
 	}
 
 	function generate() {
-		const cs = buildCharset();
+		const cs = buildCharsetNow();
 		if (!cs) return;
-		passwords = Array.from({ length: count }, () => generateOne(cs, length));
+		passwords = Array.from({ length: count }, () => generatePassword(cs, length));
 	}
 
 	function strengthLabel(bits: number): { label: string; color: string } {
@@ -71,7 +42,7 @@
 		setTimeout(() => { copiedAll = false; }, 1500);
 	}
 
-	let entropy = $derived(calcEntropy(buildCharset().length || 1, length));
+	let entropy = $derived(calcEntropy(buildCharsetNow().length || 1, length));
 	let strength = $derived(strengthLabel(entropy));
 </script>
 
@@ -134,7 +105,7 @@
 
 		<button
 			onclick={generate}
-			disabled={!buildCharset()}
+			disabled={!buildCharsetNow()}
 			class="w-full px-5 py-2.5 bg-violet-700 hover:bg-violet-800 disabled:opacity-40 text-white rounded-lg font-medium transition-colors"
 		>{$t('passwordGen').generate}</button>
 	</div>

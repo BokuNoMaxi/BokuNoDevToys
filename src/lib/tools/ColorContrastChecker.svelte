@@ -1,61 +1,11 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
+	import { checkContrast } from '$lib/core/frontend';
 
 	let fgInput = $state('#ffffff');
 	let bgInput = $state('#1e293b');
 
-	function parseHex(raw: string): [number, number, number] | null {
-		const s = raw.trim().replace('#', '');
-		if (s.length === 3) {
-			const [r, g, b] = s.split('').map(c => parseInt(c + c, 16));
-			return [r, g, b];
-		}
-		if (s.length === 6) {
-			return [parseInt(s.slice(0,2),16), parseInt(s.slice(2,4),16), parseInt(s.slice(4,6),16)];
-		}
-		// try rgb(...)
-		const m = raw.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-		if (m) return [+m[1], +m[2], +m[3]];
-		return null;
-	}
-
-	function sRGB(c: number): number {
-		const v = c / 255;
-		return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-	}
-
-	function luminance(r: number, g: number, b: number): number {
-		return 0.2126 * sRGB(r) + 0.7152 * sRGB(g) + 0.0722 * sRGB(b);
-	}
-
-	function contrastRatio(l1: number, l2: number): number {
-		const [light, dark] = l1 > l2 ? [l1, l2] : [l2, l1];
-		return (light + 0.05) / (dark + 0.05);
-	}
-
-	interface CheckResult {
-		ratio: number;
-		aaLarge: boolean;
-		aaNormal: boolean;
-		aaaLarge: boolean;
-		aaaNormal: boolean;
-	}
-
-	let result = $derived.by((): CheckResult | null => {
-		const fg = parseHex(fgInput);
-		const bg = parseHex(bgInput);
-		if (!fg || !bg) return null;
-		const lFg = luminance(...fg);
-		const lBg = luminance(...bg);
-		const ratio = contrastRatio(lFg, lBg);
-		return {
-			ratio,
-			aaLarge:   ratio >= 3,
-			aaNormal:  ratio >= 4.5,
-			aaaLarge:  ratio >= 4.5,
-			aaaNormal: ratio >= 7,
-		};
-	});
+	let result = $derived(checkContrast(fgInput, bgInput));
 
 	function badge(pass: boolean) {
 		return pass

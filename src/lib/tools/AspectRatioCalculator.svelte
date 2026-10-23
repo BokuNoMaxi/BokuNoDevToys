@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
+	import { ASPECT_PRESETS, aspectRatio, heightFromWidth, widthFromHeight } from '$lib/core/frontend';
 
 	// Section 1: Ratio from dimensions
 	let width = $state(1920);
@@ -13,51 +14,21 @@
 	let fromWidthInput = $state('');   // user enters width → get height
 	let fromHeightInput = $state('');  // user enters height → get width
 
-	const presets = [
-		{ label: '16:9',  w: 16, h: 9  },
-		{ label: '4:3',   w: 4,  h: 3  },
-		{ label: '1:1',   w: 1,  h: 1  },
-		{ label: '3:2',   w: 3,  h: 2  },
-		{ label: '21:9',  w: 21, h: 9  },
-		{ label: '9:16',  w: 9,  h: 16 },
-		{ label: '2:1',   w: 2,  h: 1  },
-		{ label: '5:4',   w: 5,  h: 4  },
-	];
+	const presets = ASPECT_PRESETS;
 
-	function gcd(a: number, b: number): number { return b === 0 ? a : gcd(b, a % b); }
+	let ratio = $derived(aspectRatio(width, height));
 
-	let ratio = $derived.by(() => {
-		if (!width || !height) return null;
-		const g = gcd(width, height);
-		return { w: width / g, h: height / g };
-	});
-
-	let knownName = $derived.by(() => {
-		if (!ratio) return null;
-		return presets.find(p => p.w === ratio!.w && p.h === ratio!.h)?.label ?? null;
-	});
+	let knownName = $derived(ratio?.name ?? null);
 
 	// Preset click: update ratio, recalculate from-width and from-height results
 	function applyPreset(p: { w: number; h: number }) {
 		ratioW = p.w;
 		ratioH = p.h;
-		// Don't clear inputs — recalc will happen via $derived
 	}
 
-	// Derived results for section 3
-	let resultHeightFromWidth = $derived.by(() => {
-		const w = parseFloat(fromWidthInput);
-		if (!isNaN(w) && w > 0 && ratioW && ratioH)
-			return Math.round((w * ratioH) / ratioW);
-		return null;
-	});
+	let resultHeightFromWidth = $derived(heightFromWidth(parseFloat(fromWidthInput), ratioW, ratioH));
 
-	let resultWidthFromHeight = $derived.by(() => {
-		const h = parseFloat(fromHeightInput);
-		if (!isNaN(h) && h > 0 && ratioW && ratioH)
-			return Math.round((h * ratioW) / ratioH);
-		return null;
-	});
+	let resultWidthFromHeight = $derived(widthFromHeight(parseFloat(fromHeightInput), ratioW, ratioH));
 
 	// Preview box
 	let preview = $derived.by(() => {

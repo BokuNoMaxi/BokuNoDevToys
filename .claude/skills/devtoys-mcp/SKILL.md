@@ -1,187 +1,30 @@
 ---
-description: DevToys MCP Server - Use specialized text & data tools via Claude
-tags: [mcp, tools, text-processing, data-conversion]
-triggers:
-  - "use devtoys"
-  - "encode base64"
-  - "format json"
-  - "hash"
-  - "convert units"
-  - "qr code"
+name: devtoys
+description: Use the DevToys MCP connector for deterministic text and data work instead of computing it yourself — formatting JSON/SQL/XML, Base64, hashes, color and CSS unit conversion, WCAG contrast, regex tests, diffs, CSV parsing, cron next runs, date math, QR codes, curl-to-code, access/error log summaries, SEO and robots/sitemap checks. Use whenever the user pastes data to transform or analyze and the devtoys tools are available.
 ---
 
-# DevToys MCP Connector
+# DevToys connector
 
-Exposes all DevToys tools to Claude via MCP (Model Context Protocol), enabling AI assistants to use pre-optimized functions for text transformations, data encoding, hashing, and unit conversion instead of generating code.
+Remote MCP server at `https://devtoys.bokunocompany.at/mcp` (setup: https://devtoys.bokunocompany.at/mcp-connector). If its tools are not available in the session, say so and point to that page instead of faking results.
 
-## What It Does
+## When to call a tool instead of answering yourself
 
-When you ask Claude to:
-- Encode/decode text (Base64, URL, HTML)
-- Format data (JSON, SQL, Markdown)
-- Generate hashes or UUIDs
-- Convert between units
-- Create QR codes
+| Task | Tool |
+|---|---|
+| Base64, hashes (MD5/SHA), UUID-like random values, passwords | `base64`, `hash_text`, `password_generate`, `random_int`, `random_pick` |
+| Format/convert JSON, SQL, XML→YAML, PHP var_dump→JSON, Markdown→HTML, CSV | `json_format`, `sql_format`, `xml_to_yaml`, `vardump_to_json`, `markdown_to_html`, `csv_parse` |
+| Colors and CSS | `color_convert`, `color_contrast`, `css_unit_convert`, `aspect_ratio` |
+| Text | `diff_text`, `text_prettify`, `text_generate`, `regex_test` |
+| Dates and schedules | `timestamp_convert`, `date_add`, `date_diff`, `timezone_convert`, `cron_next_runs` |
+| Logs and SEO | `access_log_analyze`, `error_log_analyze`, `seo_analyze`, `keyword_density`, `schema_extract`, `robots_sitemap_validate` |
+| Misc | `curl_to_code`, `qr_generate` |
 
-Instead of Claude writing the logic, it **calls the specialized DevToys tool** via MCP. This saves 30-50% token usage and eliminates hallucinations.
+Prefer the tool for anything where an exact result matters (hashes, encodings, date arithmetic, regex matches, contrast ratios) — never estimate those.
 
-## Available Tools
+## Limits to respect
 
-| Category | Tools |
-|----------|-------|
-| **Encoding** | base64_encode, base64_decode, url_encode, url_decode, html_encode, html_decode |
-| **Text** | reverse_string, count_chars |
-| **JSON** | json_format, json_minify, json_validate |
-| **Markup** | markdown_to_html, format_sql |
-| **Crypto** | hash_md5, hash_sha256, hash_sha512, generate_uuid, generate_random_string |
-| **QR Codes** | generate_qrcode |
-| **Units** | convert_length, convert_weight, convert_temperature |
-
-## Setup
-
-The MCP server is **pre-configured** in `.claude/settings.json`. Nothing to do — it loads automatically.
-
-```json
-{
-  "mcpServers": {
-    "devtoys": {
-      "command": "node",
-      "args": ["mcp-server/dist/index.js"],
-      "cwd": "${workspaceFolder}"
-    }
-  }
-}
-```
-
-## Usage Examples
-
-### Ask Claude to use the tools:
-
-```
-"Encode this string to Base64: hello world"
-→ Claude calls base64_encode tool
-→ Returns: aGVsbG8gd29ybGQ=
-```
-
-```
-"Format this JSON: {"name":"John","age":30}"
-→ Claude calls json_format tool with indent: 2
-→ Returns formatted JSON
-```
-
-```
-"Generate SHA256 hash of 'password123'"
-→ Claude calls hash_sha256 tool
-→ Returns: ef92b778...
-```
-
-```
-"Convert 100 miles to kilometers"
-→ Claude calls convert_length tool
-→ Returns: { value: 160.934, from: 'mi', to: 'km' }
-```
-
-## Building & Testing
-
-### Build the MCP server:
-```bash
-cd mcp-server
-npm install
-npm run build
-```
-
-### Test the server directly:
-```bash
-node mcp-server/dist/index.js
-```
-
-Then send JSON-RPC requests via stdin:
-```json
-{"jsonrpc":"2.0","id":1,"method":"tools/list"}
-{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"base64_encode","arguments":{"text":"hello"}}}
-```
-
-### Test via Claude Code:
-Just ask Claude to use any of the tools. If the MCP server is running, it will call them.
-
-## Adding New Tools
-
-1. Create `mcp-server/src/tools/mytool.ts`:
-```typescript
-export function myTransform(input: string): string {
-  return transformed;
-}
-
-export const myToolTools = [
-  {
-    name: 'my_tool',
-    description: 'What it does',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        input: { type: 'string', description: '...' }
-      },
-      required: ['input']
-    }
-  }
-];
-
-export async function handleMyToolTool(toolName: string, args: Record<string, string>): Promise<string> {
-  if (toolName === 'my_tool') {
-    return myTransform(args.input);
-  }
-  throw new Error(`Unknown tool: ${toolName}`);
-}
-```
-
-2. Add to `mcp-server/src/tools/index.ts`:
-```typescript
-import { myToolTools, handleMyToolTool } from './mytool.js';
-
-const toolCategories: ToolHandler[] = [
-  // ... existing ...
-  { tools: myToolTools, handler: handleMyToolTool }
-];
-```
-
-3. Rebuild:
-```bash
-cd mcp-server
-npm run build
-```
-
-The new tool is automatically registered and available to Claude.
-
-## Benefits
-
-| Benefit | Impact |
-|---------|--------|
-| **Token Savings** | 30-50% less tokens for text operations |
-| **Speed** | Pre-optimized vs LLM inference |
-| **Reliability** | No hallucinations on encoding/hashing |
-| **Consistency** | Same code across CLI, Web, AI |
-| **Extensibility** | New tools in 5 minutes |
-
-## Troubleshooting
-
-### Tools not appearing in Claude Code?
-1. Check `.claude/settings.json` exists and has `mcpServers.devtoys`
-2. Verify `mcp-server/dist/index.js` exists (run `npm run build`)
-3. Restart Claude Code session
-4. Check stderr for MCP connection errors
-
-### Tool returns error?
-- Check the tool name spelling in the error message
-- Verify argument types (e.g., `value` should be `number` for conversion tools)
-- Run the server directly to debug JSON-RPC requests
-
-### Server won't start?
-- Ensure Node.js 18+ is installed: `node --version`
-- Check working directory: should be the project root
-- Run `cd mcp-server && npm install && npm run build`
-
-## References
-
-- [MCP Specification](https://modelcontextprotocol.io/)
-- [mcp-server/README.md](../../mcp-server/README.md)
-- [DevToys Web](https://devtoys.bokunocompany.at/)
+- The server never fetches URLs. Fetch content yourself and pass it as the argument.
+- Text arguments are capped at 2 MB; `diff_text` at 3000 lines combined. For huge logs, pass the relevant slice.
+- Server time and timezone are UTC; `timezone_convert` uses fixed offsets only (no DST rules).
+- Do not send secrets the user wants kept private (for example passwords to hash).
+- Tools return errors as `isError` results with a message; report the message rather than retrying blindly.

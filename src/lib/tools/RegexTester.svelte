@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
+	import { findMatches, type MatchGroup } from '$lib/core/regex';
 
 	let pattern = $state('');
 	let testStr = $state('');
@@ -8,19 +9,10 @@
 	let flagM = $state(false);
 	let flagS = $state(false);
 
-	interface MatchGroup { index: number; value: string; groups: (string | undefined)[]; }
-
 	let result = $derived.by((): { highlighted: string; matches: MatchGroup[]; error: string } => {
 		if (!pattern) return { highlighted: escHtml(testStr), matches: [], error: '' };
 		try {
-			const flags = (flagG ? 'g' : '') + (flagI ? 'i' : '') + (flagM ? 'm' : '') + (flagS ? 's' : '');
-			const matches: MatchGroup[] = [];
-			let m: RegExpExecArray | null;
-			const localRe = new RegExp(pattern, flags.includes('g') ? flags : flags + 'g');
-			while ((m = localRe.exec(testStr)) !== null) {
-				matches.push({ index: m.index, value: m[0], groups: m.slice(1) });
-				if (m[0].length === 0) localRe.lastIndex++;
-			}
+			const matches = findMatches(pattern, testStr, { g: flagG, i: flagI, m: flagM, s: flagS });
 			let highlighted = '';
 			let pos = 0;
 			for (const match of matches) {

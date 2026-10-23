@@ -1,129 +1,31 @@
-# DevToys MCP Server
+# DevToys MCP server
 
-MCP (Model Context Protocol) server that exposes all DevToys tools to Claude AI assistants.
+Remote [MCP](https://modelcontextprotocol.io) server (Streamable HTTP, stateless) that exposes the DevToys tools to Claude and other MCP clients.
 
-## Overview
+- **Endpoint:** `POST /mcp` (JSON responses, no sessions, no auth) — `GET /healthz` for health checks
+- **User docs / connect guide:** <https://devtoys.bokunocompany.at/mcp-connector>
+- **Logic:** lives in [`../src/lib/core`](../src/lib/core) and is shared with the Svelte web tools. This package only adds the MCP layer (`src/tools/*.ts`), the HTTP entry (`src/http.ts`) and a Node DOM (`src/node-dom.ts`, linkedom) for the HTML/XML tools.
 
-Instead of Claude generating text transformations, hashing, encoding/decoding from scratch, it can now call these specialized tools via MCP. This saves **30-50% token usage** for common operations.
-
-## Available Tools
-
-### Text Encoding & Decoding
-- `base64_encode` — Encode to Base64
-- `base64_decode` — Decode from Base64
-- `url_encode` — URL encode text
-- `url_decode` — URL decode text
-- `html_encode` — HTML entity encode
-- `html_decode` — HTML entity decode
-
-### Text Utilities
-- `reverse_string` — Reverse a string
-- `count_chars` — Count chars, words, lines, bytes
-
-### Data Formats
-- `json_format` — Pretty-print JSON with indentation
-- `json_minify` — Minify JSON (remove whitespace)
-- `json_validate` — Validate JSON syntax
-- `markdown_to_html` — Convert Markdown to HTML
-- `format_sql` — Format SQL queries (supports multiple dialects)
-
-### Cryptography & Security
-- `hash_md5` — Generate MD5 hash
-- `hash_sha256` — Generate SHA256 hash
-- `hash_sha512` — Generate SHA512 hash
-- `generate_uuid` — Generate UUID v4
-- `generate_random_string` — Generate random string
-
-### QR Codes
-- `generate_qrcode` — Generate QR code from text/URL
-
-### Unit Conversion
-- `convert_length` — Convert between length units (mm, cm, m, km, in, ft, yd, mi)
-- `convert_weight` — Convert between weight units (mg, g, kg, oz, lb, t)
-- `convert_temperature` — Convert between temp units (celsius, fahrenheit, kelvin)
-
-## Architecture
-
-```
-src/
-├── index.ts          — MCP server (JSON-RPC over stdio)
-└── tools/
-    ├── base64.ts     — Base64 encoding/decoding
-    ├── crypto.ts     — Hashing & random generation
-    ├── json.ts       — JSON formatting & validation
-    ├── markdown.ts   — Markdown conversion
-    ├── qrcode.ts     — QR code generation
-    ├── sql.ts        — SQL formatting
-    ├── text.ts       — Text utilities
-    ├── units.ts      — Unit conversion
-    └── index.ts      — Tool registry & dispatcher
-```
-
-## Building
+## Develop
 
 ```bash
 cd mcp-server
-npm install
-npm run build
+npm ci
+npm test            # builds, starts the server on a random port and runs the MCP client tests
+npm run typecheck
+npm run build && PORT=3000 node dist/server.mjs
 ```
 
-## Testing
+## Add a tool
 
-Run the server and send JSON-RPC requests via stdin:
+1. Put the pure logic in `src/lib/core/<area>.ts` (no DOM, no `$lib/i18n`; take a `ParseDoc` argument if you need a document) and use it from the Svelte component too.
+2. Register it in the matching `src/tools/*.ts` with `defineTool(server, name, { title, description, input, run })`. Keep descriptions short — they are sent to the model with every conversation.
+3. Add the name and a one-line description to `mcpDocs.tools` in **both** `src/lib/translations/en.ts` and `de.ts` (a test fails if they drift) and a test to `test/server.test.mjs`.
 
-```bash
-node dist/index.js
-```
+## Safety notes
 
-Then send a JSON-RPC request (each line is a separate request):
+The endpoint is public. Therefore: no URL fetching (SSRF), body limit 6 MB, 2 MB per text field, `regex_test` runs in a worker with a 2 s timeout (ReDoS), `diff_text` is line-capped, and nginx rate-limits `/mcp`. Do not add tools that read files, call other services or keep state.
 
-```json
-{"jsonrpc":"2.0","id":1,"method":"tools/list"}
-{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"base64_encode","arguments":{"text":"hello"}}}
-```
+## Deploy
 
-## Integration with Claude Code
-
-The server is automatically registered in `.claude/settings.json`:
-
-```json
-{
-  "mcpServers": {
-    "devtoys": {
-      "command": "node",
-      "args": ["mcp-server/dist/index.js"],
-      "cwd": "${workspaceFolder}"
-    }
-  }
-}
-```
-
-Once registered, Claude Code and Claude Cowork will automatically detect all tools.
-
-## Adding New Tools
-
-1. Create a new file in `src/tools/myfeature.ts`
-2. Export:
-   - Feature functions (e.g., `myTransform(input: string): string`)
-   - `myfeatureTools` array with tool definitions
-   - `handleMyfeatureTool` async handler
-3. Import and add to `src/tools/index.ts`:
-
-```typescript
-import { myfeatureTools, handleMyfeatureTool } from './myfeature.js';
-
-const toolCategories: ToolHandler[] = [
-  // ...existing...
-  { tools: myfeatureTools, handler: handleMyfeatureTool }
-];
-```
-
-4. Rebuild: `npm run build`
-
-## Benefits
-
-- **Token Savings**: 30-50% less token usage for text transformations
-- **Speed**: Pre-optimized functions vs LLM inference
-- **Consistency**: Same implementation across CLI, Web, and AI interfaces
-- **Reliability**: No hallucinations on encoding/hashing operations
-- **Extensibility**: Easy to add new tools without modifying core server
+Part of `docker-compose.yml` (`mcp` service, `Dockerfile.mcp`); nginx proxies `/mcp` to it. See the deploy section in the repository `CLAUDE.md`.

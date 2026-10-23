@@ -1,85 +1,17 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
+	import { prettifyText, type PrettierMode, type UrlTransform, type CaseTransform } from '$lib/core/text';
 
 	let input = $state('');
 	let copied = $state(false);
 
-	type Mode = 'auto' | 'single' | 'paragraph' | 'compact';
+	type Mode = PrettierMode;
 	let mode = $state<Mode>('auto');
 	let stripHtml = $state(false);
-	type UrlTransform = 'none' | 'encode' | 'decode';
 	let urlTransform = $state<UrlTransform>('none');
-	type CaseTransform = 'none' | 'camel' | 'pascal' | 'snake' | 'kebab';
 	let caseTransform = $state<CaseTransform>('none');
 
-	function toCase(text: string, ct: CaseTransform): string {
-		if (ct === 'none') return text;
-		const words = text
-			.replace(/([a-z])([A-Z])/g, '$1 $2')
-			.split(/[\s\-_]+/)
-			.filter(w => w.length > 0)
-			.map(w => w.toLowerCase());
-		if (ct === 'camel') return words.map((w, i) => i === 0 ? w : w[0].toUpperCase() + w.slice(1)).join('');
-		if (ct === 'pascal') return words.map(w => w[0].toUpperCase() + w.slice(1)).join('');
-		if (ct === 'snake') return words.join('_');
-		if (ct === 'kebab') return words.join('-');
-		return text;
-	}
-
-	function removeHtml(text: string): string {
-		return text
-			.replace(/<br\s*\/?>/gi, '\n')
-			.replace(/<\/?(p|div|h[1-6]|li|tr|blockquote|section|article|header|footer|main|aside)[^>]*>/gi, '\n')
-			.replace(/<[^>]+>/g, '')
-			.replace(/&nbsp;/g, ' ')
-			.replace(/&amp;/g, '&')
-			.replace(/&lt;/g, '<')
-			.replace(/&gt;/g, '>')
-			.replace(/&quot;/g, '"')
-			.replace(/&#39;/g, "'")
-			.replace(/&[a-z]+;/gi, ' ');
-	}
-
-	function prettify(text: string, m: Mode, doStripHtml: boolean): string {
-		if (!text.trim()) return '';
-
-		let result = doStripHtml ? removeHtml(text) : text;
-
-		// Normalize line endings and trim each line
-		result = result.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-		result = result.split('\n').map(l => l.trim()).join('\n');
-
-		let resolvedMode = m;
-		if (m === 'auto') {
-			const lines = result.split('\n').filter(l => l.length > 0);
-			const avgLen = lines.reduce((s, l) => s + l.length, 0) / (lines.length || 1);
-			resolvedMode = avgLen < 60 ? 'single' : 'paragraph';
-		}
-
-		if (resolvedMode === 'single') {
-			result = result.split('\n').filter(l => l.length > 0).join(' ');
-			result = result.replace(/\s{2,}/g, ' ').trim();
-		} else if (resolvedMode === 'paragraph') {
-			result = result.replace(/\n{3,}/g, '\n\n');
-			result = result.split('\n\n').map(para =>
-				para.split('\n').filter(l => l.length > 0).join(' ').replace(/\s{2,}/g, ' ')
-			).join('\n\n').trim();
-		} else if (resolvedMode === 'compact') {
-			result = result.split('\n').filter(l => l.length > 0).join('\n');
-			result = result.replace(/\s{2,}/g, ' ').trim();
-		}
-
-		return result;
-	}
-
-	let output = $derived.by(() => {
-		const base = prettify(input, mode, stripHtml);
-		let result = base;
-		if (urlTransform === 'encode') result = encodeURIComponent(result);
-		else if (urlTransform === 'decode') { try { result = decodeURIComponent(result); } catch { /* keep */ } }
-		result = toCase(result, caseTransform);
-		return result;
-	});
+	let output = $derived(prettifyText(input, { mode, stripHtml, url: urlTransform, caseTransform }));
 
 	function copy() {
 		navigator.clipboard.writeText(output);

@@ -1,10 +1,7 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
+	import { loadCsv, type Delim, type Enclosure, type Escape, type ParsedData } from '$lib/core/csv';
 	import { openPopoutHtml } from '$lib/popout';
-
-	type Delim = ',' | ';' | '\t' | '|' | 'auto';
-	type Enclosure = '"' | "'" | 'none' | 'auto';
-	type Escape = '\\' | '"' | 'none' | 'auto';
 
 	let raw = $state('');
 	let fileName = $state('');
@@ -19,60 +16,13 @@
 	let optEnclosure = $state<Enclosure>('auto');
 	let optEscape    = $state<Escape>('auto');
 
-	interface ParsedData { headers: string[]; rows: string[][]; delimiter: string; enclosure: string; }
 	let data = $state<ParsedData | null>(null);
-
-	function detectDelimiter(text: string): ',' | ';' | '\t' | '|' {
-		const line = text.split('\n')[0] ?? '';
-		const counts: Record<string, number> = {
-			',':  (line.match(/,/g)  ?? []).length,
-			';':  (line.match(/;/g)  ?? []).length,
-			'\t': (line.match(/\t/g) ?? []).length,
-			'|':  (line.match(/\|/g) ?? []).length,
-		};
-		return (Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? ',') as ',' | ';' | '\t' | '|';
-	}
-
-	function detectEnclosure(text: string, delim: string): '"' | "'" | 'none' {
-		const line = text.split('\n')[0] ?? '';
-		if (line.includes(`"${delim}`) || line.startsWith('"')) return '"';
-		if (line.includes(`'${delim}`) || line.startsWith("'")) return "'";
-		return 'none';
-	}
-
-	function parseCsv(text: string, delim: string, encl: string, esc: string): string[][] {
-		const rows: string[][] = [];
-		for (const line of text.split('\n')) {
-			if (!line.trim()) continue;
-			const cells: string[] = [];
-			let inQuote = false, cell = '';
-			const hasEncl = encl !== 'none' && encl !== '';
-			for (let i = 0; i < line.length; i++) {
-				const ch = line[i];
-				// Handle escape sequences
-				if (hasEncl && esc !== 'none' && ch === esc && i + 1 < line.length) {
-					if (esc === '\\') { cell += line[i + 1]; i++; continue; }
-					if (esc === '"' && ch === encl && line[i + 1] === encl) { cell += encl; i++; continue; }
-				}
-				if (hasEncl && ch === encl) { inQuote = !inQuote; continue; }
-				if (ch === delim && !inQuote) { cells.push(cell.trim()); cell = ''; continue; }
-				cell += ch;
-			}
-			cells.push(cell.trim());
-			rows.push(cells);
-		}
-		return rows;
-	}
 
 	function load() {
 		if (!raw.trim()) return;
-		const delim     = optDelim     === 'auto' ? detectDelimiter(raw) : optDelim;
-		const encl      = optEnclosure === 'auto' ? detectEnclosure(raw, delim) : optEnclosure;
-		const escChar   = optEscape    === 'auto' ? (encl === '"' ? '"' : encl === "'" ? 'none' : 'none') : optEscape;
-
-		const rows = parseCsv(raw, delim, encl, escChar);
-		if (rows.length === 0) { data = null; return; }
-		data = { headers: rows[0], rows: rows.slice(1), delimiter: delim, enclosure: encl };
+		const result = loadCsv(raw, optDelim, optEnclosure, optEscape);
+		if (!result) { data = null; return; }
+		data = result;
 		sortCol = -1;
 		sortAsc = true;
 		hiddenCols = new Set();

@@ -1,0 +1,17 @@
+FROM node:20-alpine AS builder
+WORKDIR /app/mcp-server
+COPY mcp-server/package*.json ./
+RUN npm ci
+COPY mcp-server/ ./
+# Geteilte Tool-Logik (wird auch von der Web-App genutzt)
+COPY src/lib/core /app/src/lib/core
+RUN npm run build
+
+FROM node:20-alpine
+ENV NODE_ENV=production TZ=UTC PORT=3000
+WORKDIR /app
+COPY --from=builder /app/mcp-server/dist/ ./
+USER node
+EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s CMD wget -qO- http://127.0.0.1:3000/healthz || exit 1
+CMD ["node", "server.mjs"]

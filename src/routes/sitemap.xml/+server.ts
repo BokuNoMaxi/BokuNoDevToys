@@ -7,6 +7,7 @@ const SITE = 'https://devtoys.bokunocompany.at';
 export function GET() {
 	const urls = [
 		`	<url><loc>${SITE}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
+		`	<url><loc>${SITE}/mcp-connector</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>`,
 		...categories.flatMap((cat) =>
 			cat.tools.map(
 				(t) => `	<url><loc>${SITE}/tools/${t.id}</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>`

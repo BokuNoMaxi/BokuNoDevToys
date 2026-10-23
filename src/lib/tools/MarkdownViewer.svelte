@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
-	import { marked } from 'marked';
+	import { markdownToHtml } from '$lib/core/markdown';
 	import DOMPurify from 'dompurify';
 	import { openPopoutHtml } from '$lib/popout';
 
@@ -9,7 +9,7 @@
 
 	let rendered = $derived.by(() => {
 		if (!input.trim()) return '';
-		return DOMPurify.sanitize(marked(input) as string);
+		return DOMPurify.sanitize(markdownToHtml(input));
 	});
 
 	function copy() {

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { t, lang } from '$lib/i18n';
+	import { cronNextRuns } from '$lib/core/cron';
 
 	type FieldMode = 'simple' | 'manual';
 	interface Field { mode: FieldMode; simple: string; manual: string; }
@@ -112,34 +113,10 @@
 
 	let nextRuns = $derived.by(() => {
 		try {
-			const [m, h, d, mo, wd] = expression.split(' ');
-			const now = new Date();
-			const results: string[] = [];
-			const candidate = new Date(now);
-			candidate.setSeconds(0, 0);
-			candidate.setMinutes(candidate.getMinutes() + 1);
-
-			function matches(val: string, n: number): boolean {
-				if (val === '*') return true;
-				if (val.startsWith('*/')) { const step = parseInt(val.slice(2)); return n % step === 0; }
-				if (val.includes(',')) return val.split(',').some(v => parseInt(v) === n);
-				if (val.includes('-')) { const [a,b] = val.split('-').map(Number); return n >= a && n <= b; }
-				return parseInt(val) === n;
-			}
-
-			let iterations = 0;
-			while (results.length < 5 && iterations < 527040) {
-				iterations++;
-				if (matches(mo, candidate.getMonth() + 1) && matches(d, candidate.getDate()) &&
-					matches(wd, candidate.getDay()) && matches(h, candidate.getHours()) && matches(m, candidate.getMinutes())) {
-					results.push(candidate.toLocaleString($lang === 'de' ? 'de-AT' : 'en-US', {
-						weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit',
-						hour: '2-digit', minute: '2-digit'
-					}));
-				}
-				candidate.setMinutes(candidate.getMinutes() + 1);
-			}
-			return results;
+			return cronNextRuns(expression, 5).map(d => d.toLocaleString($lang === 'de' ? 'de-AT' : 'en-US', {
+				weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit',
+				hour: '2-digit', minute: '2-digit'
+			}));
 		} catch { return []; }
 	});
 
