@@ -129,6 +129,8 @@ Die **erste** Einrichtung (und jede Änderung an `nginx.conf`) braucht zusätzli
 Prüfen: `curl -s -X POST https://devtoys.bokunocompany.at/mcp -H 'content-type: application/json' -H 'accept: application/json, text/event-stream' -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'`.
 Änderungen an `src/lib/core/` wirken sich auch auf die Web-Tools aus → zusätzlich den schnellen Weg (Build + restart) ausführen.
 
+**Automatisch:** Die GitHub Action `.github/workflows/deploy.yml` deployt bei jedem Push auf `main` (Quick Build; voller Rebuild bei Änderungen an `package*.json`, `Dockerfile`, `nginx.conf`, `docker-compose.yml`; zusätzlich `mcp` neu bauen bei Änderungen in `mcp-server/`, `src/lib/core/`, `Dockerfile.mcp`). Manuelles Deployen ist nur nötig, wenn die Action nicht läuft.
+
 Das baut das komplette Image neu (inkl. `npm ci`) und ist deutlich langsamer — für reine
 Tool-/Übersetzungs-Änderungen nicht nötig.
 

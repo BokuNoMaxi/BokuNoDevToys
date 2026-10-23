@@ -40,11 +40,20 @@ jobs:
           if [ "${{ github.event_name }}" != "push" ]; then
             # Zeitplan oder manueller Start: Basis-Abbild pruefen und neu bauen
             echo "full=true" >> "$GITHUB_OUTPUT"
-          elif git diff --name-only "${{ steps.pull.outputs.before }}" "${{ steps.pull.outputs.after }}" \
-             | grep -qE '^(package(-lock)?\.json|Dockerfile|nginx\.conf)$'; then
+            echo "mcp=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          changed=$(git diff --name-only "${{ steps.pull.outputs.before }}" "${{ steps.pull.outputs.after }}")
+          if echo "$changed" | grep -qE '^(package(-lock)?\.json|Dockerfile|nginx\.conf|docker-compose\.yml)$'; then
             echo "full=true" >> "$GITHUB_OUTPUT"
           else
             echo "full=false" >> "$GITHUB_OUTPUT"
+          fi
+          # MCP-Server (eigener Container) hat ein eigenes Image und wird vom Quick Build nicht erfasst
+          if echo "$changed" | grep -qE '^(mcp-server/|src/lib/core/|Dockerfile\.mcp$)'; then
+            echo "mcp=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "mcp=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Full rebuild (dependency/Dockerfile/nginx changes)
@@ -67,3 +76,11 @@ jobs:
           cd /mnt/data/claude/BokuNoDevToys
           docker compose run --rm builder npm run build
           docker compose restart devtoys
+
+      - name: Rebuild MCP server (mcp-server or shared core changed)
+        if: steps.check.outputs.full == 'false' && steps.check.outputs.mcp == 'true'
+        run: |
+          set -e
+          cd /mnt/data/claude/BokuNoDevToys
+          flock -w 5400 /tmp/docker-nachtbuild.lock docker compose build mcp
+          docker compose up -d mcp
