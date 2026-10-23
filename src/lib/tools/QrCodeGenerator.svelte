@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
 	import QRCode from 'qrcode';
+	import { buildQrContent } from '$lib/core/qr';
 	import { onMount } from 'svelte';
 
 	type QrType = 'url' | 'text' | 'email' | 'wifi' | 'phone';
@@ -21,12 +22,10 @@
 	let generated = $state(false);
 
 	function buildContent(): string {
-		if (qrType === 'url')   return urlVal;
-		if (qrType === 'text')  return textVal;
-		if (qrType === 'email') return `mailto:${emailVal}`;
-		if (qrType === 'phone') return `tel:${phoneVal}`;
-		if (qrType === 'wifi')  return `WIFI:S:${wifiSsid};T:${wifiEnc};P:${wifiPass};;`;
-		return '';
+		return buildQrContent({
+			type: qrType, url: urlVal, text: textVal, email: emailVal, phone: phoneVal,
+			wifiSsid, wifiPass, wifiEnc,
+		});
 	}
 
 	async function generate() {

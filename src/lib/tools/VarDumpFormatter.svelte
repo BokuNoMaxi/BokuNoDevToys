@@ -1,117 +1,12 @@
 <script lang="ts">
 	import VarDumpNode, { type VDNode } from '$lib/components/VarDumpNode.svelte';
 	import { t } from '$lib/i18n';
+	import { parseVarDump } from '$lib/core/vardump';
 	import { openPopoutText } from '$lib/popout';
 
 	let input = $state('');
 	let parsed = $state<VDNode | null>(null);
 	let error = $state('');
-
-	// ── Parser ──────────────────────────────────────────────────────────────
-
-	function parseVarDump(text: string): VDNode {
-		// Normalize: remove carriage returns, strip leading/trailing whitespace per line
-		const lines = text
-			.replace(/\r\n/g, '\n')
-			.split('\n')
-			.map(l => l.trim())
-			.filter(l => l.length > 0);
-
-		let pos = 0;
-
-		function peek() { return lines[pos] ?? ''; }
-		function consume() { return lines[pos++] ?? ''; }
-
-		function parseValue(): VDNode {
-			const line = peek();
-
-			if (line === 'NULL') {
-				consume();
-				return { type: 'null' };
-			}
-
-			if (line.startsWith('bool(')) {
-				consume();
-				return { type: 'bool', value: line === 'bool(true)' };
-			}
-
-			if (line.startsWith('int(')) {
-				consume();
-				return { type: 'int', value: parseInt(line.slice(4, -1)) };
-			}
-
-			if (line.startsWith('float(') || line.startsWith('double(')) {
-				consume();
-				const inner = line.startsWith('float(') ? line.slice(6, -1) : line.slice(7, -1);
-				return { type: 'float', value: parseFloat(inner) };
-			}
-
-			if (line.startsWith('string(')) {
-				consume();
-				// string(N) "value" — value might contain escaped quotes
-				const m = line.match(/^string\((\d+)\) "(.*)"/s);
-				return { type: 'string', length: m ? parseInt(m[1]) : 0, value: m ? m[2] : '' };
-			}
-
-			if (line.startsWith('array(')) {
-				consume(); // "array(N) {"
-				const m = line.match(/^array\((\d+)\)/);
-				const length = m ? parseInt(m[1]) : 0;
-				const children: VDNode['children'] = [];
-
-				while (pos < lines.length && peek() !== '}') {
-					const keyLine = peek();
-					// Key patterns: [0]=> or ["key"]=> or [key]:protected=> or [key:ClassName:private]=>
-					const ki = keyLine.match(/^\[(\d+)\]=>$/) ??
-					            keyLine.match(/^\["(.*?)"\]=>$/) ??
-					            keyLine.match(/^\["(.*?)":.*?\]=>$/) ??
-					            keyLine.match(/^\[(.+?)\]=>$/);
-					if (ki) {
-						consume();
-						const rawKey = ki[1];
-						const key = /^\d+$/.test(rawKey) ? parseInt(rawKey) : rawKey;
-						const val = parseValue();
-						children.push({ key, value: val });
-					} else {
-						consume(); // skip unexpected line
-					}
-				}
-				if (peek() === '}') consume();
-				return { type: 'array', length, children };
-			}
-
-			if (line.startsWith('object(')) {
-				consume(); // "object(Class)#id (N) {"
-				const m = line.match(/^object\((.+?)\)#(\d+) \((\d+)\)/);
-				const className = m ? m[1] : 'unknown';
-				const objectId  = m ? parseInt(m[2]) : 0;
-				const length    = m ? parseInt(m[3]) : 0;
-				const children: VDNode['children'] = [];
-
-				while (pos < lines.length && peek() !== '}') {
-					const keyLine = peek();
-					const ki = keyLine.match(/^\["(.*?)"\]=>$/) ??
-					            keyLine.match(/^\["(.*?)":.*?\]=>$/) ??
-					            keyLine.match(/^\[(\d+)\]=>$/) ??
-					            keyLine.match(/^\[(.+?)\]=>$/);
-					if (ki) {
-						consume();
-						children.push({ key: ki[1], value: parseValue() });
-					} else {
-						consume();
-					}
-				}
-				if (peek() === '}') consume();
-				return { type: 'object', className, objectId, length, children };
-			}
-
-			// Fallback: treat unknown line as string
-			consume();
-			return { type: 'string', value: line, length: line.length };
-		}
-
-		return parseValue();
-	}
 
 	// Serialize a parsed tree back to canonical, fully-expanded var_dump text (for popout).
 	function nodeToText(node: VDNode, indent = ''): string {

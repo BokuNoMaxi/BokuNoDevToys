@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base64Encode, base64Decode } from '$lib/core/encoding';
 	import { t } from '$lib/i18n';
 
 	let textInput = $state('');
@@ -19,8 +20,8 @@
 	let computed = $derived.by(() => {
 		if (!textInput.trim()) return { output: '', error: '' };
 		try {
-			if (textMode === 'encode') return { output: btoa(unescape(encodeURIComponent(textInput))), error: '' };
-			return { output: decodeURIComponent(escape(atob(textInput))), error: '' };
+			if (textMode === 'encode') return { output: base64Encode(textInput), error: '' };
+			return { output: base64Decode(textInput), error: '' };
 		} catch {
 			return { output: '', error: textMode === 'decode' ? 'Invalid Base64 string' : 'Encoding failed' };
 		}

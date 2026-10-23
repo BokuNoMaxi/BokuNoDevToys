@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
+	import { CSS_UNITS, convertCssUnit } from '$lib/core/frontend';
 
 	let baseFontSize = $state(16);
 	let viewportW = $state(1440);
@@ -8,43 +9,10 @@
 	let inputUnit = $state('px');
 	let copiedUnit = $state<string | null>(null);
 
-	const units = ['px', 'rem', 'em', 'pt', '%', 'vw', 'vh'];
+	const units = CSS_UNITS as readonly string[];
+	const ctx = $derived({ baseFontSize, viewportW, viewportH });
 
-	function toPx(val: number, unit: string): number {
-		switch (unit) {
-			case 'px':  return val;
-			case 'rem': return val * baseFontSize;
-			case 'em':  return val * baseFontSize;
-			case 'pt':  return val * (96 / 72);
-			case '%':   return val * baseFontSize / 100;
-			case 'vw':  return val * viewportW / 100;
-			case 'vh':  return val * viewportH / 100;
-			default:    return val;
-		}
-	}
-
-	function fromPx(px: number, unit: string): string {
-		let r: number;
-		switch (unit) {
-			case 'px':  r = px; break;
-			case 'rem': r = px / baseFontSize; break;
-			case 'em':  r = px / baseFontSize; break;
-			case 'pt':  r = px * (72 / 96); break;
-			case '%':   r = px / baseFontSize * 100; break;
-			case 'vw':  r = px / viewportW * 100; break;
-			case 'vh':  r = px / viewportH * 100; break;
-			default:    r = px;
-		}
-		const str = r.toFixed(4).replace(/\.?0+$/, '');
-		return str;
-	}
-
-	let results = $derived.by(() => {
-		const num = parseFloat(inputValue);
-		if (isNaN(num) || inputValue.trim() === '') return [];
-		const px = toPx(num, inputUnit);
-		return units.map(u => ({ unit: u, value: u === inputUnit ? inputValue : fromPx(px, u) }));
-	});
+	let results = $derived(convertCssUnit(inputValue, inputUnit, ctx));
 
 	function copy(unit: string, value: string) {
 		navigator.clipboard.writeText(value + unit);

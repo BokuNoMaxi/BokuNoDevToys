@@ -2,22 +2,28 @@
   "name": "devtoys-mcp-server",
   "version": "1.0.0",
   "type": "module",
-  "description": "MCP server for BokuNoDevToys - exposes all dev tools via Claude",
-  "main": "dist/index.js",
+  "description": "Remote MCP server (Streamable HTTP) for BokuNoDevToys",
+  "main": "dist/server.mjs",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "tsc --watch"
+    "build": "node build.mjs",
+    "start": "node dist/server.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node build.mjs && node --test test/server.test.mjs"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "bcryptjs": "^3.0.3",
+    "fast-xml-parser": "^5.11.2",
+    "linkedom": "^0.18.14",
+    "marked": "^18.1.1",
     "qrcode": "^1.5.4",
-    "marked": "^18.0.6",
-    "sql-formatter": "^15.8.2",
-    "dompurify": "^3.4.11",
-    "bcryptjs": "^3.0.3"
+    "sql-formatter": "^15.9.0",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
-    "typescript": "^5.0.0"
+    "@types/node": "^20.19.43",
+    "@types/qrcode": "^1.5.6",
+    "esbuild": "^0.28.2",
+    "typescript": "^5.9.3"
   }
 }

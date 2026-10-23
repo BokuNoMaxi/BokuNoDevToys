@@ -11,6 +11,22 @@ services:
     volumes:
       - ./build:/usr/share/nginx/html:ro
 
+  mcp:
+    container_name: devtoys-mcp
+    build:
+      context: .
+      dockerfile: Dockerfile.mcp
+    restart: unless-stopped
+    expose:
+      - "3000"
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 512m
+    cpus: 1.0
+
   builder:
     image: node:20-alpine
     container_name: devtoys-builder

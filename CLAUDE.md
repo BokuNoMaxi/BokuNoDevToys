@@ -8,14 +8,20 @@ SvelteKit-Projekt mit Dev-Tools im Browser. Läuft produktiv via Docker unter ht
 - `src/lib/tools/config.ts` — Tool-Registry: hier neue Tools registrieren (id, name, description, Kategorie)
 - `src/routes/tools/[tool]/+page.svelte` — Routing: hier neue Tool-Komponenten einbinden
 
+- `src/lib/core/` — **framework-freie Tool-Logik** (kein DOM, kein `$lib/i18n`), geteilt von den Svelte-Tools und dem MCP-Server
+- `mcp-server/` — Remote-MCP-Server (Streamable HTTP unter `/mcp`), siehe `mcp-server/README.md`
+- `src/routes/mcp-connector/` — Anleitung zum Claude-Konnektor (de/en, Texte unter `mcpDocs` in den Übersetzungen)
+
 ## Neues Tool hinzufügen
 
-1. Svelte-Komponente in `src/lib/tools/MeinTool.svelte` erstellen
-2. In `src/lib/tools/config.ts` unter der passenden Kategorie eintragen:
+1. Reine Logik in `src/lib/core/<bereich>.ts` ablegen (Text rein → Ergebnis raus; für HTML/XML einen `ParseDoc`-Parameter statt `DOMParser` nehmen)
+2. Svelte-Komponente in `src/lib/tools/MeinTool.svelte` erstellen und die Logik aus `core` importieren
+3. In `src/lib/tools/config.ts` unter der passenden Kategorie eintragen:
    ```ts
    { id: 'mein-tool', name: 'Mein Tool', description: '...' }
    ```
-3. In `src/routes/tools/[tool]/+page.svelte` importieren und per `{:else if toolId === 'mein-tool'}` einbinden
+4. In `src/routes/tools/[tool]/+page.svelte` importieren und per `{:else if toolId === 'mein-tool'}` einbinden
+5. Wenn das Tool sinnvoll ohne Browser nutzbar ist (reine Text-/Datenverarbeitung, kein Netzwerk, keine Geheimnisse): auch als MCP-Tool in `mcp-server/src/tools/*.ts` registrieren, in `mcpDocs.tools` (en + de) eintragen und einen Test in `mcp-server/test/server.test.mjs` ergänzen (`cd mcp-server && npm test`)
 
 ## Arbeitsweise
 
@@ -107,6 +113,23 @@ gebaut/neu gezogen wird, ist der Container in unter einer Sekunde wieder da.
 cd /mnt/data/claude/BokuNoDevToys
 docker compose build --no-cache && docker compose up -d
 ```
+
+### MCP-Server (Claude-Konnektor)
+
+Eigener Service `mcp` (`Dockerfile.mcp`, Port 3000 nur intern); der nginx im `devtoys`-Container leitet
+`POST /mcp` dorthin weiter. Nach Änderungen an `mcp-server/` oder `src/lib/core/`:
+
+```bash
+cd /mnt/data/claude/BokuNoDevToys
+docker compose build mcp && docker compose up -d mcp      # Website bleibt online
+```
+
+Die **erste** Einrichtung (und jede Änderung an `nginx.conf`) braucht zusätzlich den vollen Rebuild des
+`devtoys`-Images (siehe oben). Ist der `mcp`-Container down, antwortet nur `/mcp` mit 502, die Seite läuft weiter.
+Prüfen: `curl -s -X POST https://devtoys.bokunocompany.at/mcp -H 'content-type: application/json' -H 'accept: application/json, text/event-stream' -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'`.
+Änderungen an `src/lib/core/` wirken sich auch auf die Web-Tools aus → zusätzlich den schnellen Weg (Build + restart) ausführen.
+
+**Automatisch:** Die GitHub Action `.github/workflows/deploy.yml` deployt bei jedem Push auf `main` (Quick Build; voller Rebuild bei Änderungen an `package*.json`, `Dockerfile`, `nginx.conf`, `docker-compose.yml`; zusätzlich `mcp` neu bauen bei Änderungen in `mcp-server/`, `src/lib/core/`, `Dockerfile.mcp`). Manuelles Deployen ist nur nötig, wenn die Action nicht läuft.
 
 Das baut das komplette Image neu (inkl. `npm ci`) und ist deutlich langsamer — für reine
 Tool-/Übersetzungs-Änderungen nicht nötig.

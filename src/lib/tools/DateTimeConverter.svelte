@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import { t } from '$lib/i18n';
+	import { dateToTimestamp, timestampToDate, formatLocal } from '$lib/core/datetime';
 
 	let now = $state(new Date());
 	let interval: ReturnType<typeof setInterval>;
@@ -15,28 +16,20 @@
 	onMount(() => { interval = setInterval(() => { now = new Date(); }, 1000); });
 	onDestroy(() => clearInterval(interval));
 
-	function pad(n: number) { return String(n).padStart(2, '0'); }
-
-	function formatLocal(d: Date) {
-		return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-	}
-
 	function convertDateToTs() {
 		dateError = '';
 		dateToTs = '';
-		const d = new Date(dateInput);
-		if (isNaN(d.getTime())) { dateError = $t('datetime').invalidDate; return; }
-		dateToTs = String(Math.floor(d.getTime() / 1000));
+		const ts = dateToTimestamp(dateInput);
+		if (ts === null) { dateError = $t('datetime').invalidDate; return; }
+		dateToTs = ts;
 	}
 
 	function convertTsToDate() {
 		tsError = '';
 		tsToDate = '';
-		const n = Number(tsInput.trim());
-		if (!tsInput.trim() || isNaN(n)) { tsError = $t('datetime').invalidTs; return; }
-		const ms = n < 1e12 ? n * 1000 : n;
-		const d = new Date(ms);
-		tsToDate = `Local: ${formatLocal(d)}\nUTC:   ${d.toUTCString()}`;
+		const res = timestampToDate(tsInput);
+		if (res === null) { tsError = $t('datetime').invalidTs; return; }
+		tsToDate = res;
 	}
 
 	function copy(text: string) { navigator.clipboard.writeText(text); }

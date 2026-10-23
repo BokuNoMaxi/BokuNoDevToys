@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
+	import { convertTimezone, FIXED_TZ_OFFSET } from '$lib/core/datetime';
 
 	const bases = ['UTC', 'GMT', 'MEZ', 'MESZ'];
 	const offsets = Array.from({ length: 25 }, (_, i) => i - 12);
-	const fixedOffset: Record<string, number> = { UTC: 0, MEZ: 1, MESZ: 2 };
+	const fixedOffset = FIXED_TZ_OFFSET;
 
 	let inputDate = $state(new Date().toISOString().slice(0, 10));
 	let inputTime = $state(new Date().toTimeString().slice(0, 5));
@@ -28,25 +29,9 @@
 		if (!inputDate || !fromBase || !toBase) { error = tz.fillAll; return; }
 
 		try {
-			const toTz = toOffset === 0 ? 'UTC' : `Etc/GMT${toOffset > 0 ? -toOffset : '+' + Math.abs(toOffset)}`;
-			const approxUtc = new Date(`${inputDate}T${inputTime || '00:00'}:00Z`);
-			if (isNaN(approxUtc.getTime())) { error = tz.invalidDate; return; }
-
-			const utcMs = approxUtc.getTime() - fromOffset * 3600000;
-			const utcDate = new Date(utcMs);
-
-			const parts = new Intl.DateTimeFormat('de-DE', {
-				timeZone: toTz,
-				year: 'numeric', month: '2-digit', day: '2-digit',
-				hour: '2-digit', minute: '2-digit', second: '2-digit',
-				hour12: false,
-			}).formatToParts(utcDate);
-
-			const p: Record<string, string> = {};
-			parts.forEach(({ type, value }) => { p[type] = value; });
-
-			const sign = toOffset >= 0 ? '+' : '';
-			result = `${p.day}.${p.month}.${p.year} ${p.hour}:${p.minute}:${p.second} ${toBase}${sign}${toOffset}`;
+			const res = convertTimezone(inputDate, inputTime, fromOffset, toOffset, toBase);
+			if (res === null) { error = tz.invalidDate; return; }
+			result = res;
 		} catch (e) {
 			error = `${$t('timezone').error}: ${(e as Error).message}`;
 		}

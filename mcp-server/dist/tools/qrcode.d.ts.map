@@ -1,1 +1,0 @@
-{"version":3,"file":"qrcode.d.ts","sourceRoot":"","sources":["../../src/tools/qrcode.ts"],"names":[],"mappings":"AAEA,wBAAsB,cAAc,CAAC,IAAI,EAAE,MAAM,EAAE,IAAI,GAAE,MAAY,GAAG,OAAO,CAAC,MAAM,CAAC,CActF;AAED,eAAO,MAAM,WAAW;;;;;;;;;;;;;;;;;GAavB,CAAC;AAEF,wBAAsB,gBAAgB,CAAC,QAAQ,EAAE,MAAM,EAAE,IAAI,EAAE,MAAM,CAAC,MAAM,EAAE,MAAM,GAAG,MAAM,CAAC,GAAG,OAAO,CAAC,MAAM,CAAC,CAU/G"}

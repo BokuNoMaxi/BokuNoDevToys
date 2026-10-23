@@ -1,0 +1,7 @@
+node_modules
+mcp-server/node_modules
+mcp-server/dist
+build
+.svelte-kit
+.git
+.claude

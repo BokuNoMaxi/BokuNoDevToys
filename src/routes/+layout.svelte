@@ -246,6 +246,8 @@
 				{$t('footer').sourceCode}
 			</a>
 			<span class="text-slate-600 mx-1">•</span>
+			<a href="/mcp-connector" class="text-slate-300 hover:text-white transition-colors">{$t('footer').mcp}</a>
+			<span class="text-slate-600 mx-1">•</span>
 			<a href="/impressum" class="text-slate-400 hover:text-slate-300 transition-colors">Impressum / Legal</a>
 		</p>
 	</aside>

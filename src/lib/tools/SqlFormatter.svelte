@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
-	import { format } from 'sql-formatter';
+	import { formatSql } from '$lib/core/format';
 	import { openPopoutText } from '$lib/popout';
 
 	type Dialect = 'mysql' | 'postgresql' | 'sqlite' | 'sql';
@@ -11,7 +11,7 @@
 	let result = $derived.by((): { output: string; error: string } => {
 		if (!input.trim()) return { output: '', error: '' };
 		try {
-			const output = format(input, { language: dialect, tabWidth: 2, keywordCase: 'upper' });
+			const output = formatSql(input, dialect);
 			return { output, error: '' };
 		} catch (e) {
 			return { output: '', error: (e as Error).message };

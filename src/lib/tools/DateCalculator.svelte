@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
+	import { shiftDate, diffDates } from '$lib/core/datetime';
 
 	let baseDate = $state(new Date().toISOString().slice(0, 10));
 	let baseTime = $state(new Date().toTimeString().slice(0, 5));
@@ -29,17 +30,10 @@
 		result = '';
 		if (!baseDate) { error = dc.enterDate; return; }
 		try {
-			const d = new Date(`${baseDate}T${baseTime || '00:00'}:00`);
-			if (isNaN(d.getTime())) { error = dc.invalidDate; return; }
 			const sign = operation === 'add' ? 1 : -1;
-			d.setFullYear(d.getFullYear() + sign * years);
-			d.setMonth(d.getMonth() + sign * months);
-			d.setDate(d.getDate() + sign * days);
-			d.setHours(d.getHours() + sign * hours);
-			d.setMinutes(d.getMinutes() + sign * minutes);
-			d.setSeconds(d.getSeconds() + sign * seconds);
-			const fmt = (n: number) => String(n).padStart(2, '0');
-			result = `${d.getFullYear()}-${fmt(d.getMonth()+1)}-${fmt(d.getDate())} ${fmt(d.getHours())}:${fmt(d.getMinutes())}:${fmt(d.getSeconds())}`;
+			const res = shiftDate(baseDate, baseTime, { years, months, days, hours, minutes, seconds }, sign);
+			if (res === null) { error = dc.invalidDate; return; }
+			result = res;
 		} catch (e) {
 			error = `${dc.error}: ${(e as Error).message}`;
 		}
@@ -49,29 +43,16 @@
 		const dc = $t('dateCalc');
 		diffResult = '';
 		try {
-			const a = new Date(`${dateA}T${timeA || '00:00'}:00`);
-			const b = new Date(`${dateB}T${timeB || '00:00'}:00`);
-			if (isNaN(a.getTime()) || isNaN(b.getTime())) { diffResult = dc.invalidDates; return; }
-
-			const ms = Math.abs(b.getTime() - a.getTime());
-			const totalSeconds = Math.floor(ms / 1000);
-			const totalMinutes = Math.floor(totalSeconds / 60);
-			const totalHours = Math.floor(totalMinutes / 60);
-			const totalDays = Math.floor(totalHours / 24);
-			const secs = totalSeconds % 60;
-			const mins = totalMinutes % 60;
-			const hrs = totalHours % 24;
-			const approxYears = Math.floor(totalDays / 365);
-			const approxMonths = Math.floor((totalDays % 365) / 30);
-			const remDays = totalDays % 365 % 30;
-			const direction = b >= a ? dc.bAfterA : dc.aAfterB;
+			const d = diffDates(dateA, timeA, dateB, timeB);
+			if (d === null) { diffResult = dc.invalidDates; return; }
+			const direction = d.bAfterA ? dc.bAfterA : dc.aAfterB;
 
 			diffResult = [
 				direction,
 				'',
-				`${dc.total}: ${totalDays} ${dc.daysUnit} / ${totalHours} ${dc.hoursUnit} / ${totalMinutes} ${dc.minutesUnit} / ${totalSeconds} ${dc.secondsUnit}`,
+				`${dc.total}: ${d.totalDays} ${dc.daysUnit} / ${d.totalHours} ${dc.hoursUnit} / ${d.totalMinutes} ${dc.minutesUnit} / ${d.totalSeconds} ${dc.secondsUnit}`,
 				'',
-				`${dc.breakdown}: ${approxYears} y, ${approxMonths} m, ${remDays} d, ${pad(hrs)} h, ${pad(mins)} min, ${pad(secs)} s`,
+				`${dc.breakdown}: ${d.years} y, ${d.months} m, ${d.days} d, ${pad(d.hours)} h, ${pad(d.minutes)} min, ${pad(d.seconds)} s`,
 			].join('\n');
 		} catch (e) {
 			diffResult = `${$t('dateCalc').error}: ${(e as Error).message}`;
