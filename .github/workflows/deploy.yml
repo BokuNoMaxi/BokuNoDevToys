@@ -69,12 +69,17 @@ jobs:
           flock -w 5400 /tmp/docker-nachtbuild.lock docker compose build $args
           docker compose up -d
 
-      - name: Quick build (code/content changes only)
-        if: steps.check.outputs.full == 'false'
+      # ./build ist als Volume in den devtoys-Container gemountet und ueberdeckt das im Image
+      # gebaute HTML. Der Image-Build (oben) aktualisiert die Seite deshalb NICHT — ./build muss
+      # in jedem Fall neu gebaut werden, auch nach einem vollen Rebuild.
+      # npm install: Der builder nutzt ein benanntes node_modules-Volume (npm ci scheitert dort an
+      # EBUSY); so kommen neue Abhaengigkeiten an, bevor ./build ueberschrieben wird.
+      - name: Build site (./build is mounted into the container)
         run: |
           set -e
           cd /mnt/data/claude/BokuNoDevToys
-          docker compose run --rm builder npm run build
+          docker compose run --rm builder sh -c "npm install --no-audit --no-fund && npm run build"
+          git checkout -- package.json package-lock.json
           docker compose restart devtoys
 
       - name: Rebuild MCP server (mcp-server or shared core changed)
