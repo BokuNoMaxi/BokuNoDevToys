@@ -8,6 +8,13 @@ services:
     ports:
       - "34291:80"
     restart: unless-stopped
+    # Statische Seite wird ausgeliefert (leeres ./build gaebe 403/404 und damit "ungesund")
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
     volumes:
       - ./build:/usr/share/nginx/html:ro
 
