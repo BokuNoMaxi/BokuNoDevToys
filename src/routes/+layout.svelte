@@ -78,15 +78,15 @@
 	}
 
 	const catMeta: Record<string, { icon: string; color: string; border: string }> = {
-		dateTime:  { icon: '📅', color: 'text-sky-400',     border: 'border-sky-500' },
+		dateTime:  { icon: '📅', color: 'text-sky-300', border: 'border-sky-500' },
 		text:      { icon: '📝', color: 'text-emerald-400', border: 'border-emerald-500' },
 		format:    { icon: '🔧', color: 'text-amber-400',   border: 'border-amber-500' },
-		security:  { icon: '🔐', color: 'text-red-400',     border: 'border-red-500' },
-		generator: { icon: '⚙️', color: 'text-violet-400',  border: 'border-violet-500' },
+		security:  { icon: '🔐', color: 'text-red-300', border: 'border-red-500' },
+		generator: { icon: '⚙️', color: 'text-violet-300', border: 'border-violet-500' },
 		analyzer:  { icon: '🔍', color: 'text-cyan-400',    border: 'border-cyan-500' },
-		frontend:  { icon: '🖼️', color: 'text-pink-400',    border: 'border-pink-500' },
+		frontend:  { icon: '🖼️', color: 'text-pink-300', border: 'border-pink-500' },
 		seo:       { icon: '📈', color: 'text-lime-400',    border: 'border-lime-500' },
-		scraper:   { icon: '⬇️', color: 'text-orange-400',  border: 'border-orange-500' },
+		scraper:   { icon: '⬇️', color: 'text-orange-300', border: 'border-orange-500' },
 	};
 </script>
 

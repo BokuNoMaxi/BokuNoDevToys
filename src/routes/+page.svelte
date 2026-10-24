@@ -112,6 +112,6 @@
 	</div>
 
 	<div class="mt-12 pt-8 border-t border-slate-800 text-center">
-		<p class="text-xs text-slate-400">{$t('home').footer}</p>
+		<p class="text-xs text-slate-300">{$t('home').footer}</p>
 	</div>
 </div>

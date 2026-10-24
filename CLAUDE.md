@@ -31,19 +31,27 @@ SvelteKit-Projekt mit Dev-Tools im Browser. Läuft produktiv via Docker unter ht
 
 Die Seite muss zu 100% barrierefrei sein. Folgende Regeln gelten für **jede neue Komponente und jede Änderung**:
 
+### Farbwelt (wie bokunocompany.at)
+Definiert in `src/routes/layout.css` (`@theme`, Tailwind v4 — eine `tailwind.config.ts` wird ignoriert):
+- **Grund** `bg-slate-950` = `#1A1C2E` (navy). Flächen darüber: `slate-900` `#1f2236` (Sidebar, Eingabefelder), `slate-800` `#262940` (Karten), `slate-700` `#363a58` (Rahmen). Die Stufen sind navy-getönt, die Reihenfolge ist unverändert.
+- **Akzent** `#8B5CF6` = `violet-500` / `--color-accent`: für Rahmen, Fokus-Zustände, Slider/Checkboxen und große Flächen. **Nicht** als Hintergrund für Buttons mit Text (weiß darauf nur 4,23:1) und nicht als Text auf dem Grund (3,97:1) — dafür `bg-violet-700` bzw. `text-violet-300`.
+- **Zweitakzent** `#F59E0B` = `amber-500` / `--color-accent-secondary`: globaler Tastatur-Fokusring (7,83:1 auf dem Grund); Textlinks in Fließtext-Seiten als `text-amber-400` (10,07:1).
+- **Schrift**: Inter (selbst gehostet über `@fontsource-variable/inter`, die CSP erlaubt nur `font-src 'self'`).
+
 ### Farbkontrast (WCAG AAA — Pflicht)
 - Normaler Text (< 18pt / < 14pt bold): Kontrastverhältnis **mindestens 7:1**
 - Großer Text (≥ 18pt / ≥ 14pt bold): Kontrastverhältnis mindestens 4.5:1
 - **Erlaubte Text-Farben** auf dunklem Hintergrund (bg-slate-800/900):
-  - `text-slate-300` oder heller für Beschriftungen, Überschriften, Hinweistexte
-  - `text-violet-300` für Code-Highlights, aktive Nav-Links
-  - `text-red-300` für Fehlermeldungen
-  - `text-emerald-400`, `text-amber-400`, `text-sky-400` (nur auf bg-slate-900: ≥ 7.6:1)
+  - `text-slate-300` oder heller für Beschriftungen, Überschriften, Hinweistexte (8,75:1 auf slate-800, 9,62:1 auf slate-900)
+  - `text-violet-300` für Code-Highlights, aktive Nav-Links (7,72:1 / 8,49:1)
+  - `text-red-300` für Fehlermeldungen (7,51:1 / 8,25:1)
+  - `text-emerald-400`, `text-amber-400`, `text-sky-400` (nur auf bg-slate-900/950: ≥ 7,3:1). Auf bg-slate-800 stattdessen die `-300`-Stufe nehmen.
 - **Buttons aktiv**: `bg-violet-700 text-white` (7.10:1 ✓)
 - **Buttons inaktiv auf bg-slate-700**: `text-slate-200` (8.40:1 ✓)
-- **Buttons inaktiv auf bg-slate-900**: `text-slate-300` (12.02:1 ✓)
-- **Hover** auf bg-slate-600: `text-white` (7.57:1 ✓)
+- **Buttons inaktiv auf bg-slate-900**: `text-slate-300` (9.62:1 ✓)
+- **Hover** auf bg-slate-600: `text-white` (8.33:1 ✓)
 - **Nie verwenden** für lesbaren Text: `text-slate-400` bis `text-slate-700` auf slate-800/900 Hintergründen
+- Bei Farbänderungen immer alle Seiten messen, nicht nur Stichproben (Playwright: Textfarbe gegen effektiven Hintergrund je Element, vorher/nachher vergleichen).
 
 ### Formularelemente
 - Jedes `<input>`, `<textarea>`, `<select>` **muss** ein zugeordnetes `<label for="id">` oder `aria-label` / `aria-labelledby` haben

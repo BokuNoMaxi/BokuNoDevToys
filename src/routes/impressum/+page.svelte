@@ -16,7 +16,7 @@
 		<h2 class="text-xl font-semibold text-violet-300 mb-4">{$t('impressum').responsible}</h2>
 		<p class="text-slate-300 mb-4">
 			Markus Ketterer<br />
-			<a href="https://www.bokunocompany.at" target="_blank" rel="noopener noreferrer" class="text-violet-400 hover:text-violet-300 underline">
+			<a href="https://www.bokunocompany.at" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 underline">
 				www.bokunocompany.at
 			</a>
 		</p>
@@ -25,7 +25,7 @@
 	<section class="mb-8">
 		<h2 class="text-xl font-semibold text-violet-300 mb-4">{$t('impressum').sourceCode}</h2>
 		<p class="text-slate-300 mb-4">
-			<a href="https://github.com/BokuNoMaxi/BokuNoDevToys" target="_blank" rel="noopener noreferrer" class="text-violet-400 hover:text-violet-300 underline">
+			<a href="https://github.com/BokuNoMaxi/BokuNoDevToys" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 underline">
 				{$t('impressum').sourceLinkText}
 			</a>
 		</p>

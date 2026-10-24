@@ -114,7 +114,7 @@
 		<p class="text-slate-300 mb-2">{$t('mcpDocs').selfHostText}</p>
 		<div class="mb-3">{@render codeBlock('self', SELF_HOST_CMD, $t('mcpDocs').copyCommandAria)}</div>
 		<p>
-			<a href="https://github.com/BokuNoMaxi/BokuNoDevToys/tree/main/mcp-server" target="_blank" rel="noopener noreferrer" class="text-violet-300 hover:text-white underline">
+			<a href="https://github.com/BokuNoMaxi/BokuNoDevToys/tree/main/mcp-server" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 underline">
 				{$t('mcpDocs').selfHostLink}
 			</a>
 		</p>
