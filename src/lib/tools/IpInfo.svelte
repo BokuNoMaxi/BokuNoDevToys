@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
-	import { onMount } from 'svelte';
 
 	interface GeoInfo { country_name?: string; region?: string; city?: string; org?: string; asn?: string; }
 	interface IpData { ip: string; geo: GeoInfo | null; error: boolean; }
 
 	let ipv4 = $state<IpData | null>(null);
 	let ipv6 = $state<IpData | null>(null);
-	let loading = $state(true);
+	let loading = $state(false);
+	let requested = $state(false);
 
 	// CIDR calculator
 	let cidrIp   = $state('');
@@ -27,7 +27,8 @@
 		} catch { return null; }
 	}
 
-	onMount(async () => {
+	async function detect() {
+		requested = true;
 		loading = true;
 		const results = await Promise.allSettled([
 			fetchIp('https://api.ipify.org?format=json'),
@@ -47,7 +48,7 @@
 		ipv4 = v4ip ? { ip: v4ip, geo: geo4, error: false } : { ip: '', geo: null, error: true };
 		ipv6 = trueV6 ? { ip: trueV6, geo: geo6, error: false } : null;
 		loading = false;
-	});
+	}
 
 	// CIDR calculation
 	interface CidrResult { network: string; broadcast: string; hosts: number; contains: boolean | null; }
@@ -83,9 +84,14 @@
 	}
 </script>
 
-<div class="space-y-4">
+<div class="space-y-4" aria-live="polite">
 	<!-- IP Cards -->
-	{#if loading}
+	{#if !requested}
+		<div class="bg-slate-800 rounded-xl p-6">
+			<button type="button" onclick={detect} class="px-4 py-2 rounded-lg text-sm bg-violet-700 text-white hover:bg-violet-600 transition-colors">{$t('ipInfo').lookup}</button>
+			<p class="text-xs text-slate-300 mt-3">{$t('ipInfo').lookupNote}</p>
+		</div>
+	{:else if loading}
 		<div class="bg-slate-800 rounded-xl p-8 flex items-center justify-center">
 			<p class="text-slate-300 text-sm">{$t('ipInfo').loading}</p>
 		</div>

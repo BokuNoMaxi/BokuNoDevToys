@@ -23,6 +23,12 @@ SvelteKit-Projekt mit Dev-Tools im Browser. Läuft produktiv via Docker unter ht
 4. In `src/routes/tools/[tool]/+page.svelte` importieren und per `{:else if toolId === 'mein-tool'}` einbinden
 5. Wenn das Tool sinnvoll ohne Browser nutzbar ist (reine Text-/Datenverarbeitung, kein Netzwerk, keine Geheimnisse): auch als MCP-Tool in `mcp-server/src/tools/*.ts` registrieren, in `mcpDocs.tools` (en + de) eintragen und einen Test in `mcp-server/test/server.test.mjs` ergänzen (`cd mcp-server && npm test`)
 
+## Externe Skripte & Einwilligung
+
+- Externe Skripte (derzeit nur Cloudflare Web Analytics, das Cloudflare am Edge einfügt) laufen **nur mit Einwilligung**: Der Cookie-Hinweis (`src/lib/components/CookieNotice.svelte`, Logik in `src/lib/consent.ts`) setzt das First-Party-Cookie `devtoys_consent` (`analytics` | `none`), und `nginx.conf` erweitert nur dann `script-src`/`connect-src` um die Cloudflare-Hosts (`map $cookie_devtoys_consent`). Ohne Cookie blockiert die CSP das Skript.
+- Neue externe Skripte, Fonts oder Requests beim Seitenaufruf nicht ohne denselben Mechanismus einbauen. Tools dürfen Dritte nur nach einer ausdrücklichen Aktion des Nutzers kontaktieren (Beispiel: IP Info mit Button).
+- Datenschutztext: Abschnitt „Datenschutz“ auf `/impressum` (`impressum.privacy*` in en/de) bei jeder Änderung daran mitpflegen.
+
 ## Arbeitsweise
 
 **Immer direkt im Projektverzeichnis `/mnt/data/claude/BokuNoDevToys/` auf `srv-ubuntu` (10.0.0.3) arbeiten** — nie in Worktrees oder anderen Verzeichnissen, da Docker von hier baut und ein `git pull` sonst nötig wäre. (Vormals lief das Projekt auf dem Raspberry Pi unter `/home/pi/BokuNoDevToys/` — dorthin nicht mehr deployen.)

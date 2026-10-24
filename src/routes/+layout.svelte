@@ -10,6 +10,8 @@
 	import { commitHash } from '$lib/build';
 	import favicon from '$lib/assets/favicon.svg';
 	import logo from '$lib/assets/logo.svg';
+	import CookieNotice from '$lib/components/CookieNotice.svelte';
+	import { consentActions } from '$lib/consent';
 
 	let { children } = $props();
 	let sidebarOpen = $state(false);
@@ -37,6 +39,7 @@
 
 	onMount(() => {
 		lang.init();
+		consentActions.init();
 		openCats = readCookie();
 		favorites.init();
 	});
@@ -249,6 +252,8 @@
 			<a href="/mcp-connector" class="text-slate-300 hover:text-white transition-colors">{$t('footer').mcp}</a>
 			<span class="text-slate-300 mx-1" aria-hidden="true">•</span>
 			<a href="/impressum" class="text-slate-300 hover:text-white transition-colors">Impressum / Legal</a>
+			<span class="text-slate-300 mx-1" aria-hidden="true">•</span>
+			<button id="cookie-settings-button" type="button" onclick={() => consentActions.reopen()} class="text-slate-300 hover:text-white transition-colors">{$t('footer').cookieSettings}</button>
 		</p>
 	</aside>
 
@@ -277,3 +282,6 @@
 		</main>
 	</div>
 </div>
+
+<CookieNotice />
+

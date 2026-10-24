@@ -965,6 +965,8 @@ const en = {
     yes: 'Yes',
     no: 'No',
     invalidIp: 'Invalid IP address',
+    lookup: 'Look up my IP address',
+    lookupNote: 'Your IP address is requested from ipify.org and its location from ipapi.co. Nothing is sent before you click.',
   },
   csvViewer: {
     input: 'Input',
@@ -997,7 +999,19 @@ const en = {
   },
   footer: {
     sourceCode: 'GitHub',
+    cookieSettings: 'Cookie settings',
     mcp: 'Claude connector',
+  },
+  cookie: {
+    title: 'Cookies & external scripts',
+    text: 'Optional: anonymous page statistics via Cloudflare Web Analytics. The script is only loaded if you accept. Tools run in your browser either way.',
+    more: 'Privacy details',
+    accept: 'Accept',
+    decline: 'Decline',
+    currentAccepted: 'Current choice: accepted.',
+    currentDeclined: 'Current choice: declined.',
+    savedAccepted: 'Choice saved: statistics accepted. They start with the next page load.',
+    savedDeclined: 'Choice saved: statistics declined.',
   },
   impressum: {
     title: 'Legal Notice',
@@ -1011,6 +1025,12 @@ const en = {
     thirdPartyText: 'This application may link to external websites. The operator is not responsible for their content, accuracy, or compliance with laws.',
     contact: 'Contact & Questions',
     contactText: 'For license inquiries, alternative licensing terms, or other questions regarding BokuNoDevToys, please visit the project on GitHub.',
+    privacy: 'Privacy & Cookies',
+    privacyIntro: 'This site sets no tracking cookies. The tools process your input in your browser; it is not sent to our server.',
+    privacyCookies: 'Cookies and local storage on this site: "devtoys_consent" (your choice below, 6 months), "sidebar_open_cats" (which sidebar groups are open) and your language and favorites in the browser (local storage). They are technically needed for these functions.',
+    privacyAnalytics: 'Only if you accept: Cloudflare Web Analytics (Cloudflare, Inc.) counts page views without cookies. For this, your IP address is processed by Cloudflare. Without your consent the script is blocked by the server (Content Security Policy). You can change your choice at any time via "Cookie settings" in the footer.',
+    privacyExternal: 'Tools that contact third parties only do so when you use them: the IP Info tool queries ipify.org and ipapi.co after you click the lookup button; the SEO, schema, robots/sitemap and keyword tools fetch a URL through our own proxy (corsproxy.bokunocompany.at) only if you enter one.',
+    privacyNote: 'This text is a factual description of the technical behavior, not legal advice.',
   },
   mcpDocs: {
     title: 'Claude Connector (MCP)',

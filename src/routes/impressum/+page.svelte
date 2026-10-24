@@ -48,6 +48,17 @@
 		</p>
 	</section>
 
+	<section id="datenschutz" class="mb-8">
+		<h2 class="text-xl font-semibold text-violet-300 mb-4">{$t('impressum').privacy}</h2>
+		<div class="text-slate-300 text-sm space-y-3">
+			<p>{$t('impressum').privacyIntro}</p>
+			<p>{$t('impressum').privacyCookies}</p>
+			<p>{$t('impressum').privacyAnalytics}</p>
+			<p>{$t('impressum').privacyExternal}</p>
+			<p>{$t('impressum').privacyNote}</p>
+		</div>
+	</section>
+
 	<section>
 		<h2 class="text-xl font-semibold text-violet-300 mb-4">{$t('impressum').contact}</h2>
 		<p class="text-slate-300 text-sm">

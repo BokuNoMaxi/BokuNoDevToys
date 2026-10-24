@@ -967,6 +967,8 @@ const de: Translations = {
     yes: 'Ja',
     no: 'Nein',
     invalidIp: 'Ungültige IP-Adresse',
+    lookup: 'Meine IP-Adresse abrufen',
+    lookupNote: 'Deine IP-Adresse wird bei ipify.org abgefragt, der Standort bei ipapi.co. Vor dem Klick wird nichts gesendet.',
   },
   csvViewer: {
     input: 'Eingabe',
@@ -999,7 +1001,19 @@ const de: Translations = {
   },
   footer: {
     sourceCode: 'GitHub',
+    cookieSettings: 'Cookie-Einstellungen',
     mcp: 'Claude-Konnektor',
+  },
+  cookie: {
+    title: 'Cookies & externe Skripte',
+    text: 'Optional: anonyme Seitenstatistik über Cloudflare Web Analytics. Das Skript wird nur geladen, wenn du zustimmst. Die Tools laufen in jedem Fall in deinem Browser.',
+    more: 'Details zum Datenschutz',
+    accept: 'Akzeptieren',
+    decline: 'Ablehnen',
+    currentAccepted: 'Aktuelle Auswahl: akzeptiert.',
+    currentDeclined: 'Aktuelle Auswahl: abgelehnt.',
+    savedAccepted: 'Auswahl gespeichert: Statistik akzeptiert. Sie startet beim nächsten Seitenaufruf.',
+    savedDeclined: 'Auswahl gespeichert: Statistik abgelehnt.',
   },
   impressum: {
     title: 'Impressum',
@@ -1013,6 +1027,12 @@ const de: Translations = {
     thirdPartyText: 'Diese Anwendung kann auf externe Webseiten verlinken. Der Betreiber ist nicht verantwortlich für deren Inhalte, Richtigkeit oder rechtliche Konformität.',
     contact: 'Kontakt & Fragen',
     contactText: 'Für Lizenzfragen, alternative Lizenzbedingungen oder andere Fragen zu BokuNoDevToys besuchen Sie bitte das Projekt auf GitHub.',
+    privacy: 'Datenschutz & Cookies',
+    privacyIntro: 'Diese Seite setzt keine Tracking-Cookies. Die Tools verarbeiten deine Eingaben im Browser; sie werden nicht an unseren Server gesendet.',
+    privacyCookies: 'Cookies und lokaler Speicher auf dieser Seite: „devtoys_consent“ (deine Auswahl, 6 Monate), „sidebar_open_cats“ (welche Seitenleisten-Gruppen offen sind) sowie Sprache und Favoriten im Browser (Local Storage). Sie sind für diese Funktionen technisch nötig.',
+    privacyAnalytics: 'Nur wenn du zustimmst: Cloudflare Web Analytics (Cloudflare, Inc.) zählt Seitenaufrufe ohne Cookies. Dafür verarbeitet Cloudflare deine IP-Adresse. Ohne Zustimmung blockiert der Server das Skript (Content Security Policy). Deine Auswahl kannst du jederzeit über „Cookie-Einstellungen“ im Fußbereich ändern.',
+    privacyExternal: 'Tools, die Dritte kontaktieren, tun das nur bei Nutzung: Das IP-Info-Tool fragt nach einem Klick auf die Abfrage ipify.org und ipapi.co ab; die SEO-, Schema-, Robots/Sitemap- und Keyword-Tools holen eine URL über unseren eigenen Proxy (corsproxy.bokunocompany.at) nur, wenn du eine eingibst.',
+    privacyNote: 'Dieser Text beschreibt das technische Verhalten sachlich und ist keine Rechtsberatung.',
   },
   mcpDocs: {
     title: 'Claude-Konnektor (MCP)',
