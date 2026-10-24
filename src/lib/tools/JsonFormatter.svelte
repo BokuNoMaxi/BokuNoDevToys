@@ -45,7 +45,7 @@
 			onpaste={handlePaste}
 			placeholder={`{"key": "value", "array": [1, 2, 3]}`}
 			rows="8"
-			class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-400 focus:outline-none focus:border-violet-500 font-mono text-xs resize-y"
+			class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-300 focus:outline-none focus:border-violet-500 font-mono text-xs resize-y"
 		></textarea>
 		{#if error}
 			<p class="mt-2 text-red-300 text-sm font-mono" role="alert">{error}</p>

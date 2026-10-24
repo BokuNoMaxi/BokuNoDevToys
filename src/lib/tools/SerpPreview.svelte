@@ -20,7 +20,7 @@
 	const statusColor: Record<string, string> = {
 		good: 'text-emerald-400',
 		warn: 'text-amber-400',
-		bad: 'text-red-400',
+		bad: 'text-red-300',
 	};
 
 	let breadcrumb = $derived.by(() => {
@@ -48,7 +48,7 @@
 	<div class="bg-slate-800 rounded-xl p-6 space-y-4">
 		<div>
 			<div class="flex items-center justify-between mb-1.5">
-				<label class="text-xs text-slate-400" for="serp-title">{$t('serpPreview').titleLabel}</label>
+				<label class="text-xs text-slate-300" for="serp-title">{$t('serpPreview').titleLabel}</label>
 				<span class="text-xs font-mono {statusColor[titleStatus]}">{titleLen}/60</span>
 			</div>
 			<input
@@ -60,7 +60,7 @@
 		</div>
 
 		<div>
-			<label class="block text-xs text-slate-400 mb-1.5" for="serp-url">{$t('serpPreview').urlLabel}</label>
+			<label class="block text-xs text-slate-300 mb-1.5" for="serp-url">{$t('serpPreview').urlLabel}</label>
 			<input
 				id="serp-url"
 				type="text"
@@ -71,7 +71,7 @@
 
 		<div>
 			<div class="flex items-center justify-between mb-1.5">
-				<label class="text-xs text-slate-400" for="serp-desc">{$t('serpPreview').descLabel}</label>
+				<label class="text-xs text-slate-300" for="serp-desc">{$t('serpPreview').descLabel}</label>
 				<span class="text-xs font-mono {statusColor[descStatus]}">{descLen}/160</span>
 			</div>
 			<textarea

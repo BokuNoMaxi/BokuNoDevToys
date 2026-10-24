@@ -52,42 +52,42 @@
 		<div class="bg-slate-800 rounded-xl p-6 space-y-4">
 			<div class="grid grid-cols-2 gap-3">
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">Blur: <span class="text-violet-300 font-mono">{blur}px</span></label>
+					<label class="block text-xs text-slate-300 mb-1.5">Blur: <span class="text-violet-300 font-mono">{blur}px</span></label>
 					<input type="range" min="0" max="40" bind:value={blur} class="w-full accent-violet-500" />
 				</div>
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">Hintergrund Opacity: <span class="text-violet-300 font-mono">{bgOpacity}%</span></label>
+					<label class="block text-xs text-slate-300 mb-1.5">Hintergrund Opacity: <span class="text-violet-300 font-mono">{bgOpacity}%</span></label>
 					<input type="range" min="0" max="100" bind:value={bgOpacity} class="w-full accent-violet-500" />
 				</div>
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">Border Opacity: <span class="text-violet-300 font-mono">{borderOpacity}%</span></label>
+					<label class="block text-xs text-slate-300 mb-1.5">Border Opacity: <span class="text-violet-300 font-mono">{borderOpacity}%</span></label>
 					<input type="range" min="0" max="100" bind:value={borderOpacity} class="w-full accent-violet-500" />
 				</div>
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">Border Breite: <span class="text-violet-300 font-mono">{borderWidth}px</span></label>
+					<label class="block text-xs text-slate-300 mb-1.5">Border Breite: <span class="text-violet-300 font-mono">{borderWidth}px</span></label>
 					<input type="range" min="0" max="4" bind:value={borderWidth} class="w-full accent-violet-500" />
 				</div>
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">Eckenradius: <span class="text-violet-300 font-mono">{borderRadius}px</span></label>
+					<label class="block text-xs text-slate-300 mb-1.5">Eckenradius: <span class="text-violet-300 font-mono">{borderRadius}px</span></label>
 					<input type="range" min="0" max="48" bind:value={borderRadius} class="w-full accent-violet-500" />
 				</div>
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">Schatten Blur: <span class="text-violet-300 font-mono">{shadowBlur}px</span></label>
+					<label class="block text-xs text-slate-300 mb-1.5">Schatten Blur: <span class="text-violet-300 font-mono">{shadowBlur}px</span></label>
 					<input type="range" min="0" max="80" bind:value={shadowBlur} class="w-full accent-violet-500" />
 				</div>
 			</div>
 
 			<div class="grid grid-cols-3 gap-3 pt-2 border-t border-slate-700">
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">Glas Farbe</label>
+					<label class="block text-xs text-slate-300 mb-1.5">Glas Farbe</label>
 					<input type="color" bind:value={bgColor} class="h-9 w-full rounded border border-slate-600 bg-slate-900 p-0.5 cursor-pointer" />
 				</div>
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">BG Farbe 1</label>
+					<label class="block text-xs text-slate-300 mb-1.5">BG Farbe 1</label>
 					<input type="color" bind:value={bg1} class="h-9 w-full rounded border border-slate-600 bg-slate-900 p-0.5 cursor-pointer" />
 				</div>
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">BG Farbe 2</label>
+					<label class="block text-xs text-slate-300 mb-1.5">BG Farbe 2</label>
 					<input type="color" bind:value={bg2} class="h-9 w-full rounded border border-slate-600 bg-slate-900 p-0.5 cursor-pointer" />
 				</div>
 			</div>

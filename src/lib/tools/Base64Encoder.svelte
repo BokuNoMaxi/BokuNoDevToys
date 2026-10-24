@@ -72,7 +72,7 @@
 				bind:value={textInput}
 				placeholder={$t('base64').textPlaceholder}
 				rows="5"
-				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 font-mono text-sm resize-y"
+				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 font-mono text-sm resize-y"
 			></textarea>
 		</div>
 
@@ -106,7 +106,7 @@
 				value={textOutput}
 				placeholder={$t('base64').resultPlaceholder}
 				rows="5"
-				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-emerald-400 placeholder-slate-400 font-mono text-sm resize-y"
+				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-emerald-400 placeholder-slate-300 font-mono text-sm resize-y"
 			></textarea>
 		</div>
 	</div>

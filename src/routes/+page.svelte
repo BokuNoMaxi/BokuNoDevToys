@@ -65,7 +65,7 @@
 	<div class="mb-8">
 		<label for="tool-search" class="sr-only">{$t('home').searchLabel}</label>
 		<div class="relative">
-			<svg class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+			<svg class="w-4 h-4 text-slate-300 absolute left-4 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z"/>
 			</svg>
 			<input
@@ -73,7 +73,7 @@
 				type="text"
 				bind:value={query}
 				placeholder={$t('home').searchPlaceholder}
-				class="w-full bg-slate-800 border border-slate-700 rounded-lg pl-11 pr-4 py-2.5 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm"
+				class="w-full bg-slate-800 border border-slate-700 rounded-lg pl-11 pr-4 py-2.5 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm"
 			/>
 		</div>
 	</div>
@@ -99,11 +99,11 @@
 						>
 							<div class="flex items-start justify-between">
 								<h3 class="font-semibold text-slate-200 group-hover:text-violet-300 transition-colors">{meta?.name ?? tool.id}</h3>
-								<svg class="w-4 h-4 text-slate-600 group-hover:text-violet-300 mt-0.5 shrink-0 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+								<svg class="w-4 h-4 text-slate-300 group-hover:text-violet-300 mt-0.5 shrink-0 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
 								</svg>
 							</div>
-							<p class="mt-1.5 text-sm text-slate-300 group-hover:text-slate-200 transition-colors">{meta?.description ?? ''}</p>
+							<p class="mt-1.5 text-sm text-slate-300 group-hover:text-white transition-colors">{meta?.description ?? ''}</p>
 						</a>
 					{/each}
 				</div>

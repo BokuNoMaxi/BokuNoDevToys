@@ -117,7 +117,7 @@
 		<div class="px-3 pt-3">
 			<label for="nav-search" class="sr-only">{$t('nav').searchLabel}</label>
 			<div class="relative">
-				<svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+				<svg class="w-3.5 h-3.5 text-slate-300 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z"/>
 				</svg>
 				<input
@@ -125,7 +125,7 @@
 					type="text"
 					bind:value={navQuery}
 					placeholder={$t('nav').searchPlaceholder}
-					class="w-full bg-slate-800 border border-slate-700 rounded-lg pl-8 pr-3 py-1.5 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-xs"
+					class="w-full bg-slate-800 border border-slate-700 rounded-lg pl-8 pr-3 py-1.5 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-xs"
 				/>
 			</div>
 		</div>
@@ -143,7 +143,7 @@
 						<span class="flex-1 text-left text-xs font-bold uppercase tracking-widest text-amber-400">
 							{$t('nav').favoritesTitle}
 						</span>
-						<svg class="w-3 h-3 shrink-0 transition-transform duration-200 {isFavoritesOpen ? 'rotate-180' : ''} text-slate-500 group-hover:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+						<svg class="w-3 h-3 shrink-0 transition-transform duration-200 {isFavoritesOpen ? 'rotate-180' : ''} text-slate-300 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
 						</svg>
 					</button>
@@ -157,7 +157,7 @@
 									class="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm transition-colors mb-0.5
 										{currentTool() === tool.id
 											? 'bg-violet-700/20 text-violet-300 font-medium'
-											: 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/60'}"
+											: 'text-slate-300 hover:text-slate-100 hover:bg-slate-800/60'}"
 								>
 									{($t('tools') as Record<string, {name: string} | undefined>)[tool.id]?.name ?? tool.id}
 								</a>
@@ -172,7 +172,7 @@
 			{#each filteredNavCategories as category}
 				{@const isOpen = navQuery.trim() ? true : openCats.has(category.key)}
 				{@const hasActive = category.tools.some(t => t.id === currentTool())}
-				{@const meta = catMeta[category.key] ?? { icon: '•', color: 'text-slate-400', border: 'border-slate-500' }}
+				{@const meta = catMeta[category.key] ?? { icon: '•', color: 'text-slate-300', border: 'border-slate-500' }}
 				<div class="mb-1">
 					<!-- Category header -->
 					<button
@@ -183,10 +183,10 @@
 					>
 						<span class="text-base leading-none">{meta.icon}</span>
 						<span class="flex-1 text-left text-xs font-bold uppercase tracking-widest
-							{hasActive ? meta.color : 'text-slate-400 group-hover:text-slate-200'}">
+							{hasActive ? meta.color : 'text-slate-300 group-hover:text-white'}">
 							{$t('cats')[category.key]}
 						</span>
-						<svg class="w-3 h-3 shrink-0 transition-transform duration-200 {isOpen ? 'rotate-180' : ''} text-slate-500 group-hover:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+						<svg class="w-3 h-3 shrink-0 transition-transform duration-200 {isOpen ? 'rotate-180' : ''} text-slate-300 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
 						</svg>
 					</button>
@@ -201,7 +201,7 @@
 									class="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm transition-colors mb-0.5
 										{currentTool() === tool.id
 											? 'bg-violet-700/20 text-violet-300 font-medium'
-											: 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/60'}"
+											: 'text-slate-300 hover:text-slate-100 hover:bg-slate-800/60'}"
 								>
 									{($t('tools') as Record<string, {name: string} | undefined>)[tool.id]?.name ?? tool.id}
 								</a>
@@ -239,16 +239,16 @@
 				>DE</button>
 			</div>
 		</div>
-		<p class="px-5 pb-4 text-xs text-slate-500 text-center">
+		<p class="px-5 pb-4 text-xs text-slate-300 text-center">
 			BokuNoDevToys &copy; {new Date().getFullYear()} • <span title="Git commit hash" class="font-mono">{commitHash}</span>
 			<br />
-			<a href="https://github.com/BokuNoMaxi/BokuNoDevToys" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-slate-300 transition-colors">
+			<a href="https://github.com/BokuNoMaxi/BokuNoDevToys" target="_blank" rel="noopener noreferrer" class="text-slate-300 hover:text-white transition-colors">
 				{$t('footer').sourceCode}
 			</a>
-			<span class="text-slate-600 mx-1">•</span>
+			<span class="text-slate-300 mx-1" aria-hidden="true">•</span>
 			<a href="/mcp-connector" class="text-slate-300 hover:text-white transition-colors">{$t('footer').mcp}</a>
-			<span class="text-slate-600 mx-1">•</span>
-			<a href="/impressum" class="text-slate-400 hover:text-slate-300 transition-colors">Impressum / Legal</a>
+			<span class="text-slate-300 mx-1" aria-hidden="true">•</span>
+			<a href="/impressum" class="text-slate-300 hover:text-white transition-colors">Impressum / Legal</a>
 		</p>
 	</aside>
 

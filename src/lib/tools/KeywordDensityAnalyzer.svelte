@@ -61,14 +61,14 @@
 					{fetching ? $t('keywordDensity').fetching : $t('keywordDensity').fetch}
 				</button>
 			</div>
-			<p class="text-xs text-slate-400">{$t('keywordDensity').proxyNote}</p>
+			<p class="text-xs text-slate-300">{$t('keywordDensity').proxyNote}</p>
 			{#if fetchError}<p class="text-red-300 text-sm">{fetchError}</p>{/if}
 		{/if}
 
 		<div class="flex items-center justify-between">
 			<label class="text-xs font-semibold text-slate-300 uppercase tracking-wider" for="kd-input">{$t('keywordDensity').inputLabel}</label>
 			<div class="flex items-center gap-3">
-				<label class="flex items-center gap-1.5 text-xs text-slate-400 cursor-pointer">
+				<label class="flex items-center gap-1.5 text-xs text-slate-300 cursor-pointer">
 					<input type="checkbox" bind:checked={stripHtml} class="accent-violet-500" />
 					{$t('keywordDensity').stripHtml}
 				</label>
@@ -79,19 +79,19 @@
 			bind:value={input}
 			placeholder={$t('keywordDensity').placeholder}
 			rows="10"
-			class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 text-sm placeholder-slate-400 focus:outline-none focus:border-violet-500 resize-y"
+			class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 text-sm placeholder-slate-300 focus:outline-none focus:border-violet-500 resize-y"
 			spellcheck="false"
 		></textarea>
 
 		<div class="flex items-center gap-4 flex-wrap">
 			<div class="flex items-center gap-2">
-				<span class="text-xs text-slate-400">{$t('keywordDensity').phraseLength}</span>
+				<span class="text-xs text-slate-300">{$t('keywordDensity').phraseLength}</span>
 				{#each [1, 2, 3] as n}
 					<button onclick={() => ngramSize = n as 1 | 2 | 3} class="px-3 py-1 rounded-lg text-xs font-mono transition-colors {ngramSize === n ? 'bg-violet-700 text-white' : 'bg-slate-900 text-slate-300 hover:text-slate-100'}">{n}</button>
 				{/each}
 			</div>
 			<div class="flex items-center gap-2">
-				<span class="text-xs text-slate-400">{$t('keywordDensity').stopwordLang}</span>
+				<span class="text-xs text-slate-300">{$t('keywordDensity').stopwordLang}</span>
 				{#each [['en','EN'],['de','DE']] as [v, label]}
 					<button onclick={() => lang = v as 'en' | 'de'} class="px-3 py-1 rounded-lg text-xs font-medium transition-colors {lang === v ? 'bg-violet-700 text-white' : 'bg-slate-900 text-slate-300 hover:text-slate-100'}">{label}</button>
 				{/each}
@@ -103,13 +103,13 @@
 		<div class="bg-slate-800 rounded-xl p-6">
 			<div class="flex items-center justify-between mb-3">
 				<h2 class="text-xs font-semibold text-slate-300 uppercase tracking-wider">{$t('keywordDensity').resultsTitle}</h2>
-				<span class="text-xs text-slate-400">{$t('keywordDensity').totalWords}: <span class="font-mono text-slate-300">{result.totalWords}</span></span>
+				<span class="text-xs text-slate-300">{$t('keywordDensity').totalWords}: <span class="font-mono text-slate-300">{result.totalWords}</span></span>
 			</div>
 			<div class="space-y-1.5 max-h-[32rem] overflow-y-auto">
 				{#each result.rows as row}
 					<div class="flex items-center gap-3 bg-slate-900 rounded-lg px-4 py-2">
 						<span class="flex-1 text-sm text-slate-200 font-mono truncate">{row.phrase}</span>
-						<span class="text-xs text-slate-400 w-16 text-right">{row.count}×</span>
+						<span class="text-xs text-slate-300 w-16 text-right">{row.count}×</span>
 						<div class="w-24 h-1.5 bg-slate-700 rounded-full overflow-hidden shrink-0">
 							<div class="h-full bg-violet-500" style="width:{Math.min(100, row.density * 8)}%"></div>
 						</div>
@@ -119,6 +119,6 @@
 			</div>
 		</div>
 	{:else if input.trim()}
-		<div class="bg-slate-800 rounded-xl p-6 text-center text-slate-400 text-sm">{$t('keywordDensity').noResults}</div>
+		<div class="bg-slate-800 rounded-xl p-6 text-center text-slate-300 text-sm">{$t('keywordDensity').noResults}</div>
 	{/if}
 </div>

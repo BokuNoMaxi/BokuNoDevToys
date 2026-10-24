@@ -87,14 +87,14 @@
 	<!-- IP Cards -->
 	{#if loading}
 		<div class="bg-slate-800 rounded-xl p-8 flex items-center justify-center">
-			<p class="text-slate-400 text-sm">{$t('ipInfo').loading}</p>
+			<p class="text-slate-300 text-sm">{$t('ipInfo').loading}</p>
 		</div>
 	{:else}
 		<div class="grid grid-cols-1 {ipv6 ? 'lg:grid-cols-2' : ''} gap-4">
 			{#each [{ label: $t('ipInfo').ipv4, data: ipv4 }, ...(ipv6 ? [{ label: $t('ipInfo').ipv6, data: ipv6 }] : [])] as card}
 				<div class="bg-slate-800 rounded-xl p-6">
 					<div class="flex items-center gap-2 mb-1">
-						<span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">{card.label}</span>
+						<span class="text-xs font-semibold text-slate-300 uppercase tracking-wider">{card.label}</span>
 					</div>
 					{#if card.data?.error}
 						<p class="text-red-300 text-sm">{$t('ipInfo').error}</p>
@@ -111,13 +111,13 @@
 									tile($t('ipInfo').asn, g.asn, 'text-slate-300'),
 								] as item}
 									<div>
-										<p class="text-xs text-slate-400">{item.label}</p>
+										<p class="text-xs text-slate-300">{item.label}</p>
 										<p class="text-sm {item.color} font-medium">{item.value}</p>
 									</div>
 								{/each}
 							</div>
 						{:else}
-							<p class="text-xs text-slate-400">{$t('ipInfo').geoError}</p>
+							<p class="text-xs text-slate-300">{$t('ipInfo').geoError}</p>
 						{/if}
 					{/if}
 				</div>
@@ -130,20 +130,20 @@
 		<h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">{$t('ipInfo').cidrCalc}</h2>
 		<div class="flex gap-3 flex-wrap">
 			<div class="flex-1 min-w-40">
-				<label for="cidr-ip" class="block text-xs text-slate-400 mb-1">{$t('ipInfo').cidrIp}</label>
+				<label for="cidr-ip" class="block text-xs text-slate-300 mb-1">{$t('ipInfo').cidrIp}</label>
 				<input id="cidr-ip" bind:value={cidrIp} placeholder="192.168.1.0"
 					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-300 font-mono focus:outline-none focus:border-violet-500 text-sm" />
 			</div>
 			<div class="w-24">
-				<label for="cidr-pfx" class="block text-xs text-slate-400 mb-1">{$t('ipInfo').cidrPrefix}</label>
+				<label for="cidr-pfx" class="block text-xs text-slate-300 mb-1">{$t('ipInfo').cidrPrefix}</label>
 				<div class="flex items-center gap-1">
-					<span class="text-slate-400 text-sm">/</span>
+					<span class="text-slate-300 text-sm">/</span>
 					<input id="cidr-pfx" bind:value={cidrPfx} type="number" min="0" max="32"
 						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-300 font-mono focus:outline-none focus:border-violet-500 text-sm" />
 				</div>
 			</div>
 			<div class="flex-1 min-w-40">
-				<label for="cidr-test" class="block text-xs text-slate-400 mb-1">{$t('ipInfo').cidrTestIp}</label>
+				<label for="cidr-test" class="block text-xs text-slate-300 mb-1">{$t('ipInfo').cidrTestIp}</label>
 				<input id="cidr-test" bind:value={cidrTest} placeholder="192.168.1.50"
 					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-300 font-mono focus:outline-none focus:border-violet-500 text-sm" />
 			</div>
@@ -153,12 +153,12 @@
 			<div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
 				{#each [
 					{ label: $t('ipInfo').cidrNetwork, value: cidrResult.network, color: 'text-emerald-400' },
-					{ label: $t('ipInfo').cidrBroadcast, value: cidrResult.broadcast, color: 'text-sky-400' },
+					{ label: $t('ipInfo').cidrBroadcast, value: cidrResult.broadcast, color: 'text-sky-300' },
 					{ label: $t('ipInfo').cidrHosts, value: cidrResult.hosts.toLocaleString(), color: 'text-violet-300' },
 					...(cidrResult.contains !== null ? [{ label: $t('ipInfo').cidrContains, value: cidrResult.contains ? $t('ipInfo').yes : $t('ipInfo').no, color: cidrResult.contains ? 'text-emerald-400' : 'text-red-300' }] : []),
 				] as item}
 					<div class="bg-slate-900 rounded-lg p-3">
-						<p class="text-xs text-slate-400 mb-1">{item.label}</p>
+						<p class="text-xs text-slate-300 mb-1">{item.label}</p>
 						<p class="font-mono text-sm font-bold {item.color}">{item.value}</p>
 					</div>
 				{/each}

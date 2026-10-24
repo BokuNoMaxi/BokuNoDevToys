@@ -51,7 +51,7 @@
 				bind:value={input}
 				placeholder={$t('markdownViewer').placeholder}
 				rows="20"
-				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 font-mono text-sm placeholder-slate-400 focus:outline-none focus:border-violet-500 resize-y"
+				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 font-mono text-sm placeholder-slate-300 focus:outline-none focus:border-violet-500 resize-y"
 				spellcheck="false"
 			></textarea>
 		</div>
@@ -68,7 +68,7 @@
 					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 					{@html rendered}
 				{:else}
-					<p class="text-slate-400 text-sm">{$t('markdownViewer').placeholder}</p>
+					<p class="text-slate-300 text-sm">{$t('markdownViewer').placeholder}</p>
 				{/if}
 			</div>
 		</div>

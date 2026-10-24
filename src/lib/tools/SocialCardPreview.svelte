@@ -81,23 +81,23 @@
 		{:else}
 			<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 				<div class="sm:col-span-2">
-					<label class="block text-xs text-slate-400 mb-1.5">og:title</label>
+					<label class="block text-xs text-slate-300 mb-1.5">og:title</label>
 					<input type="text" bind:value={ogTitle} class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 text-sm focus:outline-none focus:border-violet-500" />
 				</div>
 				<div class="sm:col-span-2">
-					<label class="block text-xs text-slate-400 mb-1.5">og:description</label>
+					<label class="block text-xs text-slate-300 mb-1.5">og:description</label>
 					<textarea bind:value={ogDescription} rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 text-sm focus:outline-none focus:border-violet-500 resize-y"></textarea>
 				</div>
 				<div class="sm:col-span-2">
-					<label class="block text-xs text-slate-400 mb-1.5">og:image (URL)</label>
+					<label class="block text-xs text-slate-300 mb-1.5">og:image (URL)</label>
 					<input type="text" bind:value={ogImage} placeholder="https://…/image.png" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 font-mono text-xs focus:outline-none focus:border-violet-500" />
 				</div>
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">og:url</label>
+					<label class="block text-xs text-slate-300 mb-1.5">og:url</label>
 					<input type="text" bind:value={ogUrl} class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 font-mono text-xs focus:outline-none focus:border-violet-500" />
 				</div>
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">og:site_name</label>
+					<label class="block text-xs text-slate-300 mb-1.5">og:site_name</label>
 					<input type="text" bind:value={siteName} class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 text-sm focus:outline-none focus:border-violet-500" />
 				</div>
 			</div>
@@ -112,13 +112,13 @@
 				{#if displayImage}
 					<img src={displayImage} alt="" class="w-full h-full object-cover" />
 				{:else}
-					<span class="text-slate-400 text-xs">{$t('socialCard').noImage}</span>
+					<span class="text-slate-700 text-xs">{$t('socialCard').noImage}</span>
 				{/if}
 			</div>
 			<div class="p-3 bg-[#f0f2f5]">
-				<p class="text-xs text-[#65676b] uppercase">{displayHost}</p>
+				<p class="text-xs text-[#4b4d52] uppercase">{displayHost}</p>
 				<p class="text-sm font-semibold text-[#050505] mt-0.5 leading-tight line-clamp-2">{ogTitle || 'Title'}</p>
-				<p class="text-xs text-[#65676b] mt-0.5 line-clamp-1">{ogDescription || ''}</p>
+				<p class="text-xs text-[#4b4d52] mt-0.5 line-clamp-1">{ogDescription || ''}</p>
 			</div>
 		</div>
 	</div>
@@ -131,13 +131,13 @@
 				{#if displayImage}
 					<img src={displayImage} alt="" class="w-full h-full object-cover" />
 				{:else}
-					<span class="text-slate-400 text-xs">{$t('socialCard').noImage}</span>
+					<span class="text-slate-200 text-xs">{$t('socialCard').noImage}</span>
 				{/if}
 			</div>
 			<div class="p-3 bg-slate-900">
-				<p class="text-xs text-slate-400">{displayHost}</p>
+				<p class="text-xs text-slate-300">{displayHost}</p>
 				<p class="text-sm font-medium text-slate-100 mt-0.5 leading-tight line-clamp-1">{ogTitle || 'Title'}</p>
-				<p class="text-xs text-slate-400 mt-0.5 line-clamp-2">{ogDescription || ''}</p>
+				<p class="text-xs text-slate-300 mt-0.5 line-clamp-2">{ogDescription || ''}</p>
 			</div>
 		</div>
 	</div>

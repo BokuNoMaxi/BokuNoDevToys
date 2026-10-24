@@ -181,7 +181,7 @@
 		<h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">{$t('cronBuilder').command}</h2>
 		<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
 			<div>
-				<label for="cron-user" class="block text-xs text-slate-400 mb-1">{$t('cronBuilder').user}</label>
+				<label for="cron-user" class="block text-xs text-slate-300 mb-1">{$t('cronBuilder').user}</label>
 				<input
 					id="cron-user"
 					bind:value={cmdUser}
@@ -190,7 +190,7 @@
 				/>
 			</div>
 			<div>
-				<label for="cron-cmd" class="block text-xs text-slate-400 mb-1">{$t('cronBuilder').commandLabel}</label>
+				<label for="cron-cmd" class="block text-xs text-slate-300 mb-1">{$t('cronBuilder').commandLabel}</label>
 				<input
 					id="cron-cmd"
 					bind:value={cmdCommand}
@@ -199,7 +199,7 @@
 				/>
 			</div>
 			<div>
-				<label for="cron-params" class="block text-xs text-slate-400 mb-1">{$t('cronBuilder').params}</label>
+				<label for="cron-params" class="block text-xs text-slate-300 mb-1">{$t('cronBuilder').params}</label>
 				<input
 					id="cron-params"
 					bind:value={cmdParams}
@@ -227,7 +227,7 @@
 		{#if cmdCommand.trim()}
 			<div>
 				<div class="flex items-center justify-between mb-2">
-					<h3 class="text-xs text-slate-400 uppercase tracking-wider">{$t('cronBuilder').fullLine}</h3>
+					<h3 class="text-xs text-slate-300 uppercase tracking-wider">{$t('cronBuilder').fullLine}</h3>
 					<button onclick={() => copy(fullLine, 'full')} class="text-xs px-3 py-1 rounded-md border border-slate-600 hover:border-violet-500 text-slate-300 hover:text-violet-300 transition-colors">
 						{copiedFull ? $t('cronBuilder').copied : $t('cronBuilder').copy}
 					</button>
@@ -238,16 +238,16 @@
 
 		{#if description}
 			<div>
-				<h3 class="text-xs text-slate-400 uppercase tracking-wider mb-1">{$t('cronBuilder').description}</h3>
+				<h3 class="text-xs text-slate-300 uppercase tracking-wider mb-1">{$t('cronBuilder').description}</h3>
 				<p class="text-slate-300 text-sm">{description}</p>
 			</div>
 		{/if}
 		{#if nextRuns.length > 0}
 			<div>
-				<h3 class="text-xs text-slate-400 uppercase tracking-wider mb-2">{$t('cronBuilder').nextRuns}</h3>
+				<h3 class="text-xs text-slate-300 uppercase tracking-wider mb-2">{$t('cronBuilder').nextRuns}</h3>
 				<ol class="space-y-1">
 					{#each nextRuns as run, i}
-						<li class="text-sm font-mono text-slate-300"><span class="text-slate-500 mr-2">{i+1}.</span>{run}</li>
+						<li class="text-sm font-mono text-slate-300"><span class="text-slate-300 mr-2">{i+1}.</span>{run}</li>
 					{/each}
 				</ol>
 			</div>

@@ -33,7 +33,7 @@
 				bind:value={input}
 				placeholder={$t('hashGen').placeholder}
 				rows="6"
-				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono resize-y"
+				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono resize-y"
 			></textarea>
 		</div>
 		<div>
@@ -60,11 +60,11 @@
 			{/if}
 		</div>
 		{#if computing}
-			<p class="text-slate-400 text-sm">{$t('hashGen').computing}</p>
+			<p class="text-slate-300 text-sm">{$t('hashGen').computing}</p>
 		{:else if hash}
 			<p class="font-mono text-emerald-400 break-all text-sm bg-slate-900 rounded-lg px-4 py-3">{hash}</p>
 		{:else}
-			<p class="text-slate-400 text-sm">{$t('hashGen').empty}</p>
+			<p class="text-slate-300 text-sm">{$t('hashGen').empty}</p>
 		{/if}
 	</div>
 </div>

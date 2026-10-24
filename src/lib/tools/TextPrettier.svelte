@@ -100,7 +100,7 @@
 				onpaste={handlePaste}
 				placeholder={$t('textPrettier').placeholder}
 				rows="14"
-				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm resize-y"
+				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm resize-y"
 			></textarea>
 			{#if input}
 				<button onclick={() => input = ''} class="mt-2 text-xs text-slate-300 hover:text-slate-100 transition-colors">{$t('textPrettier').clear}</button>
@@ -121,7 +121,7 @@
 				<p class="mt-2 text-xs text-slate-300">{output.length} {$t('textPrettier').chars}</p>
 			{:else}
 				<div class="bg-slate-900 rounded-lg px-4 py-3 min-h-32 flex items-center justify-center">
-					<p class="text-slate-400 text-sm">{$t('textPrettier').empty}</p>
+					<p class="text-slate-300 text-sm">{$t('textPrettier').empty}</p>
 				</div>
 			{/if}
 		</div>

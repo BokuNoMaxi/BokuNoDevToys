@@ -56,7 +56,7 @@
 			<!-- Angle (linear + conic) -->
 			{#if gradType !== 'radial'}
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">Winkel: <span class="text-violet-300 font-mono">{angle}°</span></label>
+					<label class="block text-xs text-slate-300 mb-1.5">Winkel: <span class="text-violet-300 font-mono">{angle}°</span></label>
 					<input type="range" min="0" max="360" bind:value={angle} class="w-full accent-violet-500" />
 				</div>
 			{/if}
@@ -72,9 +72,9 @@
 						<div class="flex items-center gap-2 bg-slate-900 rounded-lg px-3 py-2">
 							<input type="color" bind:value={stop.color} class="h-8 w-10 rounded border border-slate-600 bg-slate-900 p-0.5 cursor-pointer shrink-0" />
 							<input type="range" min="0" max="100" bind:value={stop.position} class="flex-1 accent-violet-500" />
-							<span class="text-xs font-mono text-slate-400 w-8 text-right">{stop.position}%</span>
+							<span class="text-xs font-mono text-slate-300 w-8 text-right">{stop.position}%</span>
 							{#if stops.length > 2}
-								<button onclick={() => removeStop(stop.id)} class="text-slate-500 hover:text-red-400 text-xs ml-1 transition-colors">✕</button>
+								<button onclick={() => removeStop(stop.id)} class="text-slate-300 hover:text-red-300 text-xs ml-1 transition-colors">✕</button>
 							{/if}
 						</div>
 					{/each}

@@ -74,36 +74,36 @@
 			<div class="space-y-3">
 				{#if qrType === 'url'}
 					<div>
-						<label class="block text-xs text-slate-400 mb-1.5">URL</label>
+						<label class="block text-xs text-slate-300 mb-1.5">URL</label>
 						<input type="url" bind:value={urlVal} placeholder={$t('qrCode').urlPlaceholder} class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-slate-200 text-sm focus:outline-none focus:border-violet-500" />
 					</div>
 				{:else if qrType === 'text'}
 					<div>
-						<label class="block text-xs text-slate-400 mb-1.5">Text</label>
+						<label class="block text-xs text-slate-300 mb-1.5">Text</label>
 						<textarea bind:value={textVal} placeholder={$t('qrCode').textPlaceholder} rows="4" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-slate-200 text-sm focus:outline-none focus:border-violet-500 resize-y"></textarea>
 					</div>
 				{:else if qrType === 'email'}
 					<div>
-						<label class="block text-xs text-slate-400 mb-1.5">E-Mail</label>
+						<label class="block text-xs text-slate-300 mb-1.5">E-Mail</label>
 						<input type="email" bind:value={emailVal} placeholder={$t('qrCode').emailPlaceholder} class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-slate-200 text-sm focus:outline-none focus:border-violet-500" />
 					</div>
 				{:else if qrType === 'phone'}
 					<div>
-						<label class="block text-xs text-slate-400 mb-1.5">{$t('qrCode').typePhone}</label>
+						<label class="block text-xs text-slate-300 mb-1.5">{$t('qrCode').typePhone}</label>
 						<input type="tel" bind:value={phoneVal} placeholder={$t('qrCode').phonePlaceholder} class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-slate-200 text-sm focus:outline-none focus:border-violet-500" />
 					</div>
 				{:else if qrType === 'wifi'}
 					<div class="space-y-2">
 						<div>
-							<label class="block text-xs text-slate-400 mb-1">{$t('qrCode').ssid}</label>
+							<label class="block text-xs text-slate-300 mb-1">{$t('qrCode').ssid}</label>
 							<input type="text" bind:value={wifiSsid} placeholder="MyNetwork" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-slate-200 text-sm focus:outline-none focus:border-violet-500" />
 						</div>
 						<div>
-							<label class="block text-xs text-slate-400 mb-1">{$t('qrCode').password}</label>
+							<label class="block text-xs text-slate-300 mb-1">{$t('qrCode').password}</label>
 							<input type="text" bind:value={wifiPass} placeholder="password" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-slate-200 text-sm focus:outline-none focus:border-violet-500" />
 						</div>
 						<div>
-							<span class="block text-xs text-slate-400 mb-1">{$t('qrCode').encryption}</span>
+							<span class="block text-xs text-slate-300 mb-1">{$t('qrCode').encryption}</span>
 							<div class="flex gap-2">
 								{#each ['WPA', 'WEP', 'nopass'] as enc}
 									<button onclick={() => wifiEnc = enc as 'WPA' | 'WEP' | 'nopass'} class="px-3 py-1.5 rounded-lg text-xs font-mono transition-colors {wifiEnc === enc ? 'bg-violet-700 text-white' : 'bg-slate-900 text-slate-300 hover:text-slate-100'}">{enc}</button>
@@ -117,11 +117,11 @@
 			<!-- Options -->
 			<div class="grid grid-cols-2 gap-4">
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">{$t('qrCode').size}: <span class="text-violet-300 font-mono">{size}px</span></label>
+					<label class="block text-xs text-slate-300 mb-1.5">{$t('qrCode').size}: <span class="text-violet-300 font-mono">{size}px</span></label>
 					<input type="range" min="128" max="512" step="32" bind:value={size} class="w-full accent-violet-500" />
 				</div>
 				<div>
-					<span class="block text-xs text-slate-400 mb-1.5">{$t('qrCode').errorLevel}</span>
+					<span class="block text-xs text-slate-300 mb-1.5">{$t('qrCode').errorLevel}</span>
 					<div class="flex gap-1">
 						{#each errorLevels as lvl}
 							<button onclick={() => errorLevel = lvl} class="px-2.5 py-1.5 rounded-lg text-xs font-mono transition-colors {errorLevel === lvl ? 'bg-violet-700 text-white' : 'bg-slate-900 text-slate-300 hover:text-slate-100'}">{lvl}</button>
@@ -129,14 +129,14 @@
 					</div>
 				</div>
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">{$t('qrCode').fgColor}</label>
+					<label class="block text-xs text-slate-300 mb-1.5">{$t('qrCode').fgColor}</label>
 					<div class="flex gap-2">
 						<input type="color" bind:value={fgColor} class="h-9 w-10 rounded border border-slate-600 bg-slate-900 p-0.5 cursor-pointer" />
 						<input type="text" bind:value={fgColor} class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-slate-200 font-mono text-xs focus:outline-none focus:border-violet-500" />
 					</div>
 				</div>
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">{$t('qrCode').bgColor}</label>
+					<label class="block text-xs text-slate-300 mb-1.5">{$t('qrCode').bgColor}</label>
 					<div class="flex gap-2">
 						<input type="color" bind:value={bgColor} class="h-9 w-10 rounded border border-slate-600 bg-slate-900 p-0.5 cursor-pointer" />
 						<input type="text" bind:value={bgColor} class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-slate-200 font-mono text-xs focus:outline-none focus:border-violet-500" />
@@ -152,7 +152,7 @@
 			<canvas bind:this={canvasEl} class="rounded-lg {!generated ? 'hidden' : ''}"></canvas>
 			{#if !generated}
 				<div class="w-48 h-48 bg-slate-900 rounded-lg flex items-center justify-center">
-					<p class="text-slate-400 text-sm text-center px-4">{$t('qrCode').generate}</p>
+					<p class="text-slate-300 text-sm text-center px-4">{$t('qrCode').generate}</p>
 				</div>
 			{/if}
 			{#if generated}

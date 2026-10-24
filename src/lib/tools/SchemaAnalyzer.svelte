@@ -59,12 +59,12 @@
 						{fetching ? $t('schemaAnalyzer').fetching : $t('schemaAnalyzer').fetch}
 					</button>
 				</div>
-				<p class="mt-1.5 text-xs text-slate-400">{$t('schemaAnalyzer').proxyNote}</p>
+				<p class="mt-1.5 text-xs text-slate-300">{$t('schemaAnalyzer').proxyNote}</p>
 			</div>
 		{:else}
 			<div>
 				<label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2" for="schema-paste">{$t('schemaAnalyzer').pasteTab}</label>
-				<textarea id="schema-paste" bind:value={pasteInput} placeholder={$t('schemaAnalyzer').paste} rows="8" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 font-mono text-xs placeholder-slate-400 focus:outline-none focus:border-violet-500 resize-y" spellcheck="false"></textarea>
+				<textarea id="schema-paste" bind:value={pasteInput} placeholder={$t('schemaAnalyzer').paste} rows="8" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 font-mono text-xs placeholder-slate-300 focus:outline-none focus:border-violet-500 resize-y" spellcheck="false"></textarea>
 				<div class="flex gap-2 mt-2">
 					<button onclick={analyze} class="px-4 py-2 bg-violet-700 hover:bg-violet-800 text-white rounded-lg text-sm font-medium transition-colors">{$t('schemaAnalyzer').analyze}</button>
 					{#if pasteInput}
@@ -91,7 +91,7 @@
 								{item.valid ? $t('schemaAnalyzer').valid : $t('schemaAnalyzer').invalid}
 							</span>
 							{#if item.context}
-								<span class="text-xs text-slate-400 font-mono">{item.context}</span>
+								<span class="text-xs text-slate-300 font-mono">{item.context}</span>
 							{/if}
 						</div>
 						<button onclick={() => copyItem(i)} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">

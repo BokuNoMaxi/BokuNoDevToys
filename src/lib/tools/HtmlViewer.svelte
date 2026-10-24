@@ -116,7 +116,7 @@
 		<div class="flex items-center justify-between mb-3">
 			<h2 class="text-xs font-semibold text-slate-300 uppercase tracking-wider">{$t('htmlViewer').input}</h2>
 			<div class="flex items-center gap-3">
-				<label class="flex items-center gap-1.5 text-xs text-slate-400">
+				<label class="flex items-center gap-1.5 text-xs text-slate-300">
 					{$t('htmlViewer').indent}
 					<select bind:value={indentSize} class="bg-slate-900 border border-slate-700 rounded px-1.5 py-1 text-slate-200 text-xs focus:outline-none focus:border-violet-500">
 						<option value={2}>2</option>
@@ -133,7 +133,7 @@
 			bind:value={input}
 			placeholder={$t('htmlViewer').placeholder}
 			rows="10"
-			class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 font-mono text-xs placeholder-slate-400 focus:outline-none focus:border-violet-500 resize-y"
+			class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 font-mono text-xs placeholder-slate-300 focus:outline-none focus:border-violet-500 resize-y"
 			spellcheck="false"
 		></textarea>
 		{#if result.error}
@@ -168,7 +168,7 @@
 				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 				{@html safeHtml}
 			{:else}
-				<p class="text-slate-500 text-sm">{$t('htmlViewer').placeholder}</p>
+				<p class="text-slate-700 text-sm">{$t('htmlViewer').placeholder}</p>
 			{/if}
 		</div>
 	</div>

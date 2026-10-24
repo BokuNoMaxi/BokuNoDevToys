@@ -71,7 +71,7 @@
 					</select>
 				</div>
 			</fieldset>
-			<div class="text-slate-500 text-xl text-center pb-2.5" aria-hidden="true">→</div>
+			<div class="text-slate-300 text-xl text-center pb-2.5" aria-hidden="true">→</div>
 			<fieldset>
 				<legend class="text-xs text-slate-300 mb-2 uppercase font-medium">{$t('timezone').to}</legend>
 				<div class="flex gap-2">

@@ -94,7 +94,7 @@
 			aria-describedby="mysql-env-desc"
 			placeholder={'DB_USER=myuser\nDB_PASSWORD=secret\nDB_HOST=localhost\nDB_NAME=mydb\n# DB_DATABASE=mydb\n# ...'}
 			rows="6"
-			class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-400 focus:outline-none focus:border-violet-500 font-mono text-xs resize-y"
+			class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-300 focus:outline-none focus:border-violet-500 font-mono text-xs resize-y"
 		></textarea>
 		{#if envError}
 			<p class="mt-2 text-amber-400 text-sm" role="alert">{envError}</p>
@@ -115,27 +115,27 @@
 			<div>
 				<label for="db-user" class="block text-xs text-slate-300 mb-1.5">{$t('mysql').user} <span class="text-red-300">*</span></label>
 				<input id="db-user" type="text" bind:value={user} placeholder="root"
-					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 font-mono text-sm" />
+					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 font-mono text-sm" />
 			</div>
 			<div>
 				<label for="db-pass" class="block text-xs text-slate-300 mb-1.5">{$t('mysql').password}</label>
 				<input id="db-pass" type="password" bind:value={password} placeholder="••••••••"
-					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 font-mono text-sm" />
+					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 font-mono text-sm" />
 			</div>
 			<div>
 				<label for="db-host" class="block text-xs text-slate-300 mb-1.5">{$t('mysql').host}</label>
 				<input id="db-host" type="text" bind:value={host} placeholder="localhost"
-					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 font-mono text-sm" />
+					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 font-mono text-sm" />
 			</div>
 			<div>
 				<label for="db-name" class="block text-xs text-slate-300 mb-1.5">{$t('mysql').database} <span class="text-red-300">*</span></label>
 				<input id="db-name" type="text" bind:value={database} placeholder="my_database"
-					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 font-mono text-sm" />
+					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 font-mono text-sm" />
 			</div>
 			<div class="sm:col-span-2">
 				<label for="db-file" class="block text-xs text-slate-300 mb-1.5">{$t('mysql').filename}</label>
 				<input id="db-file" type="text" bind:value={filename} placeholder="backup"
-					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 font-mono text-sm" />
+					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 font-mono text-sm" />
 			</div>
 		</div>
 	</div>
@@ -172,7 +172,7 @@
 						{copied['import'] ? $t('mysql').copied : $t('mysql').copy}
 					</button>
 				</div>
-				<pre class="bg-slate-900 rounded-lg px-4 py-3 text-sm font-mono text-sky-400 overflow-x-auto whitespace-pre-wrap break-all">{importCmd}</pre>
+				<pre class="bg-slate-900 rounded-lg px-4 py-3 text-sm font-mono text-sky-300 overflow-x-auto whitespace-pre-wrap break-all">{importCmd}</pre>
 			</div>
 		</div>
 	{:else}

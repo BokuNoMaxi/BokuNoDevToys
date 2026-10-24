@@ -79,7 +79,7 @@
 			</div>
 			<div class="flex flex-wrap gap-2">
 				{#each history.slice(result.length) as n}
-					<span class="text-sm font-mono text-slate-400 bg-slate-900 rounded px-2 py-1">{n}</span>
+					<span class="text-sm font-mono text-slate-300 bg-slate-900 rounded px-2 py-1">{n}</span>
 				{/each}
 			</div>
 		</div>

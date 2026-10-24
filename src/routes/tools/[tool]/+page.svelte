@@ -93,7 +93,7 @@
 		<div class="mb-6 flex items-start justify-between gap-3">
 			<div>
 				<h1 class="text-2xl font-bold text-slate-100">{toolTrans?.name ?? toolId}</h1>
-				<p class="text-slate-500 mt-1 text-sm">{toolTrans?.description ?? ''}</p>
+				<p class="text-slate-300 mt-1 text-sm">{toolTrans?.description ?? ''}</p>
 			</div>
 			<button
 				onclick={() => favorites.toggle(toolId)}
@@ -207,7 +207,7 @@
 {:else}
 	<div class="max-w-4xl mx-auto flex items-center justify-center h-64">
 		<div class="text-center">
-			<p class="text-slate-500 text-lg">{$t('nav').notFound}</p>
+			<p class="text-slate-300 text-lg">{$t('nav').notFound}</p>
 			<a href="/tools/datetime" class="mt-3 inline-block text-violet-300 hover:text-violet-300 text-sm">{$t('nav').goToDatetime}</a>
 		</div>
 	</div>

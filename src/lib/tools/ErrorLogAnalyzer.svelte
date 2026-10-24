@@ -50,8 +50,8 @@
 		error: 'text-red-300', fatal: 'text-red-300', crit: 'text-red-300',
 		alert: 'text-red-300', emerg: 'text-red-300',
 		warn: 'text-amber-400', warning: 'text-amber-400',
-		notice: 'text-sky-400', info: 'text-slate-300',
-		debug: 'text-slate-400', unknown: 'text-slate-300',
+		notice: 'text-sky-300', info: 'text-slate-300',
+		debug: 'text-slate-300', unknown: 'text-slate-300',
 	};
 
 	const levelBorder: Record<string, string> = {
@@ -77,7 +77,7 @@
 			ondrop={handleDrop}
 			aria-label={$t('errorLog').dropZone}
 		>
-			<svg class="w-8 h-8 text-slate-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+			<svg class="w-8 h-8 text-slate-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
 			</svg>
 			<span class="text-sm text-slate-300">{$t('errorLog').dropZone}</span>
@@ -87,7 +87,7 @@
 
 		<div class="flex items-center gap-3">
 			<div class="flex-1 h-px bg-slate-700"></div>
-			<span class="text-xs text-slate-400">{$t('errorLog').orPaste}</span>
+			<span class="text-xs text-slate-300">{$t('errorLog').orPaste}</span>
 			<div class="flex-1 h-px bg-slate-700"></div>
 		</div>
 
@@ -97,7 +97,7 @@
 			bind:value={inputText}
 			placeholder={$t('errorLog').pastePlaceholder}
 			rows="6"
-			class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-xs font-mono resize-y"
+			class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-xs font-mono resize-y"
 		></textarea>
 
 		<div class="flex gap-3">
@@ -132,7 +132,7 @@
 			</div>
 
 			{#if groups.length === 0}
-				<p class="text-slate-400 text-sm">{$t('errorLog').empty}</p>
+				<p class="text-slate-300 text-sm">{$t('errorLog').empty}</p>
 			{:else}
 				<div class="space-y-2 max-h-[600px] overflow-y-auto pr-1">
 					{#each groups as g}
@@ -140,7 +140,7 @@
 							<div class="flex items-start justify-between gap-3">
 								<div class="flex items-center gap-2 shrink-0">
 									<span class="text-xs font-bold uppercase {levelColor[g.level] ?? 'text-slate-300'}">{g.level}</span>
-									<span class="text-xs text-slate-400 bg-slate-800 rounded px-1.5 py-0.5">{g.count}×</span>
+									<span class="text-xs text-slate-300 bg-slate-800 rounded px-1.5 py-0.5">{g.count}×</span>
 								</div>
 							</div>
 							<p class="mt-1.5 text-xs font-mono text-slate-300 break-all">{g.normalized}</p>

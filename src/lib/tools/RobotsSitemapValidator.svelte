@@ -75,7 +75,7 @@
 	const statusColor: Record<Status, string> = {
 		pass: 'text-emerald-400 bg-emerald-400/10',
 		warn: 'text-amber-400 bg-amber-400/10',
-		fail: 'text-red-400 bg-red-400/10',
+		fail: 'text-red-300 bg-red-400/10',
 	};
 </script>
 
@@ -95,7 +95,7 @@
 				{fetching ? $t('robotsSitemap').checking : $t('robotsSitemap').check}
 			</button>
 		</div>
-		<p class="text-xs text-slate-400">{$t('robotsSitemap').proxyNote}</p>
+		<p class="text-xs text-slate-300">{$t('robotsSitemap').proxyNote}</p>
 		{#if error}<p class="text-red-300 text-sm">{error}</p>{/if}
 	</div>
 
@@ -115,7 +115,7 @@
 			{/each}
 			{#if robotsRaw}
 				<details class="mt-2">
-					<summary class="text-xs text-slate-400 cursor-pointer hover:text-slate-200 transition-colors">{$t('robotsSitemap').viewRaw}</summary>
+					<summary class="text-xs text-slate-300 cursor-pointer hover:text-white transition-colors">{$t('robotsSitemap').viewRaw}</summary>
 					<pre class="mt-2 bg-slate-900 rounded-lg px-4 py-3 text-slate-300 text-xs font-mono overflow-x-auto max-h-64 overflow-y-auto whitespace-pre-wrap">{robotsRaw}</pre>
 				</details>
 			{/if}
@@ -140,7 +140,7 @@
 			{/each}
 			{#if sitemapRaw}
 				<details class="mt-2">
-					<summary class="text-xs text-slate-400 cursor-pointer hover:text-slate-200 transition-colors">{$t('robotsSitemap').viewSitemap}</summary>
+					<summary class="text-xs text-slate-300 cursor-pointer hover:text-white transition-colors">{$t('robotsSitemap').viewSitemap}</summary>
 					<pre class="mt-2 bg-slate-900 rounded-lg px-4 py-3 text-slate-300 text-xs font-mono overflow-x-auto max-h-64 overflow-y-auto whitespace-pre-wrap">{sitemapRaw}</pre>
 				</details>
 			{/if}

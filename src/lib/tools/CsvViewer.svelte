@@ -135,7 +135,7 @@
 			ondragleave={() => dragging = false}
 			ondrop={handleDrop}
 		>
-			<svg class="w-8 h-8 text-slate-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+			<svg class="w-8 h-8 text-slate-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
 			</svg>
 			<span class="text-sm text-slate-300">{$t('csvViewer').dropZone}</span>
@@ -145,7 +145,7 @@
 
 		<div class="flex items-center gap-3">
 			<div class="flex-1 h-px bg-slate-700"></div>
-			<span class="text-xs text-slate-400">{$t('csvViewer').orPaste}</span>
+			<span class="text-xs text-slate-300">{$t('csvViewer').orPaste}</span>
 			<div class="flex-1 h-px bg-slate-700"></div>
 		</div>
 
@@ -155,13 +155,13 @@
 			bind:value={raw}
 			placeholder={$t('csvViewer').pastePlaceholder}
 			rows="5"
-			class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-xs font-mono resize-y"
+			class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-xs font-mono resize-y"
 		></textarea>
 
 		<!-- Options -->
 		<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
 			<div>
-				<label class="block text-xs text-slate-400 mb-1.5">{$t('csvViewer').delimiter}</label>
+				<label class="block text-xs text-slate-300 mb-1.5">{$t('csvViewer').delimiter}</label>
 				<div class="flex flex-wrap gap-1.5">
 					{#each (['auto', ',', ';', '\t', '|'] as Delim[]) as d}
 						<button
@@ -173,7 +173,7 @@
 				</div>
 			</div>
 			<div>
-				<label class="block text-xs text-slate-400 mb-1.5">{$t('csvViewer').enclosure}</label>
+				<label class="block text-xs text-slate-300 mb-1.5">{$t('csvViewer').enclosure}</label>
 				<div class="flex flex-wrap gap-1.5">
 					{#each (['auto', '"', "'", 'none'] as Enclosure[]) as e}
 						<button
@@ -185,7 +185,7 @@
 				</div>
 			</div>
 			<div>
-				<label class="block text-xs text-slate-400 mb-1.5">{$t('csvViewer').escape}</label>
+				<label class="block text-xs text-slate-300 mb-1.5">{$t('csvViewer').escape}</label>
 				<div class="flex flex-wrap gap-1.5">
 					{#each (['auto', '\\', '"', 'none'] as Escape[]) as e}
 						<button
@@ -216,12 +216,12 @@
 				<p class="text-sm text-slate-300">
 					<span class="text-emerald-400 font-semibold">{data.rows.length}</span> {$t('csvViewer').rows}
 					&nbsp;·&nbsp;
-					<span class="text-sky-400 font-semibold">{data.headers.length}</span> {$t('csvViewer').columns}
+					<span class="text-sky-300 font-semibold">{data.headers.length}</span> {$t('csvViewer').columns}
 					&nbsp;·&nbsp;
-					<span class="text-slate-400">{$t('csvViewer').delimiter}: <span class="font-mono">{delimLabel(data.delimiter)}</span></span>
+					<span class="text-slate-300">{$t('csvViewer').delimiter}: <span class="font-mono">{delimLabel(data.delimiter)}</span></span>
 					{#if data.enclosure !== 'none'}
 						&nbsp;·&nbsp;
-						<span class="text-slate-400">{$t('csvViewer').enclosure}: <span class="font-mono">{data.enclosure}</span></span>
+						<span class="text-slate-300">{$t('csvViewer').enclosure}: <span class="font-mono">{data.enclosure}</span></span>
 					{/if}
 				</p>
 				{#if data.rows.length > 500}
@@ -257,16 +257,16 @@
 					<thead>
 						<tr class="border-b border-slate-700">
 							{#each visibleColIndices as ci}
-								<th class="text-left py-2 px-3 text-slate-400 font-semibold whitespace-nowrap">
+								<th class="text-left py-2 px-3 text-slate-300 font-semibold whitespace-nowrap">
 									<button
 										onclick={() => toggleSort(ci)}
 										class="flex items-center gap-1 hover:text-slate-200 transition-colors"
 									>
 										{data.headers[ci]}
 										{#if sortCol === ci}
-											<span class="text-violet-400">{sortAsc ? '↑' : '↓'}</span>
+											<span class="text-violet-300">{sortAsc ? '↑' : '↓'}</span>
 										{:else}
-											<span class="text-slate-600">↕</span>
+											<span class="text-slate-300">↕</span>
 										{/if}
 									</button>
 								</th>
@@ -288,7 +288,7 @@
 		</div>
 	{:else if parsed}
 		<div class="bg-slate-800 rounded-xl p-6">
-			<p class="text-slate-400 text-sm">{$t('csvViewer').empty}</p>
+			<p class="text-slate-300 text-sm">{$t('csvViewer').empty}</p>
 		</div>
 	{/if}
 </div>

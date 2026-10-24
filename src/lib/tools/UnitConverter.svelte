@@ -34,24 +34,24 @@
 		<h2 class="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-4">Einstellungen</h2>
 		<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
 			<div>
-				<label class="block text-xs text-slate-400 mb-1.5">Base Font Size</label>
+				<label class="block text-xs text-slate-300 mb-1.5">Base Font Size</label>
 				<div class="flex items-center gap-2">
 					<input type="number" bind:value={baseFontSize} min="1" max="32" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 font-mono text-sm focus:outline-none focus:border-violet-500" />
-					<span class="text-slate-400 text-sm">px</span>
+					<span class="text-slate-300 text-sm">px</span>
 				</div>
 			</div>
 			<div>
-				<label class="block text-xs text-slate-400 mb-1.5">Viewport Breite</label>
+				<label class="block text-xs text-slate-300 mb-1.5">Viewport Breite</label>
 				<div class="flex items-center gap-2">
 					<input type="number" bind:value={viewportW} min="320" max="3840" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 font-mono text-sm focus:outline-none focus:border-violet-500" />
-					<span class="text-slate-400 text-sm">px</span>
+					<span class="text-slate-300 text-sm">px</span>
 				</div>
 			</div>
 			<div>
-				<label class="block text-xs text-slate-400 mb-1.5">Viewport Höhe</label>
+				<label class="block text-xs text-slate-300 mb-1.5">Viewport Höhe</label>
 				<div class="flex items-center gap-2">
 					<input type="number" bind:value={viewportH} min="320" max="2160" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 font-mono text-sm focus:outline-none focus:border-violet-500" />
-					<span class="text-slate-400 text-sm">px</span>
+					<span class="text-slate-300 text-sm">px</span>
 				</div>
 			</div>
 		</div>
@@ -81,9 +81,9 @@
 						onclick={() => copy(r.unit, r.value)}
 						class="flex flex-col gap-0.5 bg-slate-900 rounded-lg px-3 py-2.5 text-left hover:bg-slate-700 transition-colors group {r.unit === inputUnit ? 'ring-1 ring-violet-500/50' : ''}"
 					>
-						<span class="text-xs text-slate-400">{r.unit}</span>
-						<span class="font-mono text-sm text-emerald-400">{r.value}<span class="text-slate-500">{r.unit}</span></span>
-						<span class="text-xs text-slate-500 group-hover:text-slate-300 transition-colors">{copiedUnit === r.unit ? 'Kopiert!' : 'Klicken zum Kopieren'}</span>
+						<span class="text-xs text-slate-300">{r.unit}</span>
+						<span class="font-mono text-sm text-emerald-400">{r.value}<span class="text-slate-300">{r.unit}</span></span>
+						<span class="text-xs text-slate-300 group-hover:text-white transition-colors">{copiedUnit === r.unit ? 'Kopiert!' : 'Klicken zum Kopieren'}</span>
 					</button>
 				{/each}
 			</div>

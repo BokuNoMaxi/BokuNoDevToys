@@ -9,7 +9,7 @@
 
 	function badge(pass: boolean) {
 		return pass
-			? 'bg-emerald-900/40 text-emerald-400 border border-emerald-700/40'
+			? 'bg-emerald-900/40 text-emerald-300 border border-emerald-700/40'
 			: 'bg-red-900/30 text-red-300 border border-red-700/30';
 	}
 </script>
@@ -44,8 +44,8 @@
 		<div class="bg-slate-800 rounded-xl p-6 space-y-4">
 			<div class="flex items-center gap-4">
 				<div class="bg-slate-900 rounded-xl px-6 py-4 text-center">
-					<div class="text-3xl font-bold font-mono text-violet-300">{result.ratio.toFixed(2)}<span class="text-lg text-slate-400">:1</span></div>
-					<div class="text-xs text-slate-400 mt-1">{$t('colorContrast').ratio}</div>
+					<div class="text-3xl font-bold font-mono text-violet-300">{result.ratio.toFixed(2)}<span class="text-lg text-slate-300">:1</span></div>
+					<div class="text-xs text-slate-300 mt-1">{$t('colorContrast').ratio}</div>
 				</div>
 				<!-- Preview -->
 				<div class="flex-1 rounded-xl p-4" style="background:{bgInput}">

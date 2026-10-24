@@ -122,13 +122,13 @@
 			<div>
 				<label for="ytdlp-filename" class="block text-xs text-slate-300 mb-1.5">{lc.filename}</label>
 				<input id="ytdlp-filename" type="text" bind:value={state.filename} placeholder={lc.filenamePlaceholder}
-					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 				<p class="text-xs text-slate-300 mt-1">{lc.filenameHint}</p>
 			</div>
 			<div>
 				<label for="ytdlp-url" class="block text-xs text-slate-300 mb-1.5">{lc.url}</label>
 				<input id="ytdlp-url" type="url" bind:value={state.url} placeholder={lc.urlPlaceholder}
-					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 			</div>
 		</fieldset>
 
@@ -177,7 +177,7 @@
 				<div class="max-w-xs">
 					<label for="ytdlp-sub-langs" class="block text-xs text-slate-300 mb-1.5">{lc.subLangs}</label>
 					<input id="ytdlp-sub-langs" type="text" bind:value={state.subLangs} placeholder={lc.subLangsPlaceholder}
-						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 				</div>
 			{/if}
 
@@ -189,7 +189,7 @@
 				<div class="max-w-[10rem]">
 					<label for="ytdlp-rate-limit" class="block text-xs text-slate-300 mb-1.5">{lc.rateLimitValue}</label>
 					<input id="ytdlp-rate-limit" type="text" bind:value={state.rateLimitValue} placeholder={lc.rateLimitPlaceholder}
-						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 				</div>
 			{/if}
 

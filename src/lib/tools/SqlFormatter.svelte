@@ -50,7 +50,7 @@
 				bind:value={input}
 				placeholder={$t('sqlFormatter').placeholder}
 				rows="10"
-				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 font-mono text-sm placeholder-slate-400 focus:outline-none focus:border-violet-500 resize-y"
+				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 font-mono text-sm placeholder-slate-300 focus:outline-none focus:border-violet-500 resize-y"
 				spellcheck="false"
 			></textarea>
 			{#if input}
@@ -76,7 +76,7 @@
 			<pre class="bg-slate-900 rounded-lg px-4 py-3 text-emerald-400 text-sm font-mono overflow-x-auto whitespace-pre max-h-96 overflow-y-auto">{result.output}</pre>
 		{:else if !result.error}
 			<div class="bg-slate-900 rounded-lg px-4 py-8 flex items-center justify-center">
-				<p class="text-slate-400 text-sm">{$t('sqlFormatter').empty}</p>
+				<p class="text-slate-300 text-sm">{$t('sqlFormatter').empty}</p>
 			</div>
 		{/if}
 	</div>

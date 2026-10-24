@@ -46,12 +46,12 @@
 
 		<div class="grid grid-cols-2 gap-4">
 			<div>
-				<label class="block text-xs text-slate-400 mb-1.5" for="ar-w">{$t('aspectRatio').width}</label>
+				<label class="block text-xs text-slate-300 mb-1.5" for="ar-w">{$t('aspectRatio').width}</label>
 				<input id="ar-w" type="number" bind:value={width} min="1"
 					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-slate-200 font-mono text-sm focus:outline-none focus:border-violet-500" />
 			</div>
 			<div>
-				<label class="block text-xs text-slate-400 mb-1.5" for="ar-h">{$t('aspectRatio').height}</label>
+				<label class="block text-xs text-slate-300 mb-1.5" for="ar-h">{$t('aspectRatio').height}</label>
 				<input id="ar-h" type="number" bind:value={height} min="1"
 					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-slate-200 font-mono text-sm focus:outline-none focus:border-violet-500" />
 			</div>
@@ -60,14 +60,14 @@
 		{#if ratio}
 			<div class="flex items-center gap-4 flex-wrap">
 				<div class="bg-slate-900 rounded-lg px-4 py-3 flex items-center gap-3">
-					<span class="text-slate-400 text-xs">{$t('aspectRatio').ratio}</span>
+					<span class="text-slate-300 text-xs">{$t('aspectRatio').ratio}</span>
 					<span class="font-mono text-lg text-violet-300 font-bold">{ratio.w}:{ratio.h}</span>
 					{#if knownName}
 						<span class="text-xs bg-violet-700/30 text-violet-300 px-2 py-0.5 rounded-full">{knownName}</span>
 					{/if}
 				</div>
 				<div
-					class="bg-slate-700 rounded border-2 border-slate-600 flex items-center justify-center text-xs text-slate-400"
+					class="bg-slate-700 rounded border-2 border-slate-600 flex items-center justify-center text-xs text-slate-200"
 					style="width:{preview.w}px;height:{preview.h}px;min-width:40px;min-height:20px"
 				>{width}×{height}</div>
 			</div>
@@ -96,7 +96,7 @@
 		<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 			<!-- Width → Height -->
 			<div class="space-y-2">
-				<label class="block text-xs text-slate-400">{$t('aspectRatio').width} → {$t('aspectRatio').height}</label>
+				<label class="block text-xs text-slate-300">{$t('aspectRatio').width} → {$t('aspectRatio').height}</label>
 				<input
 					type="number"
 					bind:value={fromWidthInput}
@@ -106,17 +106,17 @@
 				/>
 				{#if resultHeightFromWidth !== null}
 					<div class="flex items-center gap-2 bg-slate-900 rounded-lg px-3 py-2.5">
-						<span class="text-slate-400 text-xs">{$t('aspectRatio').height}</span>
+						<span class="text-slate-300 text-xs">{$t('aspectRatio').height}</span>
 						<span class="flex-1 font-mono text-emerald-400 text-sm">{resultHeightFromWidth} px</span>
 					</div>
 				{:else}
-					<div class="rounded-lg px-3 py-2.5 bg-slate-900 text-slate-500 text-xs">{$t('aspectRatio').height} erscheint hier</div>
+					<div class="rounded-lg px-3 py-2.5 bg-slate-900 text-slate-300 text-xs">{$t('aspectRatio').height} erscheint hier</div>
 				{/if}
 			</div>
 
 			<!-- Height → Width -->
 			<div class="space-y-2">
-				<label class="block text-xs text-slate-400">{$t('aspectRatio').height} → {$t('aspectRatio').width}</label>
+				<label class="block text-xs text-slate-300">{$t('aspectRatio').height} → {$t('aspectRatio').width}</label>
 				<input
 					type="number"
 					bind:value={fromHeightInput}
@@ -126,11 +126,11 @@
 				/>
 				{#if resultWidthFromHeight !== null}
 					<div class="flex items-center gap-2 bg-slate-900 rounded-lg px-3 py-2.5">
-						<span class="text-slate-400 text-xs">{$t('aspectRatio').width}</span>
+						<span class="text-slate-300 text-xs">{$t('aspectRatio').width}</span>
 						<span class="flex-1 font-mono text-emerald-400 text-sm">{resultWidthFromHeight} px</span>
 					</div>
 				{:else}
-					<div class="rounded-lg px-3 py-2.5 bg-slate-900 text-slate-500 text-xs">{$t('aspectRatio').width} erscheint hier</div>
+					<div class="rounded-lg px-3 py-2.5 bg-slate-900 text-slate-300 text-xs">{$t('aspectRatio').width} erscheint hier</div>
 				{/if}
 			</div>
 		</div>

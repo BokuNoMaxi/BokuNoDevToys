@@ -27,7 +27,7 @@
 				bind:value={original}
 				placeholder={$t('diffViewer').originalPlaceholder}
 				rows="14"
-				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono resize-y"
+				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono resize-y"
 			></textarea>
 		</div>
 		<div class="bg-slate-800 rounded-xl p-6">
@@ -36,7 +36,7 @@
 				bind:value={changed}
 				placeholder={$t('diffViewer').changedPlaceholder}
 				rows="14"
-				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono resize-y"
+				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono resize-y"
 			></textarea>
 		</div>
 	</div>
@@ -48,7 +48,7 @@
 					<h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">{$t('diffViewer').result}</h2>
 					<span class="text-xs text-emerald-400">+{stats.added} {$t('diffViewer').added}</span>
 					<span class="text-xs text-red-300">−{stats.removed} {$t('diffViewer').removed}</span>
-					<span class="text-xs text-slate-400">{stats.unchanged} {$t('diffViewer').unchanged}</span>
+					<span class="text-xs text-slate-300">{stats.unchanged} {$t('diffViewer').unchanged}</span>
 				</div>
 				<div class="flex gap-2">
 					<button onclick={copy} class="text-sm px-3 py-1 rounded-md border border-slate-600 hover:border-violet-500 text-slate-300 hover:text-violet-300 transition-colors">
@@ -64,10 +64,10 @@
 							{@const isAdd = line.type === 'add'}
 							{@const isRem = line.type === 'remove'}
 							<tr class="{isAdd ? 'bg-emerald-950/40' : isRem ? 'bg-red-950/40' : ''}">
-								<td class="w-10 text-right px-2 py-0.5 select-none text-slate-500 border-r border-slate-800">{line.origLine ?? ''}</td>
-								<td class="w-10 text-right px-2 py-0.5 select-none text-slate-500 border-r border-slate-800">{line.newLine ?? ''}</td>
-								<td class="w-5 px-1 py-0.5 select-none text-center {isAdd ? 'text-emerald-400' : isRem ? 'text-red-300' : 'text-slate-600'}">{isAdd ? '+' : isRem ? '−' : ' '}</td>
-								<td class="px-3 py-0.5 whitespace-pre {isAdd ? 'text-emerald-300' : isRem ? 'text-red-300' : 'text-slate-400'}">{line.text}</td>
+								<td class="w-10 text-right px-2 py-0.5 select-none text-slate-300 border-r border-slate-800">{line.origLine ?? ''}</td>
+								<td class="w-10 text-right px-2 py-0.5 select-none text-slate-300 border-r border-slate-800">{line.newLine ?? ''}</td>
+								<td class="w-5 px-1 py-0.5 select-none text-center {isAdd ? 'text-emerald-400' : isRem ? 'text-red-300' : 'text-slate-300'}">{isAdd ? '+' : isRem ? '−' : ' '}</td>
+								<td class="px-3 py-0.5 whitespace-pre {isAdd ? 'text-emerald-300' : isRem ? 'text-red-300' : 'text-slate-300'}">{line.text}</td>
 							</tr>
 						{/each}
 					</tbody>
@@ -76,7 +76,7 @@
 		</div>
 	{:else if original || changed}
 		<div class="bg-slate-800 rounded-xl p-6 flex items-center justify-center h-24">
-			<p class="text-slate-400 text-sm">{$t('diffViewer').empty}</p>
+			<p class="text-slate-300 text-sm">{$t('diffViewer').empty}</p>
 		</div>
 	{/if}
 </div>

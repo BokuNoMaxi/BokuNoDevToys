@@ -63,7 +63,7 @@
 					autocomplete="off"
 				/>
 			</div>
-			<p class="mt-1.5 text-xs text-slate-400">{$t('colorConverter').inputLabel}</p>
+			<p class="mt-1.5 text-xs text-slate-300">{$t('colorConverter').inputLabel}</p>
 		</div>
 
 		{#if result?.error}
@@ -81,7 +81,7 @@
 				['cmyk', $t('colorConverter').cmyk, result.data.cmyk],
 			] as [key, label, value]}
 				<div class="flex items-center gap-3 bg-slate-900 rounded-lg px-4 py-2.5">
-					<span class="text-xs text-slate-400 w-14 shrink-0">{label}</span>
+					<span class="text-xs text-slate-300 w-14 shrink-0">{label}</span>
 					<span class="flex-1 font-mono text-sm text-emerald-400">{value}</span>
 					<button onclick={() => copy(key, value)} class="text-xs text-slate-300 hover:text-slate-100 transition-colors shrink-0">
 						{copiedKey === key ? $t('colorConverter').copied : $t('colorConverter').copy}

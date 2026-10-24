@@ -112,12 +112,12 @@
 			<div>
 				<label class="block text-xs text-slate-300 mb-1.5" for="hp-username">{$t('htpasswd').username}</label>
 				<input id="hp-username" type="text" bind:value={username} placeholder="admin"
-					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500" />
+					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500" />
 			</div>
 			<div>
 				<label class="block text-xs text-slate-300 mb-1.5" for="hp-password">{$t('htpasswd').password}</label>
 				<input id="hp-password" type="password" bind:value={password} placeholder="••••••••"
-					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500" />
+					class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500" />
 			</div>
 		</div>
 		{#if error}<p class="mt-2 text-red-300 text-sm" role="alert">{error}</p>{/if}
@@ -160,15 +160,15 @@
 		<div class="flex gap-3 mt-4">
 			<input type="text" bind:value={newDomain} placeholder="example.com"
 				onkeydown={(e) => e.key === 'Enter' && addDomain()}
-				class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 font-mono text-sm" />
+				class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 font-mono text-sm" />
 			<button onclick={addDomain} class="px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors">{$t('htpasswd').addDomain}</button>
 		</div>
 		{#if domainConditions.length > 0}
 			<div class="mt-3 flex flex-wrap gap-2">
 				{#each domainConditions as domain}
-					<span class="flex items-center gap-2 bg-slate-900 rounded-full px-3 py-1 text-sm font-mono text-sky-400">
+					<span class="flex items-center gap-2 bg-slate-900 rounded-full px-3 py-1 text-sm font-mono text-sky-300">
 						{domain}
-						<button onclick={() => { domainConditions = domainConditions.filter(d => d !== domain); }} class="text-slate-400 hover:text-red-300 transition-colors" aria-label="{$t('htpasswd').remove} {domain}">✕</button>
+						<button onclick={() => { domainConditions = domainConditions.filter(d => d !== domain); }} class="text-slate-300 hover:text-red-300 transition-colors" aria-label="{$t('htpasswd').remove} {domain}">✕</button>
 					</span>
 				{/each}
 			</div>
@@ -181,7 +181,7 @@
 		<div class="flex gap-3 mt-4">
 			<input type="text" bind:value={newIp} placeholder="192.168.1.0/24 or 10.0.0.1"
 				onkeydown={(e) => e.key === 'Enter' && addIp()}
-				class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 font-mono text-sm" />
+				class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 font-mono text-sm" />
 			<button onclick={addIp} class="px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors">{$t('htpasswd').addIp}</button>
 		</div>
 		{#if ipExclusions.length > 0}
@@ -189,7 +189,7 @@
 				{#each ipExclusions as ip}
 					<span class="flex items-center gap-2 bg-slate-900 rounded-full px-3 py-1 text-sm font-mono text-emerald-400">
 						{ip}
-						<button onclick={() => { ipExclusions = ipExclusions.filter(i => i !== ip); }} class="text-slate-400 hover:text-red-300 transition-colors" aria-label="{$t('htpasswd').remove} {ip}">✕</button>
+						<button onclick={() => { ipExclusions = ipExclusions.filter(i => i !== ip); }} class="text-slate-300 hover:text-red-300 transition-colors" aria-label="{$t('htpasswd').remove} {ip}">✕</button>
 					</span>
 				{/each}
 			</div>

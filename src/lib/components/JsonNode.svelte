@@ -30,7 +30,7 @@
 {#if type === 'string'}
 	<span class="text-emerald-400">"{value as string}"</span>
 {:else if type === 'number'}
-	<span class="text-sky-400">{value as number}</span>
+	<span class="text-sky-300">{value as number}</span>
 {:else if type === 'boolean'}
 	<span class="text-amber-400">{String(value)}</span>
 {:else if type === 'null'}
@@ -60,9 +60,9 @@
 						<span class="text-violet-300 font-mono text-xs">
 							{type === 'array' ? key : `"${key}"`}
 						</span>
-						<span class="text-slate-400 mx-1">:</span>
+						<span class="text-slate-300 mx-1">:</span>
 						<svelte:self value={val} depth={depth + 1} />
-						{#if i < count - 1}<span class="text-slate-400">,</span>{/if}
+						{#if i < count - 1}<span class="text-slate-300">,</span>{/if}
 					</div>
 				{/each}
 			</div>

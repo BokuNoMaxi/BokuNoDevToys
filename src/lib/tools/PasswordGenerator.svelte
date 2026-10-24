@@ -55,7 +55,7 @@
 					{$t('passwordGen').length}: <span class="text-violet-300 font-mono">{length}</span>
 				</label>
 				<input type="range" min="4" max="128" bind:value={length} class="w-full accent-violet-500" />
-				<div class="flex justify-between text-xs text-slate-400 mt-1"><span>4</span><span>128</span></div>
+				<div class="flex justify-between text-xs text-slate-300 mt-1"><span>4</span><span>128</span></div>
 			</div>
 
 			<!-- Count -->
@@ -64,7 +64,7 @@
 					{$t('passwordGen').count}: <span class="text-violet-300 font-mono">{count}</span>
 				</label>
 				<input type="range" min="1" max="20" bind:value={count} class="w-full accent-violet-500" />
-				<div class="flex justify-between text-xs text-slate-400 mt-1"><span>1</span><span>20</span></div>
+				<div class="flex justify-between text-xs text-slate-300 mt-1"><span>1</span><span>20</span></div>
 			</div>
 		</div>
 
@@ -91,14 +91,14 @@
 				{/each}
 			</div>
 			<div>
-				<label class="block text-xs text-slate-400 mb-1">{$t('passwordGen').extra}</label>
+				<label class="block text-xs text-slate-300 mb-1">{$t('passwordGen').extra}</label>
 				<input type="text" bind:value={extraChars} placeholder="e.g. @€£" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-300 font-mono text-sm focus:outline-none focus:border-violet-500" />
 			</div>
 		</div>
 
 		<!-- Entropy display -->
 		<div class="flex items-center gap-3 bg-slate-900 rounded-lg px-4 py-2.5">
-			<span class="text-xs text-slate-400">{$t('passwordGen').entropy}:</span>
+			<span class="text-xs text-slate-300">{$t('passwordGen').entropy}:</span>
 			<span class="font-mono text-sm {strength.color}">{entropy} {$t('passwordGen').bits}</span>
 			<span class="text-xs px-2 py-0.5 rounded-full bg-slate-800 {strength.color}">{strength.label}</span>
 		</div>

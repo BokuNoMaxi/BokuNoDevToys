@@ -310,24 +310,24 @@
 						<div>
 							<label for="rsync-source-user" class="block text-xs text-slate-300 mb-1.5">{lc.user}</label>
 							<input id="rsync-source-user" type="text" bind:value={rsyncState.sourceUser} placeholder={lc.userPlaceholder}
-								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 						</div>
 						<div>
 							<label for="rsync-source-host" class="block text-xs text-slate-300 mb-1.5">{lc.host}</label>
 							<input id="rsync-source-host" type="text" bind:value={rsyncState.sourceHost} placeholder={lc.hostPlaceholder}
-								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 						</div>
 						<div>
 							<label for="rsync-source-path" class="block text-xs text-slate-300 mb-1.5">{lc.path}</label>
 							<input id="rsync-source-path" type="text" bind:value={rsyncState.sourcePath} placeholder={lc.pathPlaceholderRemote}
-								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 						</div>
 					</div>
 				{:else}
 					<div>
 						<label for="rsync-source-path-local" class="block text-xs text-slate-300 mb-1.5">{lc.path}</label>
 						<input id="rsync-source-path-local" type="text" bind:value={rsyncState.sourcePath} placeholder={lc.pathPlaceholderLocal}
-							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 					</div>
 				{/if}
 			</fieldset>
@@ -344,24 +344,24 @@
 						<div>
 							<label for="rsync-dest-user" class="block text-xs text-slate-300 mb-1.5">{lc.user}</label>
 							<input id="rsync-dest-user" type="text" bind:value={rsyncState.destUser} placeholder={lc.userPlaceholder}
-								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 						</div>
 						<div>
 							<label for="rsync-dest-host" class="block text-xs text-slate-300 mb-1.5">{lc.host}</label>
 							<input id="rsync-dest-host" type="text" bind:value={rsyncState.destHost} placeholder={lc.hostPlaceholder}
-								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 						</div>
 						<div>
 							<label for="rsync-dest-path" class="block text-xs text-slate-300 mb-1.5">{lc.path}</label>
 							<input id="rsync-dest-path" type="text" bind:value={rsyncState.destPath} placeholder={lc.pathPlaceholderRemote}
-								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 						</div>
 					</div>
 				{:else}
 					<div>
 						<label for="rsync-dest-path-local" class="block text-xs text-slate-300 mb-1.5">{lc.path}</label>
 						<input id="rsync-dest-path-local" type="text" bind:value={rsyncState.destPath} placeholder={lc.pathPlaceholderLocal}
-							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 					</div>
 				{/if}
 			</fieldset>
@@ -380,13 +380,13 @@
 					<div class="max-w-[10rem]">
 						<label for="rsync-ssh-port" class="block text-xs text-slate-300 mb-1.5">{lc.sshPort}</label>
 						<input id="rsync-ssh-port" type="text" inputmode="numeric" bind:value={rsyncState.sshPort} placeholder={lc.sshPortPlaceholder}
-							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 					</div>
 				{/if}
 				<div>
 					<label for="rsync-exclude" class="block text-xs text-slate-300 mb-1.5">{lc.exclude}</label>
 					<input id="rsync-exclude" type="text" bind:value={rsyncState.exclude} placeholder={lc.excludePlaceholder}
-						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 				</div>
 			</fieldset>
 		{:else if mode === 'ssh'}
@@ -398,23 +398,23 @@
 					<div>
 						<label for="ssh-user" class="block text-xs text-slate-300 mb-1.5">{lc.user}</label>
 						<input id="ssh-user" type="text" bind:value={sshState.user} placeholder={lc.userPlaceholder}
-							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 					</div>
 					<div>
 						<label for="ssh-host" class="block text-xs text-slate-300 mb-1.5">{lc.host}</label>
 						<input id="ssh-host" type="text" bind:value={sshState.host} placeholder={lc.hostPlaceholder}
-							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 					</div>
 					<div>
 						<label for="ssh-port" class="block text-xs text-slate-300 mb-1.5">{lc.port}</label>
 						<input id="ssh-port" type="text" inputmode="numeric" bind:value={sshState.port} placeholder={lc.portPlaceholder}
-							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 					</div>
 				</div>
 				<div>
 					<label for="ssh-identity" class="block text-xs text-slate-300 mb-1.5">{lc.identityFile}</label>
 					<input id="ssh-identity" type="text" bind:value={sshState.identityFile} placeholder={lc.identityFilePlaceholder}
-						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 				</div>
 			</fieldset>
 			<fieldset class="space-y-2">
@@ -422,7 +422,7 @@
 				<div>
 					<label for="ssh-remote-cmd" class="block text-xs text-slate-300 mb-1.5">{lc.remoteCommand}</label>
 					<input id="ssh-remote-cmd" type="text" bind:value={sshState.remoteCommand} placeholder={lc.remoteCommandPlaceholder}
-						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 				</div>
 				<label class="flex items-center gap-2 text-sm text-slate-300"><input type="checkbox" bind:checked={sshState.allocateTty} class="rounded border-slate-600 bg-slate-900" />{lc.allocateTty}</label>
 				<label class="flex items-center gap-2 text-sm text-slate-300"><input type="checkbox" bind:checked={sshState.forwardAgent} class="rounded border-slate-600 bg-slate-900" />{lc.forwardAgent}</label>
@@ -441,7 +441,7 @@
 				<div>
 					<label for="du-path" class="block text-xs text-slate-300 mb-1.5">{lc.path}</label>
 					<input id="du-path" type="text" bind:value={diskUsageState.path} placeholder={lc.pathPlaceholder}
-						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 				</div>
 				<label class="flex items-center gap-2 text-sm text-slate-300"><input type="checkbox" bind:checked={diskUsageState.humanReadable} class="rounded border-slate-600 bg-slate-900" />{lc.humanReadable}</label>
 				{#if diskUsageState.tool === 'du'}
@@ -450,7 +450,7 @@
 						<div class="max-w-[10rem]">
 							<label for="du-max-depth" class="block text-xs text-slate-300 mb-1.5">{lc.maxDepth}</label>
 							<input id="du-max-depth" type="text" inputmode="numeric" bind:value={diskUsageState.maxDepth} placeholder={lc.maxDepthPlaceholder}
-								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 						</div>
 					{/if}
 				{/if}
@@ -469,12 +469,12 @@
 				<div>
 					<label for="ln-target" class="block text-xs text-slate-300 mb-1.5">{lc.target}</label>
 					<input id="ln-target" type="text" bind:value={symlinkState.target} placeholder={lc.targetPlaceholder}
-						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 				</div>
 				<div>
 					<label for="ln-name" class="block text-xs text-slate-300 mb-1.5">{lc.linkName}</label>
 					<input id="ln-name" type="text" bind:value={symlinkState.linkName} placeholder={lc.linkNamePlaceholder}
-						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 				</div>
 				<label class="flex items-center gap-2 text-sm text-slate-300"><input type="checkbox" bind:checked={symlinkState.force} class="rounded border-slate-600 bg-slate-900" />{lc.force}</label>
 			</fieldset>
@@ -498,7 +498,7 @@
 				<div>
 					<label for="tar-name" class="block text-xs text-slate-300 mb-1.5">{lc.archiveName}</label>
 					<input id="tar-name" type="text" bind:value={tarState.archiveName} placeholder={lc.archiveNamePlaceholder}
-						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 				</div>
 			</fieldset>
 			<fieldset class="space-y-2">
@@ -507,14 +507,14 @@
 					<div>
 						<label for="tar-source-paths" class="block text-xs text-slate-300 mb-1.5">{lc.sourcePaths}</label>
 						<input id="tar-source-paths" type="text" bind:value={tarState.sourcePaths} placeholder={lc.sourcePathsPlaceholder}
-							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 						<p class="text-xs text-slate-300 mt-1">{lc.sourcePathsHint}</p>
 					</div>
 				{:else}
 					<div>
 						<label for="tar-extract-to" class="block text-xs text-slate-300 mb-1.5">{lc.extractTo}</label>
 						<input id="tar-extract-to" type="text" bind:value={tarState.extractTo} placeholder={lc.extractToPlaceholder}
-							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 					</div>
 				{/if}
 				<label class="flex items-center gap-2 text-sm text-slate-300"><input type="checkbox" bind:checked={tarState.verbose} class="rounded border-slate-600 bg-slate-900" />{lc.verbose}</label>
@@ -528,12 +528,12 @@
 					<div>
 						<label for="find-path" class="block text-xs text-slate-300 mb-1.5">{lc.path}</label>
 						<input id="find-path" type="text" bind:value={findState.path} placeholder={lc.pathPlaceholder}
-							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 					</div>
 					<div>
 						<label for="find-name" class="block text-xs text-slate-300 mb-1.5">{lc.namePattern}</label>
 						<input id="find-name" type="text" bind:value={findState.namePattern} placeholder={lc.namePatternPlaceholder}
-							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 					</div>
 				</div>
 				<div class="max-w-xs">
@@ -559,7 +559,7 @@
 							<option value="-">{lc.signMinus}</option>
 						</select>
 						<input type="text" inputmode="numeric" bind:value={findState.sizeValue} placeholder={lc.sizeValuePlaceholder} aria-label={lc.sizeLabel}
-							class="w-20 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+							class="w-20 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 						<select aria-label={lc.sizeLabel} bind:value={findState.sizeUnit}
 							class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-slate-200 focus:outline-none focus:border-violet-500 text-sm">
 							<option value="k">{lc.unitK}</option>
@@ -578,7 +578,7 @@
 							<option value="-">{lc.signMinus}</option>
 						</select>
 						<input type="text" inputmode="numeric" bind:value={findState.mtimeDays} placeholder={lc.mtimeDaysPlaceholder} aria-label={lc.mtimeLabel}
-							class="w-20 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+							class="w-20 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 					</div>
 				</div>
 			</fieldset>
@@ -587,7 +587,7 @@
 				<div>
 					<label for="find-exec" class="block text-xs text-slate-300 mb-1.5">{lc.execCmd}</label>
 					<input id="find-exec" type="text" bind:value={findState.execCmd} placeholder={lc.execCmdPlaceholder}
-						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 					<p class="text-xs text-slate-300 mt-1">{lc.execCmdHint}</p>
 				</div>
 			</fieldset>
@@ -605,7 +605,7 @@
 				<div>
 					<label for="perm-target" class="block text-xs text-slate-300 mb-1.5">{lc.target}</label>
 					<input id="perm-target" type="text" bind:value={permissionsState.target} placeholder={lc.targetPlaceholder}
-						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 				</div>
 				<label class="flex items-center gap-2 text-sm text-slate-300"><input type="checkbox" bind:checked={permissionsState.recursive} class="rounded border-slate-600 bg-slate-900" />{lc.recursive}</label>
 			</fieldset>
@@ -622,7 +622,7 @@
 						<div class="max-w-[10rem]">
 							<label for="perm-octal" class="block text-xs text-slate-300 mb-1.5">{lc.octal}</label>
 							<input id="perm-octal" type="text" inputmode="numeric" bind:value={permissionsState.octal} placeholder={lc.octalPlaceholder}
-								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 						</div>
 					{:else}
 						<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -661,12 +661,12 @@
 						<div>
 							<label for="perm-chown-user" class="block text-xs text-slate-300 mb-1.5">{lc.chownUser}</label>
 							<input id="perm-chown-user" type="text" bind:value={permissionsState.chownUser} placeholder={lc.chownUserPlaceholder}
-								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 						</div>
 						<div>
 							<label for="perm-chown-group" class="block text-xs text-slate-300 mb-1.5">{lc.chownGroup}</label>
 							<input id="perm-chown-group" type="text" bind:value={permissionsState.chownGroup} placeholder={lc.chownGroupPlaceholder}
-								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+								class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 						</div>
 					</div>
 				</fieldset>
@@ -679,12 +679,12 @@
 				<div>
 					<label for="grep-pattern" class="block text-xs text-slate-300 mb-1.5">{lc.pattern}</label>
 					<input id="grep-pattern" type="text" bind:value={grepState.pattern} placeholder={lc.patternPlaceholder}
-						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 				</div>
 				<div>
 					<label for="grep-path" class="block text-xs text-slate-300 mb-1.5">{lc.path}</label>
 					<input id="grep-path" type="text" bind:value={grepState.path} placeholder={lc.pathPlaceholder}
-						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 				</div>
 			</fieldset>
 			<fieldset class="space-y-3">
@@ -709,7 +709,7 @@
 						</select>
 						{#if grepState.contextMode !== 'none'}
 							<input type="text" inputmode="numeric" bind:value={grepState.contextLines} placeholder={lc.contextLinesPlaceholder} aria-label={lc.contextLabel}
-								class="w-20 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+								class="w-20 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 						{/if}
 					</div>
 				</div>
@@ -731,18 +731,18 @@
 					<div class="max-w-[10rem]">
 						<label for="keygen-bits" class="block text-xs text-slate-300 mb-1.5">{lc.bits}</label>
 						<input id="keygen-bits" type="text" inputmode="numeric" bind:value={sshKeygenState.bits} placeholder={lc.bitsPlaceholder}
-							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+							class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 					</div>
 				{/if}
 				<div>
 					<label for="keygen-output" class="block text-xs text-slate-300 mb-1.5">{lc.outputFile}</label>
 					<input id="keygen-output" type="text" bind:value={sshKeygenState.outputFile} placeholder={lc.outputFilePlaceholder}
-						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 				</div>
 				<div>
 					<label for="keygen-comment" class="block text-xs text-slate-300 mb-1.5">{lc.comment}</label>
 					<input id="keygen-comment" type="text" bind:value={sshKeygenState.comment} placeholder={lc.commentPlaceholder}
-						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono" />
+						class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono" />
 				</div>
 				<label class="flex items-center gap-2 text-sm text-slate-300"><input type="checkbox" bind:checked={sshKeygenState.noPassphrase} class="rounded border-slate-600 bg-slate-900" />{lc.noPassphrase}</label>
 			</fieldset>

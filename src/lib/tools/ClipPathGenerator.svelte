@@ -144,15 +144,15 @@
 			<div class="space-y-1 max-h-48 overflow-y-auto">
 				{#each points as p, i}
 					<div class="flex items-center gap-2 bg-slate-900 rounded-lg px-3 py-1.5 text-xs">
-						<span class="text-slate-500 w-4">{i + 1}</span>
-						<span class="text-slate-400">X:</span>
+						<span class="text-slate-300 w-4">{i + 1}</span>
+						<span class="text-slate-300">X:</span>
 						<input type="number" bind:value={p.x} min="0" max="100" onchange={() => activePreset = ''}
 							class="w-14 bg-slate-800 rounded px-1.5 py-0.5 text-slate-200 font-mono focus:outline-none focus:ring-1 focus:ring-violet-500" />
-						<span class="text-slate-400">Y:</span>
+						<span class="text-slate-300">Y:</span>
 						<input type="number" bind:value={p.y} min="0" max="100" onchange={() => activePreset = ''}
 							class="w-14 bg-slate-800 rounded px-1.5 py-0.5 text-slate-200 font-mono focus:outline-none focus:ring-1 focus:ring-violet-500" />
 						{#if points.length > 3}
-							<button onclick={() => removePoint(i)} class="ml-auto text-slate-500 hover:text-red-400 transition-colors">✕</button>
+							<button onclick={() => removePoint(i)} class="ml-auto text-slate-300 hover:text-red-300 transition-colors">✕</button>
 						{/if}
 					</div>
 				{/each}
@@ -164,7 +164,7 @@
 			<div class="flex items-center justify-between">
 				<h2 class="text-xs font-semibold text-slate-300 uppercase tracking-wider">Vorschau</h2>
 				<div class="flex items-center gap-2">
-					<label class="text-xs text-slate-400">Farbe</label>
+					<label class="text-xs text-slate-300">Farbe</label>
 					<input type="color" bind:value={boxColor} class="h-7 w-10 rounded border border-slate-600 bg-slate-900 p-0.5 cursor-pointer" />
 				</div>
 			</div>

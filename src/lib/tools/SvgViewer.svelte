@@ -97,20 +97,20 @@
 				{$t('svgViewer').dropZone}
 				<input type="file" accept=".svg,image/svg+xml" onchange={handleFileInput} class="hidden" />
 			</label>
-			<span class="text-slate-500 text-xs">{$t('svgViewer').orPaste}</span>
+			<span class="text-slate-300 text-xs">{$t('svgViewer').orPaste}</span>
 			{#if svgCode}
 				<button onclick={() => svgCode = ''} class="text-xs text-slate-300 hover:text-slate-100 ml-auto transition-colors">{$t('svgViewer').clear}</button>
 			{/if}
 		</div>
 
 		<div>
-			<label class="block text-xs text-slate-400 mb-1.5" for="svg-paste">{$t('svgViewer').pasteLabel}</label>
+			<label class="block text-xs text-slate-300 mb-1.5" for="svg-paste">{$t('svgViewer').pasteLabel}</label>
 			<textarea
 				id="svg-paste"
 				bind:value={svgCode}
 				placeholder={$t('svgViewer').paste}
 				rows="6"
-				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 font-mono text-xs placeholder-slate-400 focus:outline-none focus:border-violet-500 resize-y"
+				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 font-mono text-xs placeholder-slate-300 focus:outline-none focus:border-violet-500 resize-y"
 				spellcheck="false"
 			></textarea>
 		</div>
@@ -151,7 +151,7 @@
 								[$t('svgViewer').elements, String(info.elements)],
 							] as [label, value]}
 								<div class="flex justify-between gap-2">
-									<span class="text-slate-400">{label}</span>
+									<span class="text-slate-300">{label}</span>
 									<span class="font-mono text-slate-300 text-right">{value}</span>
 								</div>
 							{/each}

@@ -55,7 +55,7 @@
 				'n': 'Zeilenumbruch', 't': 'Tabulator', 'r': 'Carriage Return',
 				'A': 'Textanfang', 'Z': 'Textende',
 			};
-			return { token: '\\' + ch, desc: map[ch] ?? `Literal "${ch}"`, color: 'text-sky-400' };
+			return { token: '\\' + ch, desc: map[ch] ?? `Literal "${ch}"`, color: 'text-sky-300' };
 		}
 
 		function quantifierDesc(q: string): string {
@@ -122,13 +122,13 @@
 				let prefix = '(';
 				if (peek() === '?' ) {
 					const nc = peek(1);
-					if (nc === ':')  { kind = 'Non-Capture Group'; color = 'text-slate-400'; prefix = '(?:'; i += 2; }
-					else if (nc === '=') { kind = 'Lookahead (gefolgt von …)'; color = 'text-rose-400'; prefix = '(?='; i += 2; }
-					else if (nc === '!') { kind = 'Negativer Lookahead (nicht gefolgt von …)'; color = 'text-rose-400'; prefix = '(?!'; i += 2; }
+					if (nc === ':')  { kind = 'Non-Capture Group'; color = 'text-slate-300'; prefix = '(?:'; i += 2; }
+					else if (nc === '=') { kind = 'Lookahead (gefolgt von …)'; color = 'text-rose-300'; prefix = '(?='; i += 2; }
+					else if (nc === '!') { kind = 'Negativer Lookahead (nicht gefolgt von …)'; color = 'text-rose-300'; prefix = '(?!'; i += 2; }
 					else if (nc === '<') {
 						const nc2 = peek(2);
-						if (nc2 === '=') { kind = 'Lookbehind (nach …)'; color = 'text-rose-400'; prefix = '(?<='; i += 3; }
-						else if (nc2 === '!') { kind = 'Negativer Lookbehind'; color = 'text-rose-400'; prefix = '(?<!'; i += 3; }
+						if (nc2 === '=') { kind = 'Lookbehind (nach …)'; color = 'text-rose-300'; prefix = '(?<='; i += 3; }
+						else if (nc2 === '!') { kind = 'Negativer Lookbehind'; color = 'text-rose-300'; prefix = '(?<!'; i += 3; }
 						else {
 							// named group (?<name>
 							let name = ''; let j = i + 2;
@@ -145,32 +145,32 @@
 				groupDepth = Math.max(0, groupDepth - 1);
 				i++;
 				const q = readQuantifier();
-				tokens.push({ token: ')' + q, desc: 'Ende Gruppe' + (q ? ` — ${quantifierDesc(q)}` : ''), color: 'text-slate-400' });
+				tokens.push({ token: ')' + q, desc: 'Ende Gruppe' + (q ? ` — ${quantifierDesc(q)}` : ''), color: 'text-slate-300' });
 				continue;
 			}
 
 			if (ch === '|') {
 				i++;
-				tokens.push({ token: '|', desc: 'Oder (Alternative)', color: 'text-slate-400' });
+				tokens.push({ token: '|', desc: 'Oder (Alternative)', color: 'text-slate-300' });
 				continue;
 			}
 
 			if (ch === '^') {
 				i++;
-				tokens.push({ token: '^', desc: 'Anfang der Zeile', color: 'text-violet-400' });
+				tokens.push({ token: '^', desc: 'Anfang der Zeile', color: 'text-violet-300' });
 				continue;
 			}
 
 			if (ch === '$') {
 				i++;
-				tokens.push({ token: '$', desc: 'Ende der Zeile', color: 'text-violet-400' });
+				tokens.push({ token: '$', desc: 'Ende der Zeile', color: 'text-violet-300' });
 				continue;
 			}
 
 			if (ch === '.') {
 				i++;
 				const q = readQuantifier();
-				tokens.push({ token: '.' + q, desc: 'Beliebiges Zeichen' + (q ? ` — ${quantifierDesc(q)}` : ''), color: 'text-sky-400' });
+				tokens.push({ token: '.' + q, desc: 'Beliebiges Zeichen' + (q ? ` — ${quantifierDesc(q)}` : ''), color: 'text-sky-300' });
 				continue;
 			}
 
@@ -287,7 +287,7 @@
 		<div>
 			<label for="rx-pattern" class="block text-sm font-semibold text-slate-300 uppercase tracking-wider mb-2">{$t('regexTester').pattern}</label>
 			<div class="flex items-center gap-0">
-				<span class="px-3 py-2.5 bg-slate-700 rounded-l-lg text-slate-400 text-sm font-mono border border-slate-600 border-r-0">/</span>
+				<span class="px-3 py-2.5 bg-slate-700 rounded-l-lg text-slate-200 text-sm font-mono border border-slate-600 border-r-0">/</span>
 				<input
 					id="rx-pattern"
 					bind:value={pattern}
@@ -296,7 +296,7 @@
 					spellcheck="false"
 					autocomplete="off"
 				/>
-				<span class="px-3 py-2.5 bg-slate-700 rounded-r-lg text-slate-400 text-sm font-mono border border-slate-600 border-l-0">/{(flagG?'g':'')+(flagI?'i':'')+(flagM?'m':'')+(flagS?'s':'')}</span>
+				<span class="px-3 py-2.5 bg-slate-700 rounded-r-lg text-slate-200 text-sm font-mono border border-slate-600 border-l-0">/{(flagG?'g':'')+(flagI?'i':'')+(flagM?'m':'')+(flagS?'s':'')}</span>
 			</div>
 			{#if result.error}
 				<p role="alert" class="mt-2 text-xs text-red-300">{$t('regexTester').invalidRegex}: {result.error}</p>
@@ -306,7 +306,7 @@
 		<!-- Pattern explanation -->
 		{#if explanation.length > 0 && !result.error}
 			<div class="bg-slate-900/70 rounded-lg px-4 py-3">
-				<p class="text-xs text-slate-400 uppercase tracking-wider mb-2">{$t('regexTester').explanation}</p>
+				<p class="text-xs text-slate-300 uppercase tracking-wider mb-2">{$t('regexTester').explanation}</p>
 				<div class="flex flex-wrap gap-y-2 gap-x-0">
 					{#each explanation as tok}
 						<div class="group relative">
@@ -351,7 +351,7 @@
 				bind:value={testStr}
 				placeholder={$t('regexTester').testPlaceholder}
 				rows="14"
-				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm font-mono resize-y"
+				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm font-mono resize-y"
 				spellcheck="false"
 			></textarea>
 		</div>
@@ -368,15 +368,15 @@
 					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 					{@html result.highlighted || ''}
 				{:else}
-					<span class="text-slate-500">{$t('regexTester').testPlaceholder}</span>
+					<span class="text-slate-300">{$t('regexTester').testPlaceholder}</span>
 				{/if}
 			</div>
 			{#if result.matches.length === 0 && testStr && pattern && !result.error}
-				<p class="text-slate-400 text-sm">{$t('regexTester').noMatches}</p>
+				<p class="text-slate-300 text-sm">{$t('regexTester').noMatches}</p>
 			{:else if result.matches.length > 0}
 				<div class="overflow-x-auto max-h-48 overflow-y-auto">
 					<table class="w-full text-xs">
-						<thead class="text-slate-400 border-b border-slate-700 sticky top-0 bg-slate-800">
+						<thead class="text-slate-300 border-b border-slate-700 sticky top-0 bg-slate-800">
 							<tr>
 								<th class="text-left pb-2 pr-3">#</th>
 								<th class="text-left pb-2 pr-3">{$t('regexTester').fullMatch}</th>
@@ -390,7 +390,7 @@
 						<tbody>
 							{#each result.matches as match, i}
 								<tr class="border-b border-slate-800/50">
-									<td class="py-1.5 pr-3 text-slate-400">{i + 1}</td>
+									<td class="py-1.5 pr-3 text-slate-300">{i + 1}</td>
 									<td class="py-1.5 pr-3 font-mono text-amber-300 break-all">{match.value}</td>
 									{#each match.groups as g}
 										<td class="py-1.5 pr-3 font-mono text-sky-300 break-all">{g ?? '—'}</td>
@@ -425,9 +425,9 @@
 					>
 						<div class="flex-1 min-w-0">
 							<div class="text-xs font-semibold text-slate-300 group-hover:text-slate-100 transition-colors">{cp.name}</div>
-							<div class="text-xs font-mono text-slate-400 truncate mt-0.5">{cp.pattern}</div>
+							<div class="text-xs font-mono text-slate-300 truncate mt-0.5">{cp.pattern}</div>
 						</div>
-						<span class="text-xs shrink-0 mt-0.5 {copiedPattern === cp.pattern ? 'text-emerald-400' : 'text-violet-400'}">
+						<span class="text-xs shrink-0 mt-0.5 {copiedPattern === cp.pattern ? 'text-emerald-400' : 'text-violet-300'}">
 							{copiedPattern === cp.pattern ? '✓' : '→'}
 						</span>
 					</button>
@@ -448,7 +448,7 @@
 							{#each section.rows as [token, desc]}
 								<tr class="border-b border-slate-700/40 last:border-0">
 									<td class="py-1.5 pr-3 font-mono text-amber-300 whitespace-nowrap align-top">{token}</td>
-									<td class="py-1.5 text-slate-400 leading-snug">{desc}</td>
+									<td class="py-1.5 text-slate-300 leading-snug">{desc}</td>
 								</tr>
 							{/each}
 						</tbody>

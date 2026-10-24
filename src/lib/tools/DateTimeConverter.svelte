@@ -49,7 +49,7 @@
 			</div>
 			<div class="bg-slate-900 rounded-lg p-4">
 				<div class="text-xs text-slate-300 mb-1">UTC</div>
-				<div class="text-xl font-mono text-sky-400">{now.toUTCString()}</div>
+				<div class="text-xl font-mono text-sky-300">{now.toUTCString()}</div>
 			</div>
 		</div>
 	</div>
@@ -78,7 +78,7 @@
 		<div class="flex gap-3">
 			<input type="text" bind:value={tsInput} placeholder={$t('datetime').placeholder}
 				aria-labelledby="dtc-ts-label"
-				class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-violet-500 font-mono" />
+				class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 placeholder-slate-300 focus:outline-none focus:border-violet-500 font-mono" />
 			<button onclick={convertTsToDate} class="px-5 py-2.5 bg-violet-700 hover:bg-violet-800 text-white rounded-lg font-medium transition-colors">
 				{$t('datetime').convert}
 			</button>

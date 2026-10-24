@@ -153,7 +153,7 @@
 
 		{#if diffResult}
 			<div class="bg-slate-900 rounded-lg px-4 py-3">
-				<pre class="font-mono text-sky-400 text-sm whitespace-pre">{diffResult}</pre>
+				<pre class="font-mono text-sky-300 text-sm whitespace-pre">{diffResult}</pre>
 			</div>
 		{/if}
 	</div>

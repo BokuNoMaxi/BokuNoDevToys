@@ -8,7 +8,7 @@
 	let colTemplate = $state<string[]>(['1fr', '1fr', '1fr']);
 	let copied = $state(false);
 
-	const colors = ['bg-violet-700/60','bg-sky-700/60','bg-emerald-700/60','bg-amber-700/60','bg-rose-700/60','bg-indigo-700/60'];
+	const colors = ['bg-violet-800','bg-sky-800','bg-emerald-800','bg-amber-800','bg-rose-800','bg-indigo-800'];
 
 	function addCol() {
 		colTemplate = [...colTemplate, '1fr'];
@@ -45,15 +45,15 @@
 		<div class="bg-slate-800 rounded-xl p-6 space-y-4">
 			<div class="grid grid-cols-2 gap-4">
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">{$t('cssGrid').rows}: <span class="text-violet-300 font-mono">{rows}</span></label>
+					<label class="block text-xs text-slate-300 mb-1.5">{$t('cssGrid').rows}: <span class="text-violet-300 font-mono">{rows}</span></label>
 					<input type="range" min="1" max="8" bind:value={rows} class="w-full accent-violet-500" />
 				</div>
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">{$t('cssGrid').colGap}: <span class="text-violet-300 font-mono">{colGap}px</span></label>
+					<label class="block text-xs text-slate-300 mb-1.5">{$t('cssGrid').colGap}: <span class="text-violet-300 font-mono">{colGap}px</span></label>
 					<input type="range" min="0" max="48" bind:value={colGap} class="w-full accent-violet-500" />
 				</div>
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">{$t('cssGrid').rowGap}: <span class="text-violet-300 font-mono">{rowGap}px</span></label>
+					<label class="block text-xs text-slate-300 mb-1.5">{$t('cssGrid').rowGap}: <span class="text-violet-300 font-mono">{rowGap}px</span></label>
 					<input type="range" min="0" max="48" bind:value={rowGap} class="w-full accent-violet-500" />
 				</div>
 			</div>
@@ -67,7 +67,7 @@
 				<div class="space-y-2">
 					{#each colTemplate as tpl, i}
 						<div class="flex items-center gap-2">
-							<span class="text-xs text-slate-400 w-14">Col {i+1}</span>
+							<span class="text-xs text-slate-300 w-14">Col {i+1}</span>
 							<select
 								value={tpl}
 								onchange={(e) => setTemplate(i, (e.target as HTMLSelectElement).value)}
@@ -96,7 +96,7 @@
 			<div class="flex-1 overflow-auto">
 				<div style={gridStyle}>
 					{#each Array(previewCells) as _, i}
-						<div class="rounded {colors[i % colors.length]} flex items-center justify-center text-xs text-white/60 min-h-10">{i+1}</div>
+						<div class="rounded {colors[i % colors.length]} flex items-center justify-center text-xs text-white min-h-10">{i+1}</div>
 					{/each}
 				</div>
 			</div>

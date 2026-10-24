@@ -23,7 +23,7 @@
 		if (score === null) return 'text-slate-300';
 		if (score >= 80) return 'text-emerald-400';
 		if (score >= 50) return 'text-amber-400';
-		return 'text-red-400';
+		return 'text-red-300';
 	});
 
 	async function fetchAndAnalyze() {
@@ -54,7 +54,7 @@
 	const statusColor: Record<Status, string> = {
 		pass: 'text-emerald-400 bg-emerald-400/10',
 		warn: 'text-amber-400 bg-amber-400/10',
-		fail: 'text-red-400 bg-red-400/10',
+		fail: 'text-red-300 bg-red-400/10',
 	};
 </script>
 
@@ -79,13 +79,13 @@
 					{fetching ? $t('seoScore').analyzing : $t('seoScore').analyze}
 				</button>
 			</div>
-			<p class="text-xs text-slate-400">{$t('seoScore').proxyNote}</p>
+			<p class="text-xs text-slate-300">{$t('seoScore').proxyNote}</p>
 		{:else}
 			<textarea
 				bind:value={pasteInput}
 				placeholder={$t('seoScore').pastePlaceholder}
 				rows="8"
-				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 font-mono text-xs placeholder-slate-400 focus:outline-none focus:border-violet-500 resize-y"
+				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 font-mono text-xs placeholder-slate-300 focus:outline-none focus:border-violet-500 resize-y"
 				spellcheck="false"
 			></textarea>
 			<button onclick={analyzePaste} class="px-4 py-2.5 bg-violet-700 hover:bg-violet-800 text-white rounded-lg text-sm font-medium transition-colors">{$t('seoScore').analyze}</button>
@@ -102,7 +102,7 @@
 			<div class="text-5xl font-bold {scoreColor}">{score}</div>
 			<div>
 				<p class="text-sm text-slate-300 font-medium">{$t('seoScore').scoreLabel}</p>
-				<p class="text-xs text-slate-400 mt-0.5">{$t('seoScore').scoreOutOf}</p>
+				<p class="text-xs text-slate-300 mt-0.5">{$t('seoScore').scoreOutOf}</p>
 			</div>
 		</div>
 
@@ -114,7 +114,7 @@
 					<span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 {statusColor[check.status]}">{statusIcon[check.status]}</span>
 					<div class="flex-1 min-w-0">
 						<p class="text-sm text-slate-200 font-medium">{check.label}</p>
-						<p class="text-xs text-slate-400 mt-0.5 break-words">{check.detail}</p>
+						<p class="text-xs text-slate-300 mt-0.5 break-words">{check.detail}</p>
 					</div>
 				</div>
 			{/each}

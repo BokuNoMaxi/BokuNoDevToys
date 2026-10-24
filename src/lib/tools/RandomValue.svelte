@@ -58,7 +58,7 @@
 				bind:value={valuesText}
 				placeholder={$t('randomValue').placeholder}
 				rows="8"
-				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-400 focus:outline-none focus:border-violet-500 text-sm resize-y font-mono"
+				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-300 focus:outline-none focus:border-violet-500 text-sm resize-y font-mono"
 			></textarea>
 			<p class="mt-1.5 text-xs text-slate-300">{rows().length} {$t('randomValue').entries}</p>
 		</div>
@@ -102,7 +102,7 @@
 			<div class="space-y-1">
 				{#each shuffleResult as row, i}
 					<div class="flex items-center gap-3">
-						<span class="text-xs text-slate-400 w-5 text-right shrink-0">{i + 1}.</span>
+						<span class="text-xs text-slate-300 w-5 text-right shrink-0">{i + 1}.</span>
 						<span class="text-sm font-mono text-emerald-400">{row}</span>
 					</div>
 				{/each}
@@ -118,7 +118,7 @@
 			</div>
 			<div class="flex flex-wrap gap-2">
 				{#each history.slice(1) as h}
-					<span class="text-sm text-slate-400 bg-slate-900 rounded px-2 py-1">{h}</span>
+					<span class="text-sm text-slate-300 bg-slate-900 rounded px-2 py-1">{h}</span>
 				{/each}
 			</div>
 		</div>

@@ -59,9 +59,9 @@
 						Layer {i + 1}
 					</button>
 				{/each}
-				<button onclick={addShadow} class="px-3 py-1 rounded-lg text-xs bg-slate-900 text-slate-400 hover:text-slate-100 transition-colors">+ Layer</button>
+				<button onclick={addShadow} class="px-3 py-1 rounded-lg text-xs bg-slate-900 text-slate-300 hover:text-slate-100 transition-colors">+ Layer</button>
 				{#if shadows.length > 1}
-					<button onclick={() => removeShadow(activeIdx)} class="px-3 py-1 rounded-lg text-xs bg-slate-900 text-red-400 hover:text-red-300 transition-colors">✕</button>
+					<button onclick={() => removeShadow(activeIdx)} class="px-3 py-1 rounded-lg text-xs bg-slate-900 text-red-300 hover:text-red-300 transition-colors">✕</button>
 				{/if}
 			</div>
 
@@ -75,7 +75,7 @@
 				<div class="grid grid-cols-2 gap-3">
 					{#each [['x', 'X Offset', -100, 100], ['y', 'Y Offset', -100, 100], ['blur', 'Blur', 0, 100], ['spread', 'Spread', -50, 50]] as [key, label, min, max]}
 						<div>
-							<label class="block text-xs text-slate-400 mb-1">{label}: <span class="text-violet-300 font-mono">{(shadows[activeIdx] as Record<string,number>)[key]}px</span></label>
+							<label class="block text-xs text-slate-300 mb-1">{label}: <span class="text-violet-300 font-mono">{(shadows[activeIdx] as Record<string,number>)[key]}px</span></label>
 							<input type="range" {min} {max} bind:value={(shadows[activeIdx] as Record<string,number>)[key]} class="w-full accent-violet-500" />
 						</div>
 					{/each}
@@ -83,11 +83,11 @@
 
 				<div class="grid grid-cols-2 gap-3">
 					<div>
-						<label class="block text-xs text-slate-400 mb-1">Farbe</label>
+						<label class="block text-xs text-slate-300 mb-1">Farbe</label>
 						<input type="color" bind:value={shadows[activeIdx].color} class="h-10 w-full rounded border border-slate-600 bg-slate-900 p-0.5 cursor-pointer" />
 					</div>
 					<div>
-						<label class="block text-xs text-slate-400 mb-1">Opacity: <span class="text-violet-300 font-mono">{shadows[activeIdx].opacity}%</span></label>
+						<label class="block text-xs text-slate-300 mb-1">Opacity: <span class="text-violet-300 font-mono">{shadows[activeIdx].opacity}%</span></label>
 						<input type="range" min="0" max="100" bind:value={shadows[activeIdx].opacity} class="w-full accent-violet-500 mt-3" />
 					</div>
 				</div>
@@ -96,11 +96,11 @@
 			<!-- Background colors -->
 			<div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-700">
 				<div>
-					<label class="block text-xs text-slate-400 mb-1">Vorschau Hintergrund</label>
+					<label class="block text-xs text-slate-300 mb-1">Vorschau Hintergrund</label>
 					<input type="color" bind:value={bgColor} class="h-9 w-full rounded border border-slate-600 bg-slate-900 p-0.5 cursor-pointer" />
 				</div>
 				<div>
-					<label class="block text-xs text-slate-400 mb-1">Box Farbe</label>
+					<label class="block text-xs text-slate-300 mb-1">Box Farbe</label>
 					<input type="color" bind:value={boxColor} class="h-9 w-full rounded border border-slate-600 bg-slate-900 p-0.5 cursor-pointer" />
 				</div>
 			</div>

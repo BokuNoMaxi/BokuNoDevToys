@@ -82,7 +82,7 @@
 			<div class="grid grid-cols-2 gap-4">
 				{#each corners as c}
 					<div>
-						<label class="block text-xs text-slate-400 mb-1.5">{c.label()} <span class="text-violet-300 font-mono">{c.get()}{unit}</span></label>
+						<label class="block text-xs text-slate-300 mb-1.5">{c.label()} <span class="text-violet-300 font-mono">{c.get()}{unit}</span></label>
 						<input
 							type="range" min="0" max={maxVal} value={c.get()}
 							oninput={(e) => handleChange(c.key, Number((e.target as HTMLInputElement).value))}
@@ -94,7 +94,7 @@
 
 			<!-- Presets -->
 			<div>
-				<span class="block text-xs text-slate-400 mb-2">{$t('borderRadius').presets}</span>
+				<span class="block text-xs text-slate-300 mb-2">{$t('borderRadius').presets}</span>
 				<div class="flex flex-wrap gap-2">
 					{#each presets as p}
 						<button onclick={() => applyPreset(p.v)} class="px-3 py-1.5 text-xs rounded-lg bg-slate-900 text-slate-300 hover:text-slate-100 transition-colors">{p.label}</button>

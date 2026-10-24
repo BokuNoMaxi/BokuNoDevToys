@@ -35,7 +35,7 @@
 				bind:value={xmlInput}
 				placeholder={$t('xmlToYaml').placeholder}
 				rows="18"
-				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 font-mono text-sm placeholder-slate-400 focus:outline-none focus:border-violet-500 resize-y"
+				class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-300 font-mono text-sm placeholder-slate-300 focus:outline-none focus:border-violet-500 resize-y"
 				spellcheck="false"
 			></textarea>
 		</div>
@@ -54,7 +54,7 @@
 				<pre class="bg-slate-900 rounded-lg px-4 py-3 text-emerald-400 text-sm font-mono overflow-x-auto whitespace-pre max-h-96 overflow-y-auto">{result.yaml}</pre>
 			{:else if !result.error}
 				<div class="bg-slate-900 rounded-lg px-4 py-8 min-h-48 flex items-center justify-center">
-					<p class="text-slate-400 text-sm">{$t('xmlToYaml').placeholder}</p>
+					<p class="text-slate-300 text-sm">{$t('xmlToYaml').placeholder}</p>
 				</div>
 			{/if}
 		</div>

@@ -13,7 +13,7 @@
 	const justifies   = ['flex-start', 'flex-end', 'center', 'space-between', 'space-around', 'space-evenly'];
 	const aligns      = ['flex-start', 'flex-end', 'center', 'stretch', 'baseline'];
 	const wraps       = ['nowrap', 'wrap', 'wrap-reverse'];
-	const colors      = ['bg-violet-600','bg-sky-600','bg-emerald-600','bg-amber-600','bg-rose-600'];
+	const colors      = ['bg-violet-800','bg-sky-800','bg-emerald-800','bg-amber-800','bg-rose-800'];
 
 	let css = $derived(`display: flex;\nflex-direction: ${direction};\njustify-content: ${justify};\nalign-items: ${align};\nflex-wrap: ${wrap};\ngap: ${gap}px;`);
 
@@ -80,11 +80,11 @@
 			<!-- gap + item count -->
 			<div class="grid grid-cols-2 gap-4">
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">{$t('cssFlex').gap}: <span class="text-violet-300 font-mono">{gap}px</span></label>
+					<label class="block text-xs text-slate-300 mb-1.5">{$t('cssFlex').gap}: <span class="text-violet-300 font-mono">{gap}px</span></label>
 					<input type="range" min="0" max="48" bind:value={gap} class="w-full accent-violet-500" />
 				</div>
 				<div>
-					<label class="block text-xs text-slate-400 mb-1.5">{$t('cssFlex').itemCount}: <span class="text-violet-300 font-mono">{itemCount}</span></label>
+					<label class="block text-xs text-slate-300 mb-1.5">{$t('cssFlex').itemCount}: <span class="text-violet-300 font-mono">{itemCount}</span></label>
 					<input type="range" min="1" max="100" bind:value={itemCount} class="w-full accent-violet-500" />
 				</div>
 			</div>

@@ -110,11 +110,11 @@
 			ondrop={handleDrop}
 			aria-label={$t('accessLog').dropZone}
 		>
-			<svg class="w-10 h-10 text-slate-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+			<svg class="w-10 h-10 text-slate-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
 			</svg>
 			<span class="text-sm text-slate-300">{$t('accessLog').dropZone}</span>
-			<span class="text-xs text-slate-400 mt-1">Apache / nginx Combined Log Format</span>
+			<span class="text-xs text-slate-300 mt-1">Apache / nginx Combined Log Format</span>
 			{#if fileName}<span class="mt-2 text-xs text-violet-300 font-medium">{fileName}</span>{/if}
 			<input type="file" accept=".log,.txt,.gz" onchange={handleFileInput} class="sr-only" />
 		</label>
@@ -169,7 +169,7 @@
 		<div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
 			{#each [
 				{ label: $t('accessLog').totalRequests, value: summary.total.toLocaleString(), color: 'text-violet-300' },
-				{ label: $t('accessLog').uniqueIPs, value: summary.uniqueIPs.toLocaleString(), color: 'text-sky-400' },
+				{ label: $t('accessLog').uniqueIPs, value: summary.uniqueIPs.toLocaleString(), color: 'text-sky-300' },
 				{ label: $t('accessLog').errors, value: summary.errors.toLocaleString(), color: 'text-red-300' },
 				{ label: $t('accessLog').bytesTransferred, value: formatBytes(summary.bytes), color: 'text-emerald-400' },
 				{ label: $t('accessLog').bots, value: summary.bots.toLocaleString(), color: 'text-amber-400' },
@@ -277,7 +277,7 @@
 						<div>
 							<div class="flex items-center justify-between mb-0.5">
 								<span class="text-xs font-mono text-slate-300 truncate max-w-[75%]" title={path}>{path}</span>
-								<span class="text-xs text-slate-400 shrink-0 ml-2">{count}</span>
+								<span class="text-xs text-slate-300 shrink-0 ml-2">{count}</span>
 							</div>
 							<div class="h-1 bg-slate-700 rounded">
 								<div class="h-1 bg-violet-600 rounded" style="width: {pct}%"></div>
@@ -295,7 +295,7 @@
 						<div>
 							<div class="flex items-center justify-between mb-0.5">
 								<span class="text-xs font-mono text-slate-300">{ip}</span>
-								<span class="text-xs text-slate-400 ml-2">{count}</span>
+								<span class="text-xs text-slate-300 ml-2">{count}</span>
 							</div>
 							<div class="h-1 bg-slate-700 rounded">
 								<div class="h-1 bg-sky-700 rounded" style="width: {pct}%"></div>
@@ -316,7 +316,7 @@
 						<div>
 							<div class="flex items-center justify-between mb-0.5">
 								<span class="text-xs font-mono text-slate-300 truncate max-w-[75%]" title={name}>{name}</span>
-								<span class="text-xs text-slate-400 shrink-0 ml-2">{count}</span>
+								<span class="text-xs text-slate-300 shrink-0 ml-2">{count}</span>
 							</div>
 							<div class="h-1 bg-slate-700 rounded">
 								<div class="h-1 bg-amber-500 rounded" style="width: {pct}%"></div>

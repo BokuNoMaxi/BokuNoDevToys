@@ -108,7 +108,7 @@
 		<div class="bg-slate-800 rounded-xl p-5">
 			<div class="flex items-center justify-between mb-3">
 				<h2 class="text-xs font-semibold text-slate-300 uppercase tracking-wider">{palette.name}</h2>
-				<button onclick={() => copyAll(palette.colors)} class="text-xs text-slate-400 hover:text-slate-100 transition-colors">
+				<button onclick={() => copyAll(palette.colors)} class="text-xs text-slate-300 hover:text-slate-100 transition-colors">
 					{copiedHex === palette.colors.join('') ? 'Kopiert!' : 'Alle kopieren'}
 				</button>
 			</div>
@@ -120,7 +120,7 @@
 						title={color}
 					>
 						<div class="w-14 h-14 rounded-lg border-2 border-transparent group-hover:border-white/30 transition-all" style="background:{color}"></div>
-						<span class="text-xs font-mono text-slate-400 group-hover:text-slate-200 transition-colors">
+						<span class="text-xs font-mono text-slate-300 group-hover:text-white transition-colors">
 							{copiedHex === color ? '✓' : color}
 						</span>
 					</button>
