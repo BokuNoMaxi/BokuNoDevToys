@@ -98,7 +98,7 @@
 							class="group bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-violet-500/50 rounded-xl p-5 transition-all duration-150"
 						>
 							<div class="flex items-start justify-between">
-								<h3 class="font-semibold text-slate-200 group-hover:text-violet-300 transition-colors">{meta?.name ?? tool.id}</h3>
+								<h3 class="font-semibold text-slate-200 group-hover:text-violet-200 transition-colors">{meta?.name ?? tool.id}</h3>
 								<svg class="w-4 h-4 text-slate-300 group-hover:text-violet-300 mt-0.5 shrink-0 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
 								</svg>

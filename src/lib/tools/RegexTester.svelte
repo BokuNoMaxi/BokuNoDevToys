@@ -425,9 +425,9 @@
 					>
 						<div class="flex-1 min-w-0">
 							<div class="text-xs font-semibold text-slate-300 group-hover:text-slate-100 transition-colors">{cp.name}</div>
-							<div class="text-xs font-mono text-slate-300 truncate mt-0.5">{cp.pattern}</div>
+							<div class="text-xs font-mono text-slate-300 group-hover:text-slate-100 truncate mt-0.5 transition-colors">{cp.pattern}</div>
 						</div>
-						<span class="text-xs shrink-0 mt-0.5 {copiedPattern === cp.pattern ? 'text-emerald-400' : 'text-violet-300'}">
+						<span class="text-xs shrink-0 mt-0.5 {copiedPattern === cp.pattern ? 'text-emerald-300' : 'text-violet-200'}">
 							{copiedPattern === cp.pattern ? '✓' : '→'}
 						</span>
 					</button>

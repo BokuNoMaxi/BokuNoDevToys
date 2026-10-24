@@ -81,8 +81,8 @@
 						onclick={() => copy(r.unit, r.value)}
 						class="flex flex-col gap-0.5 bg-slate-900 rounded-lg px-3 py-2.5 text-left hover:bg-slate-700 transition-colors group {r.unit === inputUnit ? 'ring-1 ring-violet-500/50' : ''}"
 					>
-						<span class="text-xs text-slate-300">{r.unit}</span>
-						<span class="font-mono text-sm text-emerald-400">{r.value}<span class="text-slate-300">{r.unit}</span></span>
+						<span class="text-xs text-slate-300 group-hover:text-white transition-colors">{r.unit}</span>
+						<span class="font-mono text-sm text-emerald-400 group-hover:text-emerald-300 transition-colors">{r.value}<span class="text-slate-300 group-hover:text-white">{r.unit}</span></span>
 						<span class="text-xs text-slate-300 group-hover:text-white transition-colors">{copiedUnit === r.unit ? 'Kopiert!' : 'Klicken zum Kopieren'}</span>
 					</button>
 				{/each}
